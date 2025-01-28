@@ -143,7 +143,6 @@ dist
 
 # End of https://www.toptal.com/developers/gitignore/api/node
 
-!.env
-!.env.*
-.env.local
-.env.*.local
+/packages/eslint-config/src/eslint-typegen.d.ts
+/packages/eslint-config/README.md
+/packages/eslint-config/LICENSE

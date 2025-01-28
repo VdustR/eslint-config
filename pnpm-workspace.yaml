@@ -2,4 +2,12 @@ packages:
   - "packages/*"
 
 catalog:
-  es-toolkit: ^1.31.0
+  "@antfu/eslint-config": ^4.1.0
+  "@eslint-react/eslint-plugin": ^1.25.0
+  "@eslint/compat": ^1.2.5
+  "@mui/types": ^7.2.21
+  eslint-config-prettier: ^10.0.1
+  eslint-plugin-mdx: ^3.1.5
+  eslint-plugin-package-json: ^0.21.1
+  eslint-plugin-react-compiler: ^19.0.0-beta-27714ef-20250124
+  typescript: ^5.7.3

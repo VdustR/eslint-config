@@ -1,0 +1,5 @@
+{
+  "foo": "bar",
+  // eslint-disable-next-line jsonc/sort-keys -- `jsonc/sort-keys` should validate this.
+  "baz": "qux",
+}

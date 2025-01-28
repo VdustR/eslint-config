@@ -1,0 +1,59 @@
+{
+  "name": "@vp-tw/eslint-config",
+  "version": "0.0.0",
+  "description": "ViPro's ESLint configuration",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.mjs"
+      },
+      "default": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      }
+    },
+    "./*": {
+      "import": {
+        "types": "./dist/esm/*.d.ts",
+        "default": "./dist/esm/*.mjs"
+      },
+      "default": {
+        "types": "./dist/*.d.ts",
+        "default": "./dist/*.js"
+      }
+    },
+    "./README.md": "./README.md",
+    "./package": "./package.json",
+    "./package.json": "./package.json"
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/esm/index.mjs",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "unbuild",
+    "copy": "run-p copy:*",
+    "copy:license": "fse copy ../../LICENSE LICENSE",
+    "copy:readme": "fse copy ../../README.md README.md",
+    "prepare": "run-p copy typegen",
+    "typegen": "tsx scripts/typegen.ts"
+  },
+  "dependencies": {
+    "@antfu/eslint-config": "catalog:",
+    "@eslint-react/eslint-plugin": "catalog:",
+    "@eslint/compat": "catalog:",
+    "@mui/types": "catalog:",
+    "@types/eslint-config-prettier": "^6.11.3",
+    "@types/eslint__eslintrc": "^2.1.2",
+    "eslint-config-prettier": "catalog:",
+    "eslint-flat-config-utils": "^2.0.0",
+    "eslint-plugin-mdx": "catalog:",
+    "eslint-plugin-package-json": "catalog:",
+    "eslint-plugin-react": "^7.37.4",
+    "eslint-plugin-react-compiler": "catalog:"
+  },
+  "devDependencies": {
+    "eslint-typegen": "^1.0.0",
+    "unbuild": "^3.3.1"
+  }
+}

@@ -4,7 +4,7 @@ import glob from "fast-glob";
 import fs from "fs-extra";
 import path from "pathe";
 
-const isFormat = process.env["TYPE"] === "format";
+const isFormat = process.env.TYPE === "format";
 
 const typescriptExtensions = ["js", "jsx", "ts", "tsx"];
 
@@ -24,7 +24,6 @@ const withSrcPkgs = pkgs.filter((pkg) => fs.existsSync(path.join(pkg, "src")));
  */
 const config = isFormat
   ? {
-      "**/*.css": "stylelint --fix",
       "**/*": [
         "eslint --report-unused-disable-directives --fix --max-warnings=0 --no-error-on-unmatched-pattern --no-warn-ignored",
         "prettier --ignore-unknown --write",

@@ -1,15 +1,12 @@
-# template-aio
+# `@vp-tw/eslint-config`
 
-My all-in-one template for web development.
+ViPro's ESLint configuration.
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/VdustR/template-aio)
-
-[![Open in CodeSandbox](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/Vdustr/template-aio)
-
-[![Open in IDX](https://cdn.idx.dev/btn/open_dark_32.svg)](https://idx.google.com/import?url=https%3A%2F%2Fgithub.com%2FVdustR%2Ftemplate-aio)
+- Built on top of [antfu/eslint-config](https://github.com/antfu/eslint-config).
+- Uses [Prettier](https://github.com/prettier/prettier) for code formatting.
+- Integrates with [eslint-mdx](https://github.com/mdx-js/eslint-mdx).
+- Fine-tuned to provide an opinionated, optimal DX.
 
 ## License
 
-[MIT](./LICENSE)
-
-Copyright (c) 2024-2025 ViPro <vdustr@gmail.com> (<http://vdustr.dev>)
+MIT © ViPro <vdustr@gmail.com> (<http://vdustr.dev>)

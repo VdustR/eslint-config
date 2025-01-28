@@ -1,0 +1,123 @@
+import type { Config } from "./types";
+import antfu from "@antfu/eslint-config";
+import packageJson from "eslint-plugin-package-json/configs/recommended";
+
+import * as reactCompilerPlugin from "eslint-plugin-react-compiler";
+import { mdx } from "./configs/mdx";
+import { prettier } from "./configs/prettier";
+import "./eslint-typegen.d";
+
+type Options = NonNullable<Parameters<typeof antfu>[0]> & {
+  mdx?: boolean | mdx.Options;
+};
+
+const vdustr = (options?: Options, ...userConfigs: Array<Config>) => {
+  const mdxOptions = options?.mdx ?? true;
+  const jsoncEnabled: boolean = Boolean(options?.jsonc ?? true);
+  type Config = NonNullable<Parameters<typeof antfu>[1]>;
+  const defaultConfigs: Array<Config> = [
+    ...(!jsoncEnabled ? [] : [packageJson]),
+    ...(!mdxOptions
+      ? []
+      : mdx({
+          ...(typeof mdxOptions !== "object" ? null : mdxOptions),
+        })),
+    prettier,
+  ];
+  return antfu(
+    {
+      // We use `prettier`.
+      stylistic: false,
+      ...options,
+    },
+    ...defaultConfigs,
+    ...userConfigs,
+  )
+    .override("antfu/javascript/rules", (config) => ({
+      ...config,
+      rules: {
+        ...config.rules,
+        /**
+         * Some callbacks are purposefully named to make the code self-documenting.
+         */
+        "prefer-arrow-callback": "off",
+
+        /**
+         * This rule does not integrate well with JSDoc `@link` tags. It's advised
+         * to verify its behavior with TypeScript instead.
+         */
+        "no-unused-vars": "off",
+        "unused-imports/no-unused-vars": "off",
+        "unused-imports/no-unused-imports-ts": "off",
+        "unused-imports/no-unused-vars-ts": "off",
+        "unused-imports/no-unused-imports": "off",
+      },
+    }))
+    .override("antfu/imports/rules", (config) => ({
+      ...config,
+      rules: {
+        ...config.rules,
+        /**
+         * Forbid `import {} from "module"`.
+         */
+        "import/no-empty-named-blocks": "error",
+      },
+    }))
+    .override("antfu/typescript/rules", (config) => ({
+      ...config,
+      rules: {
+        ...config.rules,
+        "ts/array-type": ["error", { default: "generic" }],
+
+        /**
+         * Namespaces are useful for centralizing the management of types. Just avoid
+         * overusing them with runtime code.
+         *
+         * - References:
+         *   - <https://x.com/mattpocockuk/status/1805606072167940167>
+         */
+        "ts/no-namespace": "off",
+        "ts/no-redeclare": "off",
+
+        /**
+         * Check for unused variables in TypeScript.
+         */
+        "ts/no-unused-vars": "off",
+      },
+    }))
+    .override("antfu/jsonc/rules", (config) => ({
+      ...config,
+      rules: {
+        ...config.rules,
+        "jsonc/sort-keys": "error",
+      },
+      files: [...(config.files ?? []), "**/*.code-workspace"],
+      ignores: [
+        ...(config.ignores ?? []),
+        /**
+         * Lint `package.json` files with `eslint-plugin-package-json` instead.
+         */
+        "**/package.json",
+      ],
+    }))
+    .remove("antfu/sort/package-json")
+    .remove("antfu/sort/tsconfig-json")
+    .override("antfu/react/rules", (config) => ({
+      ...config,
+      plugins: {
+        ...config.plugins,
+        "react-compiler": reactCompilerPlugin,
+      },
+      rules: {
+        ...config.rules,
+        "react-compiler/react-compiler": "error",
+
+        /**
+         * Not all destructuring assignments are more readable than their alternatives.
+         */
+        "react/prefer-destructuring-assignment": "off",
+      },
+    }));
+};
+
+export { vdustr };

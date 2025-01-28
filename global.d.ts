@@ -1,1 +1,1 @@
-/// <reference types="@repo/dts/common" />
+/// <reference types="@total-typescript/ts-reset" />
