@@ -1,6 +1,6 @@
 {
   "name": "@vp-tw/eslint-config",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "ViPro's ESLint configuration",
   "exports": {
     ".": {
