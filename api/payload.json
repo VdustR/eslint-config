@@ -17494,6 +17494,21 @@
       ]
     },
     {
+      "filepath": "packages/eslint-config/scripts/fixEslintTypegenDts.ts",
+      "globs": [
+        "**/*.?([cm])ts",
+        "**/*.?([cm])[jt]s?(x)",
+        "**/scripts/**/*.?([cm])[jt]s?(x)"
+      ],
+      "configs": [
+        12,
+        18,
+        19,
+        24,
+        38
+      ]
+    },
+    {
       "filepath": "packages/eslint-config/scripts/typegen.ts",
       "globs": [
         "**/*.?([cm])ts",
@@ -17869,7 +17884,7 @@
     }
   ],
   "meta": {
-    "lastUpdate": 1738161352048,
+    "lastUpdate": 1738168803431,
     "basePath": "",
     "configPath": ""
   }
