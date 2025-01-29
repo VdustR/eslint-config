@@ -59,9 +59,6 @@ expected.
 To fix this, you may need to prevent the outdated package `@types/eslint` from
 being installed. This can be done by creating a `.pnpmfile.cjs` file:
 
-- [ESLint v9.10.0 released - Types now included](https://eslint.org/blog/2024/09/eslint-v9.10.0-released/#types-now-included)
-- [feat: Add types #18854](https://github.com/eslint/eslint/pull/18854)
-
 ```js
 // .pnpmfile.cjs
 module.exports = {
@@ -75,6 +72,9 @@ module.exports = {
   },
 };
 ```
+
+- [ESLint v9.10.0 released - Types now included](https://eslint.org/blog/2024/09/eslint-v9.10.0-released/#types-now-included)
+- [feat: Add types #18854](https://github.com/eslint/eslint/pull/18854)
 
 ## License
 
