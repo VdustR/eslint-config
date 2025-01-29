@@ -35,6 +35,9 @@
   "main": "./dist/index.js",
   "module": "./dist/esm/index.mjs",
   "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "unbuild",
     "copy": "tsx scripts/copy",
