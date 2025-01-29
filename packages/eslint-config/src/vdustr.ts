@@ -36,33 +36,12 @@ const vdustr = (options?: Options, ...userConfigs: Array<Config>) => {
       ? null
       : mdxOptions.flatCodeBlocks),
   };
-  type Config = NonNullable<Parameters<typeof antfu>[1]>;
-  const defaultConfigs: Array<Config> = [
-    ...(!jsoncEnabled ? [] : [packageJson]),
-    ...(!mdxEnabled
-      ? []
-      : mdx({
-          ...mdxOptions,
-          flatCodeBlocks: !mdxFlatCodeBlocksEnabled
-            ? false
-            : {
-                ...mdxFlatCodeBlocksOptions,
-                rules: {
-                  "import/no-default-export": "off",
-                  ...mdxFlatCodeBlocksOptions?.rules,
-                },
-              },
-        })),
-    ...(!storybookEnabled ? [] : storybook),
-    prettier,
-  ];
   let config = antfu(
     {
       // We use `prettier`.
       stylistic: false,
       ...options,
     },
-    ...defaultConfigs,
     ...userConfigs,
   );
 
@@ -120,7 +99,9 @@ const vdustr = (options?: Options, ...userConfigs: Array<Config>) => {
         "import/no-default-export": "off",
       },
       files: [
+        // Configuration files
         "**/*.config.*",
+
         // Single file components
         "**/*.vue",
         "**/*.svelte",
@@ -169,6 +150,7 @@ const vdustr = (options?: Options, ...userConfigs: Array<Config>) => {
           "**/package.json",
         ],
       }))
+      .insertAfter("antfu/jsonc/rules", packageJson)
       .remove("antfu/sort/package-json")
       .remove("antfu/sort/tsconfig-json");
   }
@@ -193,14 +175,35 @@ const vdustr = (options?: Options, ...userConfigs: Array<Config>) => {
   }
 
   if (storybookEnabled) {
-    config = config.override("storybook:csf:stories-rules", (config) => ({
-      ...config,
-      rules: {
-        ...config.rules,
-        "import/no-default-export": "off",
-      },
-    }));
+    config = config
+      .append(storybook)
+      .override("storybook:csf:stories-rules", (config) => ({
+        ...config,
+        rules: {
+          ...config.rules,
+          "import/no-default-export": "off",
+        },
+      }));
   }
+
+  if (mdxEnabled) {
+    config = config.append(
+      mdx({
+        ...mdxOptions,
+        flatCodeBlocks: !mdxFlatCodeBlocksEnabled
+          ? false
+          : {
+              ...mdxFlatCodeBlocksOptions,
+              rules: {
+                "import/no-default-export": "off",
+                ...mdxFlatCodeBlocksOptions?.rules,
+              },
+            },
+      }),
+    );
+  }
+
+  config = config.append(prettier);
 
   return config;
 };
