@@ -5,6 +5,7 @@ const basicEntry = {
   builder: "mkdist",
   input: "./src/",
   pattern: [
+    "**/*.js",
     "**/*.ts",
     "!**/*.test.ts",
     "!**/*.test-d.ts",

@@ -1,4 +1,5 @@
 {
-  "exclude": ["scripts", "./*.ts", "src/lib"],
-  "extends": ["@vp-tw/tsconfig/base/bundler/tsconfig"]
+  "exclude": ["node_modules", "dist"],
+  "extends": ["@vp-tw/tsconfig/base/bundler/tsconfig"],
+  "include": ["scripts", "./*.ts", "src/lib"]
 }

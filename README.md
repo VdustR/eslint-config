@@ -15,7 +15,7 @@ Check [here](https://vdustr.dev/eslint-config) to preview the ESLint inspection.
 ## Installation
 
 ```bash
-pnpm i -D @vp-tw/eslint-config
+pnpm i -D eslint @antfu/eslint-config @vp-tw/eslint-config
 ```
 
 ## Usage

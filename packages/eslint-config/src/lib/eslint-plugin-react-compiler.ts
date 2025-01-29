@@ -1,8 +1,5 @@
 import type { ESLint, Linter } from "eslint";
-import { ensurePackages } from "@antfu/eslint-config";
-// @ts-expect-error -- Untyped library.
-// eslint-disable-next-line import/no-namespace -- `react-compiler` exports the plugin as a namespace.
-import * as reactCompiler from "eslint-plugin-react-compiler";
+import { ensurePackages, interopDefault } from "@antfu/eslint-config";
 
 interface ReactCompiler extends ESLint.Plugin {
   rules: NonNullable<ESLint.Plugin["rules"]>;
@@ -11,9 +8,15 @@ interface ReactCompiler extends ESLint.Plugin {
   };
 }
 
-const reactCompilerInternal = async (): Promise<ReactCompiler> => {
+const reactCompiler = async (): Promise<ReactCompiler> => {
   await ensurePackages(["eslint-plugin-react-compiler"]);
-  return reactCompiler.default ?? reactCompiler;
+  const reactCompiler = await interopDefault(
+    import(
+      // @ts-expect-error -- Untyped library.
+      "eslint-plugin-react-compiler"
+    ),
+  );
+  return reactCompiler;
 };
 
-export { reactCompilerInternal as reactCompiler };
+export { reactCompiler };

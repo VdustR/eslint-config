@@ -1,10 +1,12 @@
 import type { TypedFlatConfigItem } from "@antfu/eslint-config";
-import { ensurePackages } from "@antfu/eslint-config";
-import storybookPlugin from "eslint-plugin-storybook";
+import { ensurePackages, interopDefault } from "@antfu/eslint-config";
 import { renameRules } from "../utils/renameRules";
 
 const storybook = async (): Promise<Array<TypedFlatConfigItem>> => {
   await ensurePackages(["eslint-plugin-storybook"]);
+  const storybookPlugin = await interopDefault(
+    import("eslint-plugin-storybook"),
+  );
   return storybookPlugin.configs["flat/csf-strict"].map((config) => {
     const allConfig = config as TypedFlatConfigItem;
     const { rules, files, plugins, ...rest } = allConfig;

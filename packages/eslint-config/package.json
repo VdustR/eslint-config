@@ -43,7 +43,6 @@
     "typegen": "tsx scripts/typegen.ts"
   },
   "dependencies": {
-    "@antfu/eslint-config": "catalog:",
     "@mui/types": "catalog:",
     "@types/eslint-config-prettier": "catalog:",
     "eslint-config-prettier": "catalog:",
@@ -52,8 +51,12 @@
     "local-pkg": "catalog:"
   },
   "devDependencies": {
+    "@antfu/eslint-config": "catalog:",
     "eslint-typegen": "^1.0.0",
     "unbuild": "^3.3.1"
+  },
+  "peerDependencies": {
+    "@antfu/eslint-config": "catalog:"
   },
   "publishConfig": {
     "access": "public"
