@@ -2315,11 +2315,36 @@
       "index": 28
     },
     {
+      "files": [
+        "**/package.json"
+      ],
+      "languageOptions": {
+        "parser": "jsonc-eslint-parser"
+      },
+      "name": "package-json/recommended",
+      "plugins": {
+        "package-json": {}
+      },
+      "rules": {
+        "package-json/no-empty-fields": "error",
+        "package-json/order-properties": "error",
+        "package-json/repository-shorthand": "error",
+        "package-json/sort-collections": "error",
+        "package-json/unique-dependencies": "error",
+        "package-json/valid-local-dependency": "error",
+        "package-json/valid-name": "error",
+        "package-json/valid-package-definition": "error",
+        "package-json/valid-repository-directory": "error",
+        "package-json/valid-version": "error"
+      },
+      "index": 29
+    },
+    {
       "name": "antfu/yaml/setup",
       "plugins": {
         "yaml": {}
       },
-      "index": 29
+      "index": 30
     },
     {
       "files": [
@@ -2339,14 +2364,14 @@
         "yaml/plain-scalar": "error",
         "yaml/vue-custom-block/no-parsing-error": "error"
       },
-      "index": 30
+      "index": 31
     },
     {
       "name": "antfu/toml/setup",
       "plugins": {
         "toml": {}
       },
-      "index": 31
+      "index": 32
     },
     {
       "files": [
@@ -2367,14 +2392,14 @@
         "toml/tables-order": "error",
         "toml/vue-custom-block/no-parsing-error": "error"
       },
-      "index": 32
+      "index": 33
     },
     {
       "name": "antfu/markdown/setup",
       "plugins": {
         "markdown": {}
       },
-      "index": 33
+      "index": 34
     },
     {
       "files": [
@@ -2385,7 +2410,7 @@
       ],
       "name": "antfu/markdown/processor",
       "processor": "merged-processor:@eslint/markdown/markdown+pass-through",
-      "index": 34
+      "index": 35
     },
     {
       "files": [
@@ -2395,7 +2420,7 @@
         "parser": "parser-plain"
       },
       "name": "antfu/markdown/parser",
-      "index": 35
+      "index": 36
     },
     {
       "files": [
@@ -2436,7 +2461,7 @@
         "unused-imports/no-unused-imports": "off",
         "unused-imports/no-unused-vars": "off"
       },
-      "index": 36
+      "index": 37
     },
     {
       "files": [
@@ -2448,7 +2473,7 @@
         "no-console": "off",
         "ts/explicit-function-return-type": "off"
       },
-      "index": 37
+      "index": 38
     },
     {
       "files": [
@@ -2460,7 +2485,7 @@
         "antfu/no-top-level-await": "off",
         "no-console": "off"
       },
-      "index": 38
+      "index": 39
     },
     {
       "files": [
@@ -2472,7 +2497,7 @@
         "antfu/no-import-dist": "off",
         "antfu/no-import-node-modules-by-path": "off"
       },
-      "index": 39
+      "index": 40
     },
     {
       "files": [
@@ -2485,7 +2510,7 @@
         "no-restricted-syntax": "off",
         "unused-imports/no-unused-vars": "off"
       },
-      "index": 40
+      "index": 41
     },
     {
       "files": [
@@ -2496,7 +2521,7 @@
       "rules": {
         "ts/no-require-imports": "off"
       },
-      "index": 41
+      "index": 42
     },
     {
       "files": [
@@ -2509,32 +2534,63 @@
         "no-console": "off",
         "ts/explicit-function-return-type": "off"
       },
-      "index": 42
+      "index": 43
     },
     {
-      "files": [
-        "**/package.json"
+      "name": "Imported .gitignore patterns",
+      "ignores": [
+        "!**/.*",
+        "pnpm-lock.yaml",
+        "**/dist",
+        "packages/eslint-config/src/eslint-typegen.d.ts",
+        ".eslint-config-inspector"
       ],
-      "languageOptions": {
-        "parser": "jsonc-eslint-parser"
-      },
-      "name": "package-json/recommended",
+      "index": 44
+    },
+    {
+      "name": "storybook:csf:setup",
       "plugins": {
-        "package-json": {}
+        "storybook": {}
       },
+      "index": 45
+    },
+    {
+      "name": "storybook:csf:stories-rules",
       "rules": {
-        "package-json/no-empty-fields": "error",
-        "package-json/order-properties": "error",
-        "package-json/repository-shorthand": "error",
-        "package-json/sort-collections": "error",
-        "package-json/unique-dependencies": "error",
-        "package-json/valid-local-dependency": "error",
-        "package-json/valid-name": "error",
-        "package-json/valid-package-definition": "error",
-        "package-json/valid-repository-directory": "error",
-        "package-json/valid-version": "error"
+        "react-hooks/rules-of-hooks": "off",
+        "import/no-anonymous-default-export": "off",
+        "storybook/csf-component": "warn",
+        "storybook/default-exports": "error",
+        "storybook/hierarchy-separator": "warn",
+        "storybook/no-redundant-story-name": "warn",
+        "storybook/story-exports": "error",
+        "import/no-default-export": "off"
       },
-      "index": 43
+      "files": [
+        "**/*.stories.@(ts|tsx|js|jsx|mjs|cjs)",
+        "**/*.story.@(ts|tsx|js|jsx|mjs|cjs)"
+      ],
+      "index": 46
+    },
+    {
+      "name": "storybook:csf:main-rules",
+      "rules": {
+        "storybook/no-uninstalled-addons": "error"
+      },
+      "files": [
+        ".storybook/main.@(js|cjs|mjs|ts)"
+      ],
+      "index": 47
+    },
+    {
+      "name": "storybook:csf-strict:rules",
+      "rules": {
+        "react-hooks/rules-of-hooks": "off",
+        "import/no-anonymous-default-export": "off",
+        "storybook/no-stories-of": "error",
+        "storybook/no-title-property-in-meta": "error"
+      },
+      "index": 48
     },
     {
       "name": "vdustr/mdx",
@@ -2558,7 +2614,7 @@
         "react/react-in-jsx-scope": 0
       },
       "processor": "mdx/remark",
-      "index": 44
+      "index": 49
     },
     {
       "name": "vdustr/mdx/flat-code-blocks",
@@ -2582,52 +2638,7 @@
         "unicode-bom": "off",
         "import/no-default-export": "off"
       },
-      "index": 45
-    },
-    {
-      "name": "storybook:csf:setup",
-      "plugins": {
-        "storybook": {}
-      },
-      "index": 46
-    },
-    {
-      "name": "storybook:csf:stories-rules",
-      "rules": {
-        "react-hooks/rules-of-hooks": "off",
-        "import/no-anonymous-default-export": "off",
-        "storybook/csf-component": "warn",
-        "storybook/default-exports": "error",
-        "storybook/hierarchy-separator": "warn",
-        "storybook/no-redundant-story-name": "warn",
-        "storybook/story-exports": "error",
-        "import/no-default-export": "off"
-      },
-      "files": [
-        "**/*.stories.@(ts|tsx|js|jsx|mjs|cjs)",
-        "**/*.story.@(ts|tsx|js|jsx|mjs|cjs)"
-      ],
-      "index": 47
-    },
-    {
-      "name": "storybook:csf:main-rules",
-      "rules": {
-        "storybook/no-uninstalled-addons": "error"
-      },
-      "files": [
-        ".storybook/main.@(js|cjs|mjs|ts)"
-      ],
-      "index": 48
-    },
-    {
-      "name": "storybook:csf-strict:rules",
-      "rules": {
-        "react-hooks/rules-of-hooks": "off",
-        "import/no-anonymous-default-export": "off",
-        "storybook/no-stories-of": "error",
-        "storybook/no-title-property-in-meta": "error"
-      },
-      "index": 49
+      "index": 50
     },
     {
       "name": "vdustr/prettier",
@@ -2991,17 +3002,6 @@
         "yield-star-spacing": "off",
         "react/jsx-space-before-closing": "off"
       },
-      "index": 50
-    },
-    {
-      "name": "Imported .gitignore patterns",
-      "ignores": [
-        "!**/.*",
-        "pnpm-lock.yaml",
-        "**/dist",
-        "packages/eslint-config/src/eslint-typegen.d.ts",
-        ".eslint-config-inspector"
-      ],
       "index": 51
     }
   ],
@@ -16085,6 +16085,137 @@
       "name": "jsonc/vue-custom-block/no-parsing-error",
       "plugin": "jsonc"
     },
+    "package-json/no-empty-fields": {
+      "docs": {
+        "category": "Best Practices",
+        "description": "Reports on unnecessary empty arrays and objects.",
+        "recommended": true
+      },
+      "hasSuggestions": true,
+      "type": "suggestion",
+      "name": "package-json/no-empty-fields",
+      "plugin": "package-json"
+    },
+    "package-json/no-redundant-files": {
+      "docs": {
+        "category": "Best Practices",
+        "description": "Prevents adding unnecessary / redundant files.",
+        "recommended": false
+      },
+      "hasSuggestions": true,
+      "type": "suggestion",
+      "name": "package-json/no-redundant-files",
+      "plugin": "package-json"
+    },
+    "package-json/order-properties": {
+      "docs": {
+        "category": "Best Practices",
+        "description": "Package properties must be declared in standard order",
+        "recommended": true
+      },
+      "fixable": "code",
+      "type": "layout",
+      "name": "package-json/order-properties",
+      "plugin": "package-json"
+    },
+    "package-json/repository-shorthand": {
+      "docs": {
+        "category": "Best Practices",
+        "description": "Enforce either object or shorthand declaration for repository.",
+        "recommended": true
+      },
+      "fixable": "code",
+      "type": "suggestion",
+      "name": "package-json/repository-shorthand",
+      "plugin": "package-json"
+    },
+    "package-json/sort-collections": {
+      "docs": {
+        "category": "Best Practices",
+        "description": "Dependencies, scripts, and configuration values must be declared in alphabetical order.",
+        "recommended": true
+      },
+      "fixable": "code",
+      "type": "layout",
+      "name": "package-json/sort-collections",
+      "plugin": "package-json"
+    },
+    "package-json/unique-dependencies": {
+      "docs": {
+        "category": "Best Practices",
+        "description": "Checks a dependency isn't specified more than once (i.e. in `dependencies` and `devDependencies`)",
+        "recommended": true
+      },
+      "hasSuggestions": true,
+      "type": "suggestion",
+      "name": "package-json/unique-dependencies",
+      "plugin": "package-json"
+    },
+    "package-json/valid-local-dependency": {
+      "docs": {
+        "category": "Best Practices",
+        "description": "Checks existence of local dependencies in the package.json",
+        "recommended": true
+      },
+      "type": "problem",
+      "name": "package-json/valid-local-dependency",
+      "plugin": "package-json"
+    },
+    "package-json/valid-name": {
+      "docs": {
+        "category": "Best Practices",
+        "description": "Enforce that package names are valid npm package names",
+        "recommended": true
+      },
+      "type": "problem",
+      "name": "package-json/valid-name",
+      "plugin": "package-json"
+    },
+    "package-json/valid-package-definition": {
+      "docs": {
+        "category": "Best Practices",
+        "description": "Enforce that package.json has all properties required by the npm spec",
+        "recommended": true
+      },
+      "type": "problem",
+      "name": "package-json/valid-package-definition",
+      "plugin": "package-json"
+    },
+    "package-json/valid-repository-directory": {
+      "docs": {
+        "category": "Best Practices",
+        "description": "Enforce that if repository directory is specified, it matches the path to the package.json file",
+        "recommended": true
+      },
+      "hasSuggestions": true,
+      "type": "suggestion",
+      "name": "package-json/valid-repository-directory",
+      "plugin": "package-json"
+    },
+    "package-json/valid-version": {
+      "docs": {
+        "category": "Best Practices",
+        "description": "Enforce that package versions are valid semver specifiers",
+        "recommended": true
+      },
+      "type": "problem",
+      "name": "package-json/valid-version",
+      "plugin": "package-json"
+    },
+    "package-json/valid-package-def": {
+      "docs": {
+        "category": "Best Practices",
+        "description": "Enforce that package.json has all properties required by the npm spec",
+        "recommended": false
+      },
+      "type": "problem",
+      "deprecated": true,
+      "replacedBy": [
+        "valid-package-definition"
+      ],
+      "name": "package-json/valid-package-def",
+      "plugin": "package-json"
+    },
     "yaml/block-mapping-colon-indicator-newline": {
       "docs": {
         "description": "enforce consistent line breaks after `:` indicator",
@@ -16954,148 +17085,6 @@
       "name": "markdown/no-missing-label-refs",
       "plugin": "markdown"
     },
-    "package-json/no-empty-fields": {
-      "docs": {
-        "category": "Best Practices",
-        "description": "Reports on unnecessary empty arrays and objects.",
-        "recommended": true
-      },
-      "hasSuggestions": true,
-      "type": "suggestion",
-      "name": "package-json/no-empty-fields",
-      "plugin": "package-json"
-    },
-    "package-json/no-redundant-files": {
-      "docs": {
-        "category": "Best Practices",
-        "description": "Prevents adding unnecessary / redundant files.",
-        "recommended": false
-      },
-      "hasSuggestions": true,
-      "type": "suggestion",
-      "name": "package-json/no-redundant-files",
-      "plugin": "package-json"
-    },
-    "package-json/order-properties": {
-      "docs": {
-        "category": "Best Practices",
-        "description": "Package properties must be declared in standard order",
-        "recommended": true
-      },
-      "fixable": "code",
-      "type": "layout",
-      "name": "package-json/order-properties",
-      "plugin": "package-json"
-    },
-    "package-json/repository-shorthand": {
-      "docs": {
-        "category": "Best Practices",
-        "description": "Enforce either object or shorthand declaration for repository.",
-        "recommended": true
-      },
-      "fixable": "code",
-      "type": "suggestion",
-      "name": "package-json/repository-shorthand",
-      "plugin": "package-json"
-    },
-    "package-json/sort-collections": {
-      "docs": {
-        "category": "Best Practices",
-        "description": "Dependencies, scripts, and configuration values must be declared in alphabetical order.",
-        "recommended": true
-      },
-      "fixable": "code",
-      "type": "layout",
-      "name": "package-json/sort-collections",
-      "plugin": "package-json"
-    },
-    "package-json/unique-dependencies": {
-      "docs": {
-        "category": "Best Practices",
-        "description": "Checks a dependency isn't specified more than once (i.e. in `dependencies` and `devDependencies`)",
-        "recommended": true
-      },
-      "hasSuggestions": true,
-      "type": "suggestion",
-      "name": "package-json/unique-dependencies",
-      "plugin": "package-json"
-    },
-    "package-json/valid-local-dependency": {
-      "docs": {
-        "category": "Best Practices",
-        "description": "Checks existence of local dependencies in the package.json",
-        "recommended": true
-      },
-      "type": "problem",
-      "name": "package-json/valid-local-dependency",
-      "plugin": "package-json"
-    },
-    "package-json/valid-name": {
-      "docs": {
-        "category": "Best Practices",
-        "description": "Enforce that package names are valid npm package names",
-        "recommended": true
-      },
-      "type": "problem",
-      "name": "package-json/valid-name",
-      "plugin": "package-json"
-    },
-    "package-json/valid-package-definition": {
-      "docs": {
-        "category": "Best Practices",
-        "description": "Enforce that package.json has all properties required by the npm spec",
-        "recommended": true
-      },
-      "type": "problem",
-      "name": "package-json/valid-package-definition",
-      "plugin": "package-json"
-    },
-    "package-json/valid-repository-directory": {
-      "docs": {
-        "category": "Best Practices",
-        "description": "Enforce that if repository directory is specified, it matches the path to the package.json file",
-        "recommended": true
-      },
-      "hasSuggestions": true,
-      "type": "suggestion",
-      "name": "package-json/valid-repository-directory",
-      "plugin": "package-json"
-    },
-    "package-json/valid-version": {
-      "docs": {
-        "category": "Best Practices",
-        "description": "Enforce that package versions are valid semver specifiers",
-        "recommended": true
-      },
-      "type": "problem",
-      "name": "package-json/valid-version",
-      "plugin": "package-json"
-    },
-    "package-json/valid-package-def": {
-      "docs": {
-        "category": "Best Practices",
-        "description": "Enforce that package.json has all properties required by the npm spec",
-        "recommended": false
-      },
-      "type": "problem",
-      "deprecated": true,
-      "replacedBy": [
-        "valid-package-definition"
-      ],
-      "name": "package-json/valid-package-def",
-      "plugin": "package-json"
-    },
-    "mdx/remark": {
-      "type": "layout",
-      "docs": {
-        "description": "Linter integration with remark plugins",
-        "category": "Stylistic Issues",
-        "recommended": true
-      },
-      "fixable": "code",
-      "name": "mdx/remark",
-      "plugin": "mdx"
-    },
     "storybook/await-interactions": {
       "severity": "error",
       "docs": {
@@ -17302,6 +17291,17 @@
       },
       "name": "storybook/use-storybook-testing-library",
       "plugin": "storybook"
+    },
+    "mdx/remark": {
+      "type": "layout",
+      "docs": {
+        "description": "Linter integration with remark plugins",
+        "category": "Stylistic Issues",
+        "recommended": true
+      },
+      "fixable": "code",
+      "name": "mdx/remark",
+      "plugin": "mdx"
     }
   },
   "files": [
@@ -17311,7 +17311,7 @@
         "**/*.y?(a)ml"
       ],
       "configs": [
-        30
+        31
       ]
     },
     {
@@ -17321,9 +17321,9 @@
         "**/*.{md,mdx}"
       ],
       "configs": [
-        34,
         35,
-        44
+        36,
+        49
       ]
     },
     {
@@ -17339,7 +17339,7 @@
         18,
         19,
         24,
-        42
+        43
       ]
     },
     {
@@ -17385,7 +17385,7 @@
         18,
         19,
         24,
-        42
+        43
       ]
     },
     {
@@ -17399,7 +17399,7 @@
         18,
         19,
         24,
-        40
+        41
       ]
     },
     {
@@ -17423,8 +17423,8 @@
         2,
         12,
         24,
-        41,
-        42
+        42,
+        43
       ]
     },
     {
@@ -17433,7 +17433,7 @@
         "**/package.json"
       ],
       "configs": [
-        43
+        29
       ]
     },
     {
@@ -17449,7 +17449,7 @@
         18,
         19,
         24,
-        42
+        43
       ]
     },
     {
@@ -17463,7 +17463,7 @@
         18,
         19,
         24,
-        40
+        41
       ]
     },
     {
@@ -17472,7 +17472,7 @@
         "**/package.json"
       ],
       "configs": [
-        43
+        29
       ]
     },
     {
@@ -17486,7 +17486,7 @@
         18,
         19,
         24,
-        37
+        38
       ]
     },
     {
@@ -17500,7 +17500,7 @@
         18,
         19,
         24,
-        37
+        38
       ]
     },
     {
@@ -17626,7 +17626,7 @@
       "configs": [
         2,
         24,
-        41
+        42
       ]
     },
     {
@@ -17638,7 +17638,7 @@
       "configs": [
         2,
         24,
-        41
+        42
       ]
     },
     {
@@ -17661,7 +17661,7 @@
         18,
         19,
         24,
-        40
+        41
       ]
     },
     {
@@ -17703,7 +17703,7 @@
         18,
         19,
         24,
-        47
+        46
       ]
     },
     {
@@ -17725,7 +17725,7 @@
         "**/*.{md,mdx}"
       ],
       "configs": [
-        44
+        49
       ]
     },
     {
@@ -17734,7 +17734,7 @@
         "**/package.json"
       ],
       "configs": [
-        43
+        29
       ]
     },
     {
@@ -17767,7 +17767,7 @@
         18,
         19,
         24,
-        40
+        41
       ]
     },
     {
@@ -17776,7 +17776,7 @@
         "**/package.json"
       ],
       "configs": [
-        43
+        29
       ]
     },
     {
@@ -17794,7 +17794,7 @@
         "**/*.y?(a)ml"
       ],
       "configs": [
-        30
+        31
       ]
     },
     {
@@ -17809,8 +17809,8 @@
         2,
         12,
         24,
-        41,
-        42
+        42,
+        43
       ]
     },
     {
@@ -17824,7 +17824,7 @@
     }
   ],
   "meta": {
-    "lastUpdate": 1738148893983,
+    "lastUpdate": 1738151460954,
     "basePath": "",
     "configPath": ""
   }
