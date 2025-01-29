@@ -30,11 +30,11 @@ jobs:
             ${{ runner.os }}-pnpm-store-
       - name: Install dependencies
         run: pnpm install
-      - run: pnpm build --base=/${{ github.event.repository.name }}/
+      - run: pnpm inspect build
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
-          folder: dist
+          folder: .eslint-config-inspector
           clean: true
           token: ${{ secrets.GITHUB_TOKEN }}

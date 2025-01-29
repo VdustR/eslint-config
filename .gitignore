@@ -146,3 +146,4 @@ dist
 /packages/eslint-config/src/eslint-typegen.d.ts
 /packages/eslint-config/README.md
 /packages/eslint-config/LICENSE
+/.eslint-config-inspector
