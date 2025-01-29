@@ -1,4 +1,4 @@
 {
-  "exclude": ["configs", "./*.ts", "src/lib"],
+  "exclude": ["scripts", "./*.ts", "src/lib"],
   "extends": ["@vp-tw/tsconfig/base/bundler/tsconfig"]
 }

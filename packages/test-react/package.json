@@ -4,6 +4,6 @@
   "dependencies": {
     "@storybook/preview-api": "^8.5.2",
     "@storybook/react": "^8.5.2",
-    "@types/react": "^19.0.8"
+    "@types/react": "catalog:"
   }
 }

@@ -20,7 +20,7 @@ const mdx = ({
 }: mdx.Options = {}) => {
   const flatCodeBlocksOptions: TypedFlatConfigItem =
     typeof flatCodeBlocks !== "object" ? {} : flatCodeBlocks;
-  return [
+  const configs: Array<TypedFlatConfigItem> = [
     {
       name: "vdustr/mdx",
       ...mdxPlugin.flat,
@@ -60,7 +60,8 @@ const mdx = ({
             },
           } satisfies TypedFlatConfigItem,
         ]),
-  ] satisfies Array<TypedFlatConfigItem>;
+  ];
+  return configs;
 };
 
 export { mdx };

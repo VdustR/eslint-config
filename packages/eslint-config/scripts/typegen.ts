@@ -1,6 +1,7 @@
 import type { ESLint } from "eslint";
 import { rules as mdxRules } from "eslint-plugin-mdx/lib/rules";
-import reactCompiler from "eslint-plugin-react-compiler";
+// eslint-disable-next-line import/no-namespace -- This is a cjs module.
+import * as reactCompiler from "eslint-plugin-react-compiler";
 import storybook from "eslint-plugin-storybook";
 import { pluginsToRulesDTS } from "eslint-typegen/core";
 import fs from "fs-extra";

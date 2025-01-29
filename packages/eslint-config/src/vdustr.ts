@@ -1,14 +1,15 @@
+// eslint-disable-next-line import/no-empty-named-blocks -- Type only import.
+import type {} from "./eslint-typegen";
 import type { Config } from "./types";
 import antfu from "@antfu/eslint-config";
-import packageJson from "eslint-plugin-package-json/configs/recommended";
 
+import packageJson from "eslint-plugin-package-json/configs/recommended";
 // eslint-disable-next-line import/no-namespace -- This is a cjs module.
 import * as reactCompilerPlugin from "eslint-plugin-react-compiler";
 import { isPackageExists } from "local-pkg";
 import { mdx } from "./configs/mdx";
 import { prettier } from "./configs/prettier";
 import { storybook } from "./configs/storybook";
-import "./eslint-typegen.d";
 
 type Options = NonNullable<Parameters<typeof antfu>[0]> & {
   mdx?: boolean | mdx.Options;
