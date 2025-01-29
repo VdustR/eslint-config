@@ -1717,20 +1717,24 @@
         "import/no-self-import": "error",
         "import/no-webpack-loader-syntax": "error",
         "import/no-empty-named-blocks": "error",
-        "import/no-namespace": "error",
-        "import/no-default-export": "error"
+        "import/no-namespace": "error"
       },
       "index": 11
     },
     {
-      "name": "vdustr/allow-default-export",
+      "name": "vdustr/no-default-export",
       "rules": {
-        "import/no-default-export": "off"
+        "import/no-default-export": "error"
       },
       "files": [
+        "**/*.?([cm])js",
+        "**/*.?([cm])jsx",
+        "**/*.?([cm])ts",
+        "**/*.?([cm])tsx"
+      ],
+      "ignores": [
         "**/*.config.*",
-        "**/*.vue",
-        "**/*.svelte"
+        "**/*.astro/*.ts"
       ],
       "index": 12
     },
@@ -17335,7 +17339,6 @@
         "**/*.config.?([cm])[jt]s?(x)"
       ],
       "configs": [
-        12,
         18,
         19,
         24,
@@ -17358,6 +17361,7 @@
         "**/*.?([cm])[jt]s?(x)"
       ],
       "configs": [
+        12,
         18,
         19,
         24
@@ -17381,7 +17385,6 @@
         "**/*.config.?([cm])[jt]s?(x)"
       ],
       "configs": [
-        12,
         18,
         19,
         24,
@@ -17396,6 +17399,7 @@
         "**/*.d.?([cm])ts"
       ],
       "configs": [
+        12,
         18,
         19,
         24,
@@ -17421,7 +17425,6 @@
       ],
       "configs": [
         2,
-        12,
         24,
         42,
         43
@@ -17445,7 +17448,6 @@
         "**/*.config.?([cm])[jt]s?(x)"
       ],
       "configs": [
-        12,
         18,
         19,
         24,
@@ -17460,6 +17462,7 @@
         "**/*.d.?([cm])ts"
       ],
       "configs": [
+        12,
         18,
         19,
         24,
@@ -17483,6 +17486,7 @@
         "**/scripts/**/*.?([cm])[jt]s?(x)"
       ],
       "configs": [
+        12,
         18,
         19,
         24,
@@ -17497,6 +17501,7 @@
         "**/scripts/**/*.?([cm])[jt]s?(x)"
       ],
       "configs": [
+        12,
         18,
         19,
         24,
@@ -17510,6 +17515,7 @@
         "**/*.?([cm])[jt]s?(x)"
       ],
       "configs": [
+        12,
         18,
         19,
         24
@@ -17522,6 +17528,7 @@
         "**/*.?([cm])[jt]s?(x)"
       ],
       "configs": [
+        12,
         18,
         19,
         24
@@ -17534,9 +17541,24 @@
         "**/*.?([cm])[jt]s?(x)"
       ],
       "configs": [
+        12,
         18,
         19,
         24
+      ]
+    },
+    {
+      "filepath": "packages/eslint-config/src/eslint-typegen.js",
+      "globs": [
+        "**/*.js",
+        "**/*.?([cm])js",
+        "**/*.?([cm])[jt]s?(x)"
+      ],
+      "configs": [
+        2,
+        12,
+        24,
+        42
       ]
     },
     {
@@ -17546,6 +17568,7 @@
         "**/*.?([cm])[jt]s?(x)"
       ],
       "configs": [
+        12,
         18,
         19,
         24
@@ -17558,6 +17581,7 @@
         "**/*.?([cm])[jt]s?(x)"
       ],
       "configs": [
+        12,
         18,
         19,
         24
@@ -17579,6 +17603,7 @@
         "**/*.?([cm])[jt]s?(x)"
       ],
       "configs": [
+        12,
         18,
         19,
         24
@@ -17591,6 +17616,7 @@
         "**/*.?([cm])[jt]s?(x)"
       ],
       "configs": [
+        12,
         18,
         19,
         24
@@ -17603,6 +17629,7 @@
         "**/*.?([cm])[jt]s?(x)"
       ],
       "configs": [
+        12,
         18,
         19,
         24
@@ -17621,10 +17648,12 @@
       "filepath": "packages/test-js/.dot/index.js",
       "globs": [
         "**/*.js",
+        "**/*.?([cm])js",
         "**/*.?([cm])[jt]s?(x)"
       ],
       "configs": [
         2,
+        12,
         24,
         42
       ]
@@ -17633,10 +17662,12 @@
       "filepath": "packages/test-js/index.js",
       "globs": [
         "**/*.js",
+        "**/*.?([cm])js",
         "**/*.?([cm])[jt]s?(x)"
       ],
       "configs": [
         2,
+        12,
         24,
         42
       ]
@@ -17658,6 +17689,7 @@
         "**/*.d.?([cm])ts"
       ],
       "configs": [
+        12,
         18,
         19,
         24,
@@ -17692,6 +17724,18 @@
       ]
     },
     {
+      "filepath": "packages/test-md/README.md",
+      "globs": [
+        "**/*.md",
+        "**/*.{md,mdx}"
+      ],
+      "configs": [
+        35,
+        36,
+        49
+      ]
+    },
+    {
       "filepath": "packages/test-react/MyComponent.stories.tsx",
       "globs": [
         "**/*.?([cm])tsx",
@@ -17699,6 +17743,7 @@
         "**/*.stories.@(ts|tsx|js|jsx|mjs|cjs)"
       ],
       "configs": [
+        12,
         16,
         18,
         19,
@@ -17713,6 +17758,7 @@
         "**/*.?([cm])[jt]s?(x)"
       ],
       "configs": [
+        12,
         16,
         18,
         19,
@@ -17752,7 +17798,6 @@
         "**/*.svelte"
       ],
       "configs": [
-        12,
         26
       ]
     },
@@ -17764,6 +17809,7 @@
         "**/*.d.?([cm])ts"
       ],
       "configs": [
+        12,
         18,
         19,
         24,
@@ -17807,7 +17853,6 @@
       ],
       "configs": [
         2,
-        12,
         24,
         42,
         43
@@ -17824,7 +17869,7 @@
     }
   ],
   "meta": {
-    "lastUpdate": 1738151870995,
+    "lastUpdate": 1738159490078,
     "basePath": "",
     "configPath": ""
   }
