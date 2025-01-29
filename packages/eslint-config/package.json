@@ -38,7 +38,8 @@
   "scripts": {
     "build": "unbuild",
     "copy": "tsx scripts/copy",
-    "prepare": "run-p copy typegen",
+    "prepare": "run-s typegen",
+    "prepublishOnly": "run-s build copy",
     "typegen": "tsx scripts/typegen.ts"
   },
   "dependencies": {

@@ -12,9 +12,8 @@
   ],
   "settings": {
     "editor.codeActionsOnSave": [
-      "source.addMissingImports.ts",
-      "source.formatDocument",
       "source.fixAll.eslint",
+      "source.formatDocument",
     ],
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true,

@@ -11,7 +11,7 @@ import { prettier } from "./configs/prettier";
 import { storybook } from "./configs/storybook";
 import { reactCompiler } from "./lib/eslint-plugin-react-compiler";
 
-type Options = NonNullable<Parameters<typeof antfu>[0]> & {
+type Options = Omit<NonNullable<Parameters<typeof antfu>[0]>, "stylistic"> & {
   mdx?: boolean | mdx.Options;
   storybook?: boolean;
 };
