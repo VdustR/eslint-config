@@ -2579,7 +2579,8 @@
         "no-unused-vars": "off",
         "padded-blocks": "off",
         "strict": "off",
-        "unicode-bom": "off"
+        "unicode-bom": "off",
+        "import/no-default-export": "off"
       },
       "index": 45
     },
@@ -17811,7 +17812,7 @@
     }
   ],
   "meta": {
-    "lastUpdate": 1738142560021,
+    "lastUpdate": 1738143623309,
     "basePath": "",
     "configPath": ""
   }
