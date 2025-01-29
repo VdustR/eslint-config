@@ -1,9 +1,9 @@
 import type { TypedFlatConfigItem } from "@antfu/eslint-config";
 import type { DistributiveOmit } from "@mui/types";
-import { defaultPluginRenaming, renameRules } from "@antfu/eslint-config";
 
 // eslint-disable-next-line import/no-namespace -- `mdx` exports the plugin as a namespace.
 import * as mdxPlugin from "eslint-plugin-mdx";
+import { renameRules } from "../utils/renameRules";
 
 namespace mdx {
   export interface Options
@@ -26,12 +26,9 @@ const mdx = ({
       ...mdxPlugin.flat,
       ...options,
       rules: {
-        ...renameRules(
-          {
-            ...mdxPlugin.flat.rules,
-          },
-          defaultPluginRenaming,
-        ),
+        ...renameRules({
+          ...mdxPlugin.flat.rules,
+        }),
         ...options.rules,
       },
       processor: mdxPlugin.createRemarkProcessor({
@@ -50,12 +47,9 @@ const mdx = ({
             ...mdxPlugin.flatCodeBlocks,
             ...flatCodeBlocksOptions,
             rules: {
-              ...renameRules(
-                {
-                  ...mdxPlugin.flatCodeBlocks.rules,
-                },
-                defaultPluginRenaming,
-              ),
+              ...renameRules({
+                ...mdxPlugin.flatCodeBlocks.rules,
+              }),
               ...flatCodeBlocksOptions.rules,
             },
           } satisfies TypedFlatConfigItem,
