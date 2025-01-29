@@ -1,12 +1,12 @@
-import type { Config } from "../types";
-import { defaultPluginRenaming, renameRules } from "@antfu/eslint-config";
+import type { TypedFlatConfigItem } from "@antfu/eslint-config";
 
 import eslintConfigPrettier from "eslint-config-prettier";
+import { renameRules } from "../utils/renameRules";
 
-const prettier: Config = {
+const prettier = {
   name: "vdustr/prettier",
   ...eslintConfigPrettier,
-  rules: renameRules(eslintConfigPrettier.rules, defaultPluginRenaming),
-};
+  rules: renameRules(eslintConfigPrettier.rules),
+} satisfies TypedFlatConfigItem;
 
 export { prettier };

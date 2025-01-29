@@ -4,17 +4,23 @@ import packageJson from "eslint-plugin-package-json/configs/recommended";
 
 // eslint-disable-next-line import/no-namespace -- This is a cjs module.
 import * as reactCompilerPlugin from "eslint-plugin-react-compiler";
+import { isPackageExists } from "local-pkg";
 import { mdx } from "./configs/mdx";
 import { prettier } from "./configs/prettier";
+import { storybook } from "./configs/storybook";
 import "./eslint-typegen.d";
 
 type Options = NonNullable<Parameters<typeof antfu>[0]> & {
   mdx?: boolean | mdx.Options;
+  storybook?: boolean;
 };
 
 const vdustr = (options?: Options, ...userConfigs: Array<Config>) => {
-  const mdxOptions = options?.mdx ?? true;
+  const typescriptEnabled = isPackageExists("typescript");
   const jsoncEnabled: boolean = Boolean(options?.jsonc ?? true);
+  const reactEnabled: boolean = Boolean(options?.react ?? false);
+  const storybookEnabled: boolean = Boolean(options?.storybook ?? false);
+  const mdxOptions = options?.mdx ?? true;
   type Config = NonNullable<Parameters<typeof antfu>[1]>;
   const defaultConfigs: Array<Config> = [
     ...(!jsoncEnabled ? [] : [packageJson]),
@@ -23,9 +29,10 @@ const vdustr = (options?: Options, ...userConfigs: Array<Config>) => {
       : mdx({
           ...(typeof mdxOptions !== "object" ? null : mdxOptions),
         })),
+    ...(!storybookEnabled ? [] : storybook),
     prettier,
   ];
-  return antfu(
+  let config = antfu(
     {
       // We use `prettier`.
       stylistic: false,
@@ -33,7 +40,9 @@ const vdustr = (options?: Options, ...userConfigs: Array<Config>) => {
     },
     ...defaultConfigs,
     ...userConfigs,
-  )
+  );
+
+  config = config
     .override("antfu/javascript/rules", (config) => ({
       ...config,
       rules: {
@@ -77,7 +86,25 @@ const vdustr = (options?: Options, ...userConfigs: Array<Config>) => {
         "import/no-default-export": "error",
       },
     }))
-    .override("antfu/typescript/rules", (config) => ({
+
+    /**
+     * Allow default exports in certain files.
+     */
+    .insertAfter("antfu/imports/rules", {
+      name: "vdustr/allow-default-export",
+      rules: {
+        "import/no-default-export": "off",
+      },
+      files: [
+        "**/*.config.*",
+        // Single file components
+        "**/*.vue",
+        "**/*.svelte",
+      ],
+    });
+
+  if (typescriptEnabled) {
+    config = config.override("antfu/typescript/rules", (config) => ({
       ...config,
       rules: {
         ...config.rules,
@@ -98,25 +125,32 @@ const vdustr = (options?: Options, ...userConfigs: Array<Config>) => {
          */
         "ts/no-unused-vars": "off",
       },
-    }))
-    .override("antfu/jsonc/rules", (config) => ({
-      ...config,
-      rules: {
-        ...config.rules,
-        "jsonc/sort-keys": "error",
-      },
-      files: [...(config.files ?? []), "**/*.code-workspace"],
-      ignores: [
-        ...(config.ignores ?? []),
-        /**
-         * Lint `package.json` files with `eslint-plugin-package-json` instead.
-         */
-        "**/package.json",
-      ],
-    }))
-    .remove("antfu/sort/package-json")
-    .remove("antfu/sort/tsconfig-json")
-    .override("antfu/react/rules", (config) => ({
+    }));
+  }
+
+  if (jsoncEnabled) {
+    config = config
+      .override("antfu/jsonc/rules", (config) => ({
+        ...config,
+        rules: {
+          ...config.rules,
+          "jsonc/sort-keys": "error",
+        },
+        files: [...(config.files ?? []), "**/*.code-workspace"],
+        ignores: [
+          ...(config.ignores ?? []),
+          /**
+           * Lint `package.json` files with `eslint-plugin-package-json` instead.
+           */
+          "**/package.json",
+        ],
+      }))
+      .remove("antfu/sort/package-json")
+      .remove("antfu/sort/tsconfig-json");
+  }
+
+  if (reactEnabled) {
+    config = config.override("antfu/react/rules", (config) => ({
       ...config,
       plugins: {
         ...config.plugins,
@@ -132,6 +166,19 @@ const vdustr = (options?: Options, ...userConfigs: Array<Config>) => {
         "react/prefer-destructuring-assignment": "off",
       },
     }));
+  }
+
+  if (storybookEnabled) {
+    config = config.override("storybook:csf:stories-rules", (config) => ({
+      ...config,
+      rules: {
+        ...config.rules,
+        "import/no-default-export": "off",
+      },
+    }));
+  }
+
+  return config;
 };
 
 export { vdustr };

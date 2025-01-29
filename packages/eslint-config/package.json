@@ -50,7 +50,9 @@
     "eslint-plugin-mdx": "catalog:",
     "eslint-plugin-package-json": "catalog:",
     "eslint-plugin-react": "^7.37.4",
-    "eslint-plugin-react-compiler": "catalog:"
+    "eslint-plugin-react-compiler": "catalog:",
+    "eslint-plugin-storybook": "catalog:",
+    "local-pkg": "catalog:"
   },
   "devDependencies": {
     "eslint-typegen": "^1.0.0",

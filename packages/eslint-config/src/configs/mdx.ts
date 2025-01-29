@@ -1,14 +1,15 @@
 import type { TypedFlatConfigItem } from "@antfu/eslint-config";
 import type { DistributiveOmit } from "@mui/types";
-import type { Config } from "../types";
+import { defaultPluginRenaming, renameRules } from "@antfu/eslint-config";
 
+// eslint-disable-next-line import/no-namespace -- `mdx` exports the plugin as a namespace.
 import * as mdxPlugin from "eslint-plugin-mdx";
 
 namespace mdx {
   export interface Options
     extends DistributiveOmit<TypedFlatConfigItem, "processor"> {
     processorOptions?: mdxPlugin.ProcessorOptions;
-    flatCodeBlocks?: boolean | Config;
+    flatCodeBlocks?: boolean | TypedFlatConfigItem;
   }
 }
 
@@ -16,12 +17,23 @@ const mdx = ({
   flatCodeBlocks = true,
   processorOptions,
   ...options
-}: mdx.Options = {}) =>
-  [
+}: mdx.Options = {}) => {
+  const flatCodeBlocksOptions: TypedFlatConfigItem =
+    typeof flatCodeBlocks !== "object" ? {} : flatCodeBlocks;
+  return [
     {
       name: "vdustr/mdx",
       ...mdxPlugin.flat,
       ...options,
+      rules: {
+        ...renameRules(
+          {
+            ...mdxPlugin.flat.rules,
+          },
+          defaultPluginRenaming,
+        ),
+        ...options.rules,
+      },
       processor: mdxPlugin.createRemarkProcessor({
         lintCodeBlocks: Boolean(flatCodeBlocks),
         ...processorOptions,
@@ -36,9 +48,19 @@ const mdx = ({
           {
             name: "vdustr/mdx/flat-code-blocks",
             ...mdxPlugin.flatCodeBlocks,
-            ...(typeof flatCodeBlocks !== "object" ? null : flatCodeBlocks),
-          } satisfies Config,
+            ...flatCodeBlocksOptions,
+            rules: {
+              ...renameRules(
+                {
+                  ...mdxPlugin.flatCodeBlocks.rules,
+                },
+                defaultPluginRenaming,
+              ),
+              ...flatCodeBlocksOptions.rules,
+            },
+          } satisfies TypedFlatConfigItem,
         ]),
-  ] satisfies Array<Config>;
+  ] satisfies Array<TypedFlatConfigItem>;
+};
 
 export { mdx };

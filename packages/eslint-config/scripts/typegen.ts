@@ -1,6 +1,7 @@
 import type { ESLint } from "eslint";
-import { rules } from "eslint-plugin-mdx/lib/rules";
+import { rules as mdxRules } from "eslint-plugin-mdx/lib/rules";
 import reactCompiler from "eslint-plugin-react-compiler";
+import storybook from "eslint-plugin-storybook";
 import { pluginsToRulesDTS } from "eslint-typegen/core";
 import fs from "fs-extra";
 import path from "pathe";
@@ -21,14 +22,33 @@ import { packageDirectory } from "pkg-dir";
     return plugins;
   }
 
+  console.log(
+    storybook.configs["flat/csf-strict"].flatMap((config) =>
+      !("plugins" in config) || !config.plugins
+        ? []
+        : Object.entries(config.plugins),
+    ),
+  );
+
   const plugins: Plugins = {
     ...definePlugins({ "react-compiler": reactCompiler }),
     ...definePlugins({
       mdx: {
-        rules,
+        rules: mdxRules,
       },
     }),
+    ...definePlugins({
+      ...Object.fromEntries(
+        storybook.configs["flat/csf-strict"].flatMap((config) =>
+          !("plugins" in config) || !config.plugins
+            ? []
+            : Object.entries(config.plugins),
+        ),
+      ),
+    }),
   };
+
+  console.log(plugins);
 
   await fs.writeFile(targetPath, await pluginsToRulesDTS(plugins));
 })();

@@ -15,12 +15,12 @@ const arr: string[] = [];
 
 path.resolve("foo", ...arr);
 
-// eslint-disable-next-line react-hooks/rules-of-hooks -- `react-hooks` should validate this.
 const onClick = useCallback(() => {}, []);
 
 namespace MyComponent {
   export interface Props {
     foo: string;
+    onClick?: (...args: Array<any>) => void;
   }
 }
 
