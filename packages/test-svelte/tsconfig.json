@@ -1,0 +1,6 @@
+{
+  "extends": [
+    "@vp-tw/tsconfig/base/bundler/tsconfig",
+    "@tsconfig/svelte/tsconfig"
+  ]
+}

@@ -13,6 +13,7 @@ export default vdustr(
     react: true,
     storybook: true,
     mdx: true,
+    svelte: true,
   },
   includeIgnoreFile(prettierignorePath),
 );

@@ -22,14 +22,6 @@ import { packageDirectory } from "pkg-dir";
     return plugins;
   }
 
-  console.log(
-    storybook.configs["flat/csf-strict"].flatMap((config) =>
-      !("plugins" in config) || !config.plugins
-        ? []
-        : Object.entries(config.plugins),
-    ),
-  );
-
   const plugins: Plugins = {
     ...definePlugins({ "react-compiler": reactCompiler }),
     ...definePlugins({
@@ -47,8 +39,6 @@ import { packageDirectory } from "pkg-dir";
       ),
     }),
   };
-
-  console.log(plugins);
 
   await fs.writeFile(targetPath, await pluginsToRulesDTS(plugins));
 })();

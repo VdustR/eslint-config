@@ -32,9 +32,7 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "build": "unbuild",
-    "copy": "run-p copy:*",
-    "copy:license": "fse copy ../../LICENSE LICENSE",
-    "copy:readme": "fse copy ../../README.md README.md",
+    "copy": "tsx scripts/copy",
     "prepare": "run-p copy typegen",
     "typegen": "tsx scripts/typegen.ts"
   },
@@ -49,7 +47,6 @@
     "eslint-flat-config-utils": "^2.0.0",
     "eslint-plugin-mdx": "catalog:",
     "eslint-plugin-package-json": "catalog:",
-    "eslint-plugin-react": "^7.37.4",
     "eslint-plugin-react-compiler": "catalog:",
     "eslint-plugin-storybook": "catalog:",
     "local-pkg": "catalog:"
