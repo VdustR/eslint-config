@@ -4,12 +4,12 @@ import type { Config } from "./types";
 import antfu from "@antfu/eslint-config";
 
 import packageJson from "eslint-plugin-package-json/configs/recommended";
-// eslint-disable-next-line import/no-namespace -- This is a cjs module.
-import * as reactCompilerPlugin from "eslint-plugin-react-compiler";
+
 import { isPackageExists } from "local-pkg";
 import { mdx } from "./configs/mdx";
 import { prettier } from "./configs/prettier";
 import { storybook } from "./configs/storybook";
+import { reactCompiler } from "./lib/eslint-plugin-react-compiler";
 
 type Options = NonNullable<Parameters<typeof antfu>[0]> & {
   mdx?: boolean | mdx.Options;
@@ -155,7 +155,7 @@ const vdustr = (options?: Options, ...userConfigs: Array<Config>) => {
       ...config,
       plugins: {
         ...config.plugins,
-        "react-compiler": reactCompilerPlugin,
+        "react-compiler": reactCompiler,
       },
       rules: {
         ...config.rules,
