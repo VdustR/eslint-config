@@ -14,4 +14,9 @@ useEffect(() => {
 <a href="https://example.com" target="_blank">
   Example
 </a>;
+
+// Export `default` should be ignored.
+export default function App() {
+  return <div>Hello, world!</div>;
+}
 ```

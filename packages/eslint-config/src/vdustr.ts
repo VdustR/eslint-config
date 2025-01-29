@@ -1,7 +1,13 @@
 // eslint-disable-next-line import/no-empty-named-blocks -- Type only import.
 import type {} from "./eslint-typegen";
 import type { Config } from "./types";
-import antfu from "@antfu/eslint-config";
+import antfu, {
+  GLOB_ASTRO_TS,
+  GLOB_JS,
+  GLOB_JSX,
+  GLOB_TS,
+  GLOB_TSX,
+} from "@antfu/eslint-config";
 
 import packageJson from "eslint-plugin-package-json/configs/recommended";
 
@@ -80,13 +86,6 @@ const vdustr = (options?: Options, ...userConfigs: Array<Config>) => {
          * Consider using named imports instead.
          */
         "import/no-namespace": "error",
-
-        /**
-         * Enforcing named exports improves consistency, enhances auto-completion and refactoring, and avoids issues
-         * with default export renaming. Additionally, default exports might lead to different behavior when transformed
-         * to CJS.
-         */
-        "import/no-default-export": "error",
       },
     }))
 
@@ -94,17 +93,20 @@ const vdustr = (options?: Options, ...userConfigs: Array<Config>) => {
      * Allow default exports in certain files.
      */
     .insertAfter("antfu/imports/rules", {
-      name: "vdustr/allow-default-export",
+      name: "vdustr/no-default-export",
       rules: {
-        "import/no-default-export": "off",
+        /**
+         * Enforcing named exports improves consistency, enhances auto-completion and refactoring, and avoids issues
+         * with default export renaming. Additionally, default exports might lead to different behavior when transformed
+         * to CJS.
+         */
+        "import/no-default-export": "error",
       },
-      files: [
+      files: [GLOB_JS, GLOB_JSX, GLOB_TS, GLOB_TSX],
+      ignores: [
         // Configuration files
         "**/*.config.*",
-
-        // Single file components
-        "**/*.vue",
-        "**/*.svelte",
+        GLOB_ASTRO_TS,
       ],
     });
 
