@@ -14389,6 +14389,17 @@
       "name": "react-web-api/no-leaked-timeout",
       "plugin": "react-web-api"
     },
+    "react-compiler/react-compiler": {
+      "type": "problem",
+      "docs": {
+        "description": "Surfaces diagnostics from React Forget",
+        "recommended": true
+      },
+      "fixable": "code",
+      "hasSuggestions": true,
+      "name": "react-compiler/react-compiler",
+      "plugin": "react-compiler"
+    },
     "svelte/@typescript-eslint/no-unnecessary-condition": {
       "docs": {
         "description": "disallow conditionals where the type is always truthy or always falsy",
@@ -17800,7 +17811,7 @@
     }
   ],
   "meta": {
-    "lastUpdate": 1738140996547,
+    "lastUpdate": 1738142560021,
     "basePath": "",
     "configPath": ""
   }
