@@ -39,11 +39,13 @@
     "dist"
   ],
   "scripts": {
-    "build": "unbuild",
+    "build": "run-s build:unbuild fixEslintTypegenDts",
+    "build:unbuild": "unbuild",
     "copy": "tsx scripts/copy",
+    "fixEslintTypegenDts": "tsx scripts/fixEslintTypegenDts",
     "prepare": "run-s typegen",
     "prepublishOnly": "run-s build copy",
-    "typegen": "tsx scripts/typegen.ts"
+    "typegen": "tsx scripts/typegen"
   },
   "dependencies": {
     "@mui/types": "catalog:",

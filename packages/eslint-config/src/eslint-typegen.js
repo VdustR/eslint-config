@@ -1,1 +1,1 @@
-// This is a placeholder for `eslint-typegen.d.ts`.
+// Placeholder for `eslint-typegen.d.ts`.
