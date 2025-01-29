@@ -1,14 +1,19 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  useEffect,
+  // eslint-disable-next-line perfectionist/sort-named-imports -- `perfectionist` should validate this.
+  useCallback,
+  useRef,
+  useState,
+} from "react";
+// eslint-disable-next-line import/no-namespace -- `import/no-namespace` should validate this.
+import * as React from "react";
+// eslint-disable-next-line perfectionist/sort-imports -- `perfectionist` should validate this.
+import path from "pathe";
 
-// eslint-disable tsdoc/syntax -- tsdoc should validate this.
-/**
- *
- * @param test lol
- */
-
-// @ts-expect-error -- TypeScript should validate this.
 // eslint-disable-next-line ts/array-type -- `@typescript-eslint` should validate this.
 const arr: string[] = [];
+
+path.resolve("foo", ...arr);
 
 // eslint-disable-next-line react-hooks/rules-of-hooks -- `react-hooks` should validate this.
 const onClick = useCallback(() => {}, []);
@@ -19,6 +24,12 @@ namespace MyComponent {
   }
 }
 
+// eslint-disable-next-line jsdoc/require-returns-check -- `jsdoc` should validate this.
+/**
+ * @returns test
+ *
+ * @param _args
+ */
 const noop = (..._args: Array<any>) => {};
 
 const MyComponent: React.FC<MyComponent.Props> = (props) => {
@@ -42,4 +53,13 @@ const MyComponent: React.FC<MyComponent.Props> = (props) => {
   );
 };
 
-export { MyComponent };
+const A: React.FC = () => "a";
+
+// eslint-disable-next-line import/no-default-export -- `import/no-default-export` should validate this.
+export default MyComponent;
+
+export {
+  MyComponent,
+  // eslint-disable-next-line perfectionist/sort-named-exports -- `perfectionist` should validate this.
+  A,
+};

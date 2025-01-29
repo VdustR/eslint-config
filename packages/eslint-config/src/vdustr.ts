@@ -2,6 +2,7 @@ import type { Config } from "./types";
 import antfu from "@antfu/eslint-config";
 import packageJson from "eslint-plugin-package-json/configs/recommended";
 
+// eslint-disable-next-line import/no-namespace -- This is a cjs module.
 import * as reactCompilerPlugin from "eslint-plugin-react-compiler";
 import { mdx } from "./configs/mdx";
 import { prettier } from "./configs/prettier";
@@ -61,6 +62,19 @@ const vdustr = (options?: Options, ...userConfigs: Array<Config>) => {
          * Forbid `import {} from "module"`.
          */
         "import/no-empty-named-blocks": "error",
+
+        /**
+         * Wildcard imports can prevent tree shaking and cause name conflicts.
+         * Consider using named imports instead.
+         */
+        "import/no-namespace": "error",
+
+        /**
+         * Enforcing named exports improves consistency, enhances auto-completion and refactoring, and avoids issues
+         * with default export renaming. Additionally, default exports might lead to different behavior when transformed
+         * to CJS.
+         */
+        "import/no-default-export": "error",
       },
     }))
     .override("antfu/typescript/rules", (config) => ({
