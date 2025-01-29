@@ -44,17 +44,11 @@
   },
   "dependencies": {
     "@antfu/eslint-config": "catalog:",
-    "@eslint-react/eslint-plugin": "catalog:",
-    "@eslint/compat": "catalog:",
     "@mui/types": "catalog:",
     "@types/eslint-config-prettier": "catalog:",
-    "@types/eslint__eslintrc": "^2.1.2",
     "eslint-config-prettier": "catalog:",
     "eslint-flat-config-utils": "^2.0.0",
-    "eslint-plugin-mdx": "catalog:",
     "eslint-plugin-package-json": "catalog:",
-    "eslint-plugin-react-compiler": "catalog:",
-    "eslint-plugin-storybook": "catalog:",
     "local-pkg": "catalog:"
   },
   "devDependencies": {

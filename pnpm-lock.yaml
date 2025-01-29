@@ -177,39 +177,21 @@ importers:
       '@antfu/eslint-config':
         specifier: 'catalog:'
         version: 4.1.0(@eslint-react/eslint-plugin@1.25.0(eslint@9.19.0(jiti@2.4.2))(ts-api-utils@2.0.0(typescript@5.7.3))(typescript@5.7.3))(@typescript-eslint/utils@8.22.0(eslint@9.19.0(jiti@2.4.2))(typescript@5.7.3))(@vue/compiler-sfc@3.5.13)(eslint-plugin-react-hooks@5.1.0(eslint@9.19.0(jiti@2.4.2)))(eslint-plugin-react-refresh@0.4.18(eslint@9.19.0(jiti@2.4.2)))(eslint-plugin-svelte@2.46.1(eslint@9.19.0(jiti@2.4.2))(svelte@5.19.4))(eslint@9.19.0(jiti@2.4.2))(svelte-eslint-parser@0.43.0(svelte@5.19.4))(typescript@5.7.3)
-      '@eslint-react/eslint-plugin':
-        specifier: 'catalog:'
-        version: 1.25.0(eslint@9.19.0(jiti@2.4.2))(ts-api-utils@2.0.0(typescript@5.7.3))(typescript@5.7.3)
-      '@eslint/compat':
-        specifier: 'catalog:'
-        version: 1.2.5(eslint@9.19.0(jiti@2.4.2))
       '@mui/types':
         specifier: 'catalog:'
         version: 7.2.21(@types/react@19.0.8)
       '@types/eslint-config-prettier':
         specifier: 'catalog:'
         version: 6.11.3
-      '@types/eslint__eslintrc':
-        specifier: ^2.1.2
-        version: 2.1.2
       eslint-config-prettier:
         specifier: 'catalog:'
         version: 10.0.1(eslint@9.19.0(jiti@2.4.2))
       eslint-flat-config-utils:
         specifier: ^2.0.0
         version: 2.0.0
-      eslint-plugin-mdx:
-        specifier: 'catalog:'
-        version: 3.1.5(eslint@9.19.0(jiti@2.4.2))
       eslint-plugin-package-json:
         specifier: 'catalog:'
         version: 0.21.1(@types/estree@1.0.6)(eslint@9.19.0(jiti@2.4.2))(jsonc-eslint-parser@2.4.0)
-      eslint-plugin-react-compiler:
-        specifier: 'catalog:'
-        version: 19.0.0-beta-decd7b8-20250118(eslint@9.19.0(jiti@2.4.2))
-      eslint-plugin-storybook:
-        specifier: 'catalog:'
-        version: 0.11.2(eslint@9.19.0(jiti@2.4.2))(typescript@5.7.3)
       local-pkg:
         specifier: 'catalog:'
         version: 1.0.0
@@ -1693,9 +1675,6 @@ packages:
 
   '@types/eslint@9.6.1':
     resolution: {integrity: sha512-FXx2pKgId/WyYo2jXw63kk7/+TY7u7AziEJxJAnSFzHlqTAS3Ync6SvgYAN/k4/PQpnnVuzoMuVnByKK2qp0ag==}
-
-  '@types/eslint__eslintrc@2.1.2':
-    resolution: {integrity: sha512-qXvzPFY7Rz05xD8ZApXJ3S8xStQD2Ibzu3EFIF0UMNOAfLY5xUu3H61q0JrHo2OXD6rcFG75yUxNQbkKtFKBSw==}
 
   '@types/estree-jsx@1.0.5':
     resolution: {integrity: sha512-52CcUVNFyfb1A2ALocQw/Dd1BQFNmSdkuC3BkZ6iqhdMfQz7JWOFRuJFloOzjk+6WijU56m9oKXFAXc7o3Towg==}
@@ -7947,10 +7926,6 @@ snapshots:
     dependencies:
       '@types/estree': 1.0.6
       '@types/json-schema': 7.0.15
-
-  '@types/eslint__eslintrc@2.1.2':
-    dependencies:
-      '@types/eslint': 9.6.1
 
   '@types/estree-jsx@1.0.5':
     dependencies:

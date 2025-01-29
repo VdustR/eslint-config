@@ -1,5 +1,6 @@
 import type { TypedFlatConfigItem } from "@antfu/eslint-config";
 import type { DistributiveOmit } from "@mui/types";
+import { ensurePackages } from "@antfu/eslint-config";
 
 // eslint-disable-next-line import/no-namespace -- `mdx` exports the plugin as a namespace.
 import * as mdxPlugin from "eslint-plugin-mdx";
@@ -13,11 +14,12 @@ namespace mdx {
   }
 }
 
-const mdx = ({
+const mdx = async ({
   flatCodeBlocks = true,
   processorOptions,
   ...options
-}: mdx.Options = {}) => {
+}: mdx.Options = {}): Promise<Array<TypedFlatConfigItem>> => {
+  await ensurePackages(["eslint-plugin-mdx"]);
   const flatCodeBlocksOptions: TypedFlatConfigItem =
     typeof flatCodeBlocks !== "object" ? {} : flatCodeBlocks;
   const configs: Array<TypedFlatConfigItem> = [

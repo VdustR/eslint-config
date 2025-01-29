@@ -157,27 +157,29 @@ const vdustr = (options?: Options, ...userConfigs: Array<Config>) => {
   }
 
   if (reactEnabled) {
-    config = config.override("antfu/react/rules", (config) => ({
-      ...config,
-      plugins: {
-        ...config.plugins,
-        "react-compiler": reactCompiler,
-      },
-      rules: {
-        ...config.rules,
-        "react-compiler/react-compiler": "error",
+    config = config.override("antfu/react/rules", async (config) => {
+      return {
+        ...config,
+        plugins: {
+          ...config.plugins,
+          "react-compiler": await reactCompiler(),
+        },
+        rules: {
+          ...config.rules,
+          "react-compiler/react-compiler": "error",
 
-        /**
-         * Not all destructuring assignments are more readable than their alternatives.
-         */
-        "react/prefer-destructuring-assignment": "off",
-      },
-    }));
+          /**
+           * Not all destructuring assignments are more readable than their alternatives.
+           */
+          "react/prefer-destructuring-assignment": "off",
+        },
+      };
+    });
   }
 
   if (storybookEnabled) {
     config = config
-      .append(storybook)
+      .append(storybook())
       .override("storybook:csf:stories-rules", (config) => ({
         ...config,
         rules: {
@@ -204,7 +206,7 @@ const vdustr = (options?: Options, ...userConfigs: Array<Config>) => {
     );
   }
 
-  config = config.append(prettier);
+  config = config.append(prettier());
 
   return config;
 };

@@ -24,7 +24,7 @@ import { reactCompiler } from "../src/lib/eslint-plugin-react-compiler";
   }
 
   const plugins: Plugins = {
-    ...definePlugins({ "react-compiler": reactCompiler }),
+    ...definePlugins({ "react-compiler": await reactCompiler() }),
     ...definePlugins({
       mdx: {
         rules: mdxRules,
