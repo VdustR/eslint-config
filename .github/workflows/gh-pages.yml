@@ -30,7 +30,7 @@ jobs:
             ${{ runner.os }}-pnpm-store-
       - name: Install dependencies
         run: pnpm install
-      - run: pnpm inspect build
+      - run: pnpm inspect build --base=/${{ github.event.repository.name }}/
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4
         with:
