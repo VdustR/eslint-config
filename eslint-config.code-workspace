@@ -12,6 +12,7 @@
   ],
   "settings": {
     "editor.codeActionsOnSave": [
+      "source.removeUnusedImports",
       "source.fixAll.eslint",
       "source.formatDocument",
     ],

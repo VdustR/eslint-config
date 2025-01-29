@@ -1,5 +1,3 @@
-// eslint-disable-next-line import/no-empty-named-blocks -- Type only import.
-import type {} from "./eslint-typegen";
 import type { Config } from "./types";
 import antfu, {
   GLOB_ASTRO_TS,
@@ -10,12 +8,13 @@ import antfu, {
 } from "@antfu/eslint-config";
 
 import packageJson from "eslint-plugin-package-json/configs/recommended";
-
 import { isPackageExists } from "local-pkg";
+
 import { mdx } from "./configs/mdx";
 import { prettier } from "./configs/prettier";
 import { storybook } from "./configs/storybook";
 import { reactCompiler } from "./lib/eslint-plugin-react-compiler";
+import "./eslint-typegen";
 
 type Options = Omit<NonNullable<Parameters<typeof antfu>[0]>, "stylistic"> & {
   mdx?: boolean | mdx.Options;

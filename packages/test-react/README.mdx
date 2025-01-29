@@ -19,4 +19,8 @@ useEffect(() => {
 export default function App() {
   return <div>Hello, world!</div>;
 }
+
+// eslint-disable-next-line ts/array-type -- `ts` should validate this.
+const a: string[] = ["Hello", "world!"];
+const b: Array<string> = ["Hello", "world!"];
 ```

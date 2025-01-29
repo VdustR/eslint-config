@@ -8,4 +8,5 @@ export default function test() {
 
 // eslint-disable-next-line ts/array-type -- `ts` should validate this.
 const a: string[] = ["Hello", "world!"];
+const b: Array<string> = ["Hello", "world!"];
 ```

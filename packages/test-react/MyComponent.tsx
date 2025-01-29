@@ -10,10 +10,11 @@ import * as React from "react";
 // eslint-disable-next-line perfectionist/sort-imports -- `perfectionist` should validate this.
 import path from "pathe";
 
-// eslint-disable-next-line ts/array-type -- `@typescript-eslint` should validate this.
-const arr: string[] = [];
+// eslint-disable-next-line ts/array-type -- `ts` should validate this.
+const a: string[] = ["Hello", "world!"];
+const b: Array<string> = ["Hello", "world!"];
 
-path.resolve("foo", ...arr);
+path.resolve("foo", ...a, ...b);
 
 const onClick = useCallback(() => {}, []);
 
