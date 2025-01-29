@@ -41,7 +41,7 @@
     "@eslint-react/eslint-plugin": "catalog:",
     "@eslint/compat": "catalog:",
     "@mui/types": "catalog:",
-    "@types/eslint-config-prettier": "^6.11.3",
+    "@types/eslint-config-prettier": "catalog:",
     "@types/eslint__eslintrc": "^2.1.2",
     "eslint-config-prettier": "catalog:",
     "eslint-flat-config-utils": "^2.0.0",

@@ -1,4 +1,3 @@
 {
-  "extends": ["@vp-tw/tsconfig/base/bundler/tsconfig"],
-  "include": [".", "../lib"]
+  "extends": ["@vp-tw/tsconfig/base/bundler/tsconfig"]
 }

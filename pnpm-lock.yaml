@@ -18,6 +18,9 @@ catalogs:
     '@mui/types':
       specifier: ^7.2.21
       version: 7.2.21
+    '@types/eslint-config-prettier':
+      specifier: ^6.11.3
+      version: 6.11.3
     eslint-config-prettier:
       specifier: ^10.0.1
       version: 10.0.1
@@ -169,7 +172,7 @@ importers:
         specifier: 'catalog:'
         version: 7.2.21(@types/react@19.0.8)
       '@types/eslint-config-prettier':
-        specifier: ^6.11.3
+        specifier: 'catalog:'
         version: 6.11.3
       '@types/eslint__eslintrc':
         specifier: ^2.1.2
