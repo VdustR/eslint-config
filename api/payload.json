@@ -17352,6 +17352,18 @@
       ]
     },
     {
+      "filepath": "env.def.ts",
+      "globs": [
+        "**/*.?([cm])ts",
+        "**/*.?([cm])[jt]s?(x)"
+      ],
+      "configs": [
+        18,
+        19,
+        24
+      ]
+    },
+    {
       "filepath": "eslint-config.code-workspace",
       "globs": [
         "**/*.code-workspace"
@@ -17812,7 +17824,7 @@
     }
   ],
   "meta": {
-    "lastUpdate": 1738143623309,
+    "lastUpdate": 1738148893983,
     "basePath": "",
     "configPath": ""
   }
