@@ -1,0 +1,6 @@
+{
+  "folders": [],
+  "foo": "bar",
+  // eslint-disable-next-line jsonc/sort-keys -- `jsonc` should validate this
+  "baz": "qux",
+}
