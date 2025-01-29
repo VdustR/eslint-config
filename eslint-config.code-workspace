@@ -13,7 +13,6 @@
   "settings": {
     "editor.codeActionsOnSave": [
       "source.addMissingImports.ts",
-      "source.organizeImports",
       "source.formatDocument",
       "source.fixAll.eslint",
     ],

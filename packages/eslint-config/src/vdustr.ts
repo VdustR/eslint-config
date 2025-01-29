@@ -21,14 +21,37 @@ const vdustr = (options?: Options, ...userConfigs: Array<Config>) => {
   const jsoncEnabled: boolean = Boolean(options?.jsonc ?? true);
   const reactEnabled: boolean = Boolean(options?.react ?? false);
   const storybookEnabled: boolean = Boolean(options?.storybook ?? false);
-  const mdxOptions = options?.mdx ?? true;
+  const mdxEnabled: boolean = Boolean(options?.mdx ?? false);
+  const mdxOptions: Extract<Options["mdx"], Record<PropertyKey, any>> = {
+    ...(typeof options?.mdx !== "object" ? null : options.mdx),
+  };
+  const mdxFlatCodeBlocksEnabled: boolean = Boolean(
+    mdxOptions?.flatCodeBlocks ?? true,
+  );
+  const mdxFlatCodeBlocksOptions: Extract<
+    (typeof mdxOptions)["flatCodeBlocks"],
+    Record<PropertyKey, any>
+  > = {
+    ...(typeof mdxOptions?.flatCodeBlocks !== "object"
+      ? null
+      : mdxOptions.flatCodeBlocks),
+  };
   type Config = NonNullable<Parameters<typeof antfu>[1]>;
   const defaultConfigs: Array<Config> = [
     ...(!jsoncEnabled ? [] : [packageJson]),
-    ...(!mdxOptions
+    ...(!mdxEnabled
       ? []
       : mdx({
-          ...(typeof mdxOptions !== "object" ? null : mdxOptions),
+          ...mdxOptions,
+          flatCodeBlocks: !mdxFlatCodeBlocksEnabled
+            ? false
+            : {
+                ...mdxFlatCodeBlocksOptions,
+                rules: {
+                  "import/no-default-export": "off",
+                  ...mdxFlatCodeBlocksOptions?.rules,
+                },
+              },
         })),
     ...(!storybookEnabled ? [] : storybook),
     prettier,
