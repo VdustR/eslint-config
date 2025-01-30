@@ -1,10 +1,7 @@
-import type { ConfigNames } from "@antfu/eslint-config";
-import type { FlatConfigComposer } from "eslint-flat-config-utils";
 import type {
-  BaseConfigNamesMapSource,
   ConfigOverrides,
-  ResolveConfigNamesMap,
   TypedFlatConfigItem,
+  VpComposer,
 } from "../types";
 import {
   GLOB_ASTRO_TS,
@@ -20,28 +17,14 @@ import { GLOB_CONFIG_JS } from "../globs";
 import { extendsConfig } from "../utils/extendsConfig";
 import { ignoreKeys } from "./_utils";
 
-const configNamesMapSource = {
-  imports: "vdustr/imports/rules",
-  noDefaultExport: "vdustr/imports/no-default-export/rules",
-} as const satisfies BaseConfigNamesMapSource;
-
-declare module "../types" {
-  interface ConfigNamesMap
-    extends ResolveConfigNamesMap<imports.ConfigNamesMapSource> {}
-}
-
 namespace imports {
-  export type ConfigNamesMapSource = typeof configNamesMapSource;
   export interface Options {
     imports?: ConfigOverrides;
     noDefaultExport?: ConfigOverrides;
   }
 }
 
-const importsInternal = (
-  composer: FlatConfigComposer<TypedFlatConfigItem, ConfigNames>,
-  options?: imports.Options,
-) => {
+const imports = (composer: VpComposer, options?: imports.Options) => {
   extendsConfig(composer, "antfu/imports/rules", (config) => {
     const modifiedConfig = defu<
       TypedFlatConfigItem,
@@ -54,7 +37,7 @@ const importsInternal = (
     >(
       omit(options?.imports ?? {}, ["files", "ignores"]),
       {
-        name: configNamesMapSource.imports,
+        name: "vdustr/imports/rules",
         rules: {
           /**
            * Forbid `import {} from "module"`.
@@ -76,7 +59,7 @@ const importsInternal = (
     >(
       options?.noDefaultExport,
       {
-        name: configNamesMapSource.noDefaultExport,
+        name: "vdustr/imports/no-default-export/rules",
         rules: {
           /**
            * Enforcing named exports improves consistency, enhances
@@ -106,9 +89,5 @@ const importsInternal = (
     return [modifiedConfig, rulesConfig, noDefaultExportConfig];
   });
 };
-
-const imports = Object.assign(importsInternal, {
-  configNamesMapSource,
-});
 
 export { imports };

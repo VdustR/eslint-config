@@ -1,10 +1,7 @@
-import type { ConfigNames } from "@antfu/eslint-config";
-import type { FlatConfigComposer } from "eslint-flat-config-utils";
 import type {
-  BaseConfigNamesMapSource,
   ConfigOverrides,
-  ResolveConfigNamesMap,
   TypedFlatConfigItem,
+  VpComposer,
 } from "../types";
 import defu from "defu";
 import { omit, pick } from "es-toolkit";
@@ -14,28 +11,14 @@ import { extendsConfig } from "../utils/extendsConfig";
 import { renameRules } from "../utils/renameRules";
 import { ignoreKeys } from "./_utils";
 
-const configNamesMapSource = {
-  yaml: "vdustr/yaml/rules",
-  sortKeys: "vdustr/yaml/sort-keys/rules",
-} as const satisfies BaseConfigNamesMapSource;
-
-declare module "../types" {
-  interface ConfigNamesMap
-    extends ResolveConfigNamesMap<yaml.ConfigNamesMapSource> {}
-}
-
 namespace yaml {
-  export type ConfigNamesMapSource = typeof configNamesMapSource;
   export interface Options {
     yaml?: ConfigOverrides;
     sortKeys?: ConfigOverrides;
   }
 }
 
-const yamlInternal = (
-  composer: FlatConfigComposer<TypedFlatConfigItem, ConfigNames>,
-  options?: yaml.Options,
-) => {
+const yaml = (composer: VpComposer, options?: yaml.Options) => {
   extendsConfig(composer, "antfu/yaml/rules", (config) => {
     const modifiedConfig = defu<
       TypedFlatConfigItem,
@@ -45,7 +28,7 @@ const yamlInternal = (
     const rulesConfig = defu<TypedFlatConfigItem, Array<TypedFlatConfigItem>>(
       omit(options?.yaml ?? {}, ["files", "ignores"]),
       {
-        name: configNamesMapSource.yaml,
+        name: "vdustr/yaml/rules",
         rules: renameRules({
           ...Object.fromEntries([
             ...eslintPluginYml.configs["flat/recommended"].flatMap((config) =>
@@ -64,7 +47,7 @@ const yamlInternal = (
       Array<TypedFlatConfigItem>
     >(options?.sortKeys, {
       ...omit(omittedConfig, ["files", "ignores"]),
-      name: configNamesMapSource.sortKeys,
+      name: "vdustr/yaml/sort-keys/rules",
       files: [GLOB_PNPM_WORKSPACE_YAML],
       rules: {
         "yaml/sort-keys": [
@@ -83,9 +66,5 @@ const yamlInternal = (
     return [modifiedConfig, rulesConfig, sortKeysConfig];
   });
 };
-
-const yaml = Object.assign(yamlInternal, {
-  configNamesMapSource,
-});
 
 export { yaml };

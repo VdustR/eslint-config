@@ -1,10 +1,7 @@
-import type { ConfigNames } from "@antfu/eslint-config";
-import type { FlatConfigComposer } from "eslint-flat-config-utils";
 import type {
-  BaseConfigNamesMapSource,
   ConfigOverrides,
-  ResolveConfigNamesMap,
   TypedFlatConfigItem,
+  VpComposer,
 } from "../types";
 import { ensurePackages, interopDefault } from "@antfu/eslint-config";
 import defu from "defu";
@@ -17,20 +14,7 @@ import {
 import { extendsConfig } from "../utils/extendsConfig";
 import { ignoreKeys } from "./_utils";
 
-const configNamesMapSource = {
-  jsonc: "vdustr/jsonc/rules",
-  sortArrayValues: "vdustr/jsonc/sort-array-values/rules",
-  packageJsonSetup: "vdustr/package-json/setup",
-  packageJsonRules: "vdustr/package-json/rules",
-} as const satisfies BaseConfigNamesMapSource;
-
-declare module "../types" {
-  interface ConfigNamesMap
-    extends ResolveConfigNamesMap<jsonc.ConfigNamesMapSource> {}
-}
-
 namespace jsonc {
-  export type ConfigNamesMapSource = typeof configNamesMapSource;
   export interface Options {
     jsonc?: ConfigOverrides;
     sortArrayValues?: ConfigOverrides;
@@ -38,10 +22,7 @@ namespace jsonc {
   }
 }
 
-const jsoncInternal = async (
-  composer: FlatConfigComposer<TypedFlatConfigItem, ConfigNames>,
-  options?: jsonc.Options,
-) => {
+const jsonc = async (composer: VpComposer, options?: jsonc.Options) => {
   await ensurePackages(["eslint-plugin-package-json"]);
   const packageJson = await interopDefault(
     import("eslint-plugin-package-json/configs/recommended"),
@@ -61,7 +42,7 @@ const jsoncInternal = async (
       const rulesConfig = defu<TypedFlatConfigItem, Array<TypedFlatConfigItem>>(
         omit(options?.jsonc ?? {}, ["files", "ignores"]),
         {
-          name: configNamesMapSource.jsonc,
+          name: "vdustr/jsonc/rules",
           rules: {
             /**
              * Default.
@@ -85,7 +66,7 @@ const jsoncInternal = async (
         TypedFlatConfigItem,
         Array<TypedFlatConfigItem>
       >(options?.sortArrayValues, {
-        name: configNamesMapSource.sortArrayValues,
+        name: "vdustr/jsonc/sort-array-values/rules",
         files: [GLOB_CSPELL_JSON],
         rules: {
           "jsonc/sort-array-values": [
@@ -103,14 +84,14 @@ const jsoncInternal = async (
       });
       const packageJsonSetupConfig: TypedFlatConfigItem = {
         plugins: packageJson.plugins,
-        name: configNamesMapSource.packageJsonSetup,
+        name: "vdustr/package-json/setup",
       };
       const packageJsonRulesConfig = defu<
         TypedFlatConfigItem,
         Array<TypedFlatConfigItem>
       >(options?.packageJson, {
         ...omit(packageJson, ["name", "plugins"]),
-        name: configNamesMapSource.packageJsonRules,
+        name: "vdustr/package-json/rules",
       });
       return [
         modifiedConfig,
@@ -123,9 +104,5 @@ const jsoncInternal = async (
     ["antfu/sort/package-json", "antfu/sort/tsconfig-json"],
   );
 };
-
-const jsonc = Object.assign(jsoncInternal, {
-  configNamesMapSource,
-});
 
 export { jsonc };

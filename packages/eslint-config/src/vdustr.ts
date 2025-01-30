@@ -1,7 +1,5 @@
-import type { ConfigNames } from "@antfu/eslint-config";
-import type { FlatConfigComposer } from "eslint-flat-config-utils";
+import type { Config, VpComposer } from "./types";
 
-import type { Config, ConfigNamesMap, TypedFlatConfigItem } from "./types";
 import antfu from "@antfu/eslint-config";
 
 import { mdx } from "./configs/mdx";
@@ -26,11 +24,11 @@ type Options = NonNullable<Parameters<typeof antfu>[0]> & {
   prettier?: boolean | prettier.Options;
 };
 
-const vdustr = (options?: Options, ...userConfigs: Array<Config>) => {
-  let config: FlatConfigComposer<
-    TypedFlatConfigItem,
-    ConfigNames | keyof ConfigNamesMap
-  > = antfu({
+const vdustr = (
+  options?: Options,
+  ...userConfigs: Array<Config>
+): VpComposer => {
+  let config: VpComposer = antfu({
     // Use `prettier` for formatting by default.
     stylistic: false,
     ...options,

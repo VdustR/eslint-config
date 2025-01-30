@@ -1,31 +1,16 @@
-import type {
-  BaseConfigNamesMapSource,
-  ConfigOverrides,
-  ResolveConfigNamesMap,
-  TypedFlatConfigItem,
-} from "../types";
+import type { ConfigOverrides, TypedFlatConfigItem } from "../types";
 
 import { ensurePackages, interopDefault } from "@antfu/eslint-config";
 import defu from "defu";
 import { renameRules } from "../utils/renameRules";
 
-const configNamesMapSource = {
-  rules: "vdustr/prettier/rules",
-} as const satisfies BaseConfigNamesMapSource;
-
-declare module "../types" {
-  interface ConfigNamesMap
-    extends ResolveConfigNamesMap<prettier.ConfigNamesMapSource> {}
-}
-
 namespace prettier {
-  export type ConfigNamesMapSource = typeof configNamesMapSource;
   export interface Options {
     prettier?: ConfigOverrides;
   }
 }
 
-const prettierInternal = async (
+const prettier = async (
   options?: prettier.Options,
 ): Promise<TypedFlatConfigItem> => {
   await ensurePackages(["eslint-config-prettier"]);
@@ -37,14 +22,10 @@ const prettierInternal = async (
     {
       ...eslintConfigPrettier,
       rules: renameRules(eslintConfigPrettier.rules),
-      name: configNamesMapSource.rules,
+      name: "vdustr/prettier/rules",
     },
   );
   return rulesConfig;
 };
-
-const prettier = Object.assign(prettierInternal, {
-  configNamesMapSource,
-});
 
 export { prettier };

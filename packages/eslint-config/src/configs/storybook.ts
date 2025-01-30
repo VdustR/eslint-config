@@ -1,34 +1,17 @@
-import type {
-  BaseConfigNamesMapSource,
-  ConfigOverrides,
-  ResolveConfigNamesMap,
-  TypedFlatConfigItem,
-} from "../types";
+import type { ConfigOverrides, TypedFlatConfigItem } from "../types";
 import { ensurePackages, interopDefault } from "@antfu/eslint-config";
 import defu from "defu";
 import { pick } from "es-toolkit";
 import { renameRules } from "../utils/renameRules";
 
-const configNamesMapSource = {
-  setup: "vdustr/stroybook/setup",
-  storiesRules: "vdustr/storybook/stories/rules",
-  mainRules: "vdustr/storybook/main/rules",
-} as const satisfies BaseConfigNamesMapSource;
-
-declare module "../types" {
-  interface ConfigNamesMap
-    extends ResolveConfigNamesMap<storybook.ConfigNamesMapSource> {}
-}
-
 namespace storybook {
-  export type ConfigNamesMapSource = typeof configNamesMapSource;
   export interface Options {
     stories?: ConfigOverrides;
     main?: ConfigOverrides;
   }
 }
 
-const storybookInternal = async (
+const storybook = async (
   options?: storybook.Options,
 ): Promise<Array<TypedFlatConfigItem>> => {
   await ensurePackages(["eslint-plugin-storybook"]);
@@ -46,7 +29,7 @@ const storybookInternal = async (
   if (!originalCsfStrictConfig) throw new Error("Missing csf strict config");
   const setupConfig: TypedFlatConfigItem = {
     ...pick(originalSetupConfig, ["plugins"]),
-    name: configNamesMapSource.setup,
+    name: "vdustr/stroybook/setup",
   };
   const storyRulesConfig = defu<
     TypedFlatConfigItem,
@@ -54,7 +37,7 @@ const storybookInternal = async (
   >(
     options?.stories,
     {
-      name: configNamesMapSource.storiesRules,
+      name: "vdustr/storybook/stories/rules",
       rules: {
         "import/no-default-export": "off",
       },
@@ -71,7 +54,7 @@ const storybookInternal = async (
   const mainRulesConfig = defu<TypedFlatConfigItem, Array<TypedFlatConfigItem>>(
     options?.main,
     {
-      name: configNamesMapSource.mainRules,
+      name: "vdustr/storybook/main/rules",
     },
     {
       ...originalMainRulesConfig,
@@ -84,9 +67,5 @@ const storybookInternal = async (
     mainRulesConfig,
   ] satisfies Array<TypedFlatConfigItem>;
 };
-
-const storybook = Object.assign(storybookInternal, {
-  configNamesMapSource,
-});
 
 export { storybook };

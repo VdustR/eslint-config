@@ -1,9 +1,4 @@
-import type {
-  BaseConfigNamesMapSource,
-  ConfigOverrides,
-  ResolveConfigNamesMap,
-  TypedFlatConfigItem,
-} from "../types";
+import type { ConfigOverrides, TypedFlatConfigItem } from "../types";
 
 import {
   ensurePackages,
@@ -15,20 +10,7 @@ import defu from "defu";
 import { omit, pick } from "es-toolkit";
 import { renameRules } from "../utils/renameRules";
 
-const configNamesMapSource = {
-  setup: "vdustr/mdx/setup",
-  processor: "vdustr/mdx/processor",
-  rules: "vdustr/mdx/rules",
-  codeBlocks: "vdustr/mdx/code-blocks",
-} as const satisfies BaseConfigNamesMapSource;
-
-declare module "../types" {
-  interface ConfigNamesMap
-    extends ResolveConfigNamesMap<mdx.ConfigNamesMapSource> {}
-}
-
 namespace mdx {
-  export type ConfigNamesMapSource = typeof configNamesMapSource;
   export interface Options {
     mdx?: ConfigOverrides;
     processorOptions?: Omit<
@@ -39,7 +21,7 @@ namespace mdx {
   }
 }
 
-const mdxInternal = async ({
+const mdx = async ({
   codeBlocks = true,
   processorOptions,
   ...options
@@ -50,20 +32,20 @@ const mdxInternal = async ({
     typeof codeBlocks !== "object" ? {} : codeBlocks;
   const setupConfig: TypedFlatConfigItem = {
     ...pick(mdxPlugin.flat, ["plugins"]),
-    name: configNamesMapSource.setup,
+    name: "vdustr/mdx/setup",
   };
   const processorConfig: TypedFlatConfigItem = {
     processor: mdxPlugin.createRemarkProcessor({
       ...processorOptions,
       lintCodeBlocks: Boolean(codeBlocks),
     }),
-    name: configNamesMapSource.processor,
+    name: "vdustr/mdx/processor",
   };
   const rulesConfig = defu<TypedFlatConfigItem, Array<TypedFlatConfigItem>>(
     options.mdx,
     {
       ...omit(mdxPlugin.flat, ["plugins", "processor"]),
-      name: configNamesMapSource.rules,
+      name: "vdustr/mdx/rules",
       rules: renameRules(mdxPlugin.flat.rules ?? {}),
       /**
        * Handled by `@eslint/markdown`.
@@ -80,7 +62,7 @@ const mdxInternal = async ({
       Array<TypedFlatConfigItem>
     >(codeBlocksOptions, {
       ...mdxPlugin.flatCodeBlocks,
-      name: configNamesMapSource.codeBlocks,
+      name: "vdustr/mdx/code-blocks",
       rules: renameRules(mdxPlugin.flatCodeBlocks.rules ?? {}),
       /**
        * Handled by `@eslint/markdown`.
@@ -95,9 +77,5 @@ const mdxInternal = async ({
 
   return configs;
 };
-
-const mdx = Object.assign(mdxInternal, {
-  configNamesMapSource,
-});
 
 export { mdx };

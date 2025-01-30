@@ -1,36 +1,20 @@
-import type { ConfigNames } from "@antfu/eslint-config";
-import type { FlatConfigComposer } from "eslint-flat-config-utils";
 import type {
-  BaseConfigNamesMapSource,
   ConfigOverrides,
-  ResolveConfigNamesMap,
   TypedFlatConfigItem,
+  VpComposer,
 } from "../types";
 import defu from "defu";
 import { omit, pick } from "es-toolkit";
 import { extendsConfig } from "../utils/extendsConfig";
 import { ignoreKeys } from "./_utils";
 
-const configNamesMapSource = {
-  typescript: "vdustr/typescript/rules",
-} as const satisfies BaseConfigNamesMapSource;
-
-declare module "../types" {
-  interface ConfigNamesMap
-    extends ResolveConfigNamesMap<typescript.ConfigNamesMapSource> {}
-}
-
 namespace typescript {
-  export type ConfigNamesMapSource = typeof configNamesMapSource;
   export interface Options {
     typescript?: ConfigOverrides;
   }
 }
 
-const typescriptInternal = (
-  composer: FlatConfigComposer<TypedFlatConfigItem, ConfigNames>,
-  options?: typescript.Options,
-) => {
+const typescript = (composer: VpComposer, options?: typescript.Options) => {
   extendsConfig(composer, "antfu/typescript/rules", (config) => {
     const modifiedConfig = defu<
       TypedFlatConfigItem,
@@ -40,7 +24,7 @@ const typescriptInternal = (
     const rulesConfig = defu<TypedFlatConfigItem, Array<TypedFlatConfigItem>>(
       omit(options?.typescript ?? {}, ["files", "ignores"]),
       {
-        name: configNamesMapSource.typescript,
+        name: "vdustr/typescript/rules",
         rules: {
           /**
            * Use `Array<T>` instead of `T[]` for better DX.
@@ -71,9 +55,5 @@ const typescriptInternal = (
     return [modifiedConfig, rulesConfig];
   });
 };
-
-const typescript = Object.assign(typescriptInternal, {
-  configNamesMapSource,
-});
 
 export { typescript };

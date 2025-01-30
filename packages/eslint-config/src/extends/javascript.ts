@@ -1,36 +1,20 @@
-import type { ConfigNames } from "@antfu/eslint-config";
-import type { FlatConfigComposer } from "eslint-flat-config-utils";
 import type {
-  BaseConfigNamesMapSource,
   ConfigOverrides,
-  ResolveConfigNamesMap,
   TypedFlatConfigItem,
+  VpComposer,
 } from "../types";
 import defu from "defu";
 import { omit, pick } from "es-toolkit";
 import { extendsConfig } from "../utils/extendsConfig";
 import { ignoreKeys } from "./_utils";
 
-const configNamesMapSource = {
-  javascript: "vdustr/javascript/rules",
-} as const satisfies BaseConfigNamesMapSource;
-
-declare module "../types" {
-  interface ConfigNamesMap
-    extends ResolveConfigNamesMap<javascript.ConfigNamesMapSource> {}
-}
-
 namespace javascript {
-  export type ConfigNamesMapSource = typeof configNamesMapSource;
   export interface Options {
     javascript?: ConfigOverrides;
   }
 }
 
-const javascriptInternal = (
-  composer: FlatConfigComposer<TypedFlatConfigItem, ConfigNames>,
-  options?: javascript.Options,
-) => {
+const javascript = (composer: VpComposer, options?: javascript.Options) => {
   extendsConfig(composer, "antfu/javascript/rules", (config) => {
     const modifiedConfig = defu<
       TypedFlatConfigItem,
@@ -40,7 +24,7 @@ const javascriptInternal = (
     const rulesConfig = defu<TypedFlatConfigItem, Array<TypedFlatConfigItem>>(
       omit(options?.javascript ?? {}, ["files", "ignores"]),
       {
-        name: configNamesMapSource.javascript,
+        name: "vdustr/javascript/rules",
         rules: {
           /**
            * Some callbacks are purposefully named to make the code self-documenting.
@@ -63,9 +47,5 @@ const javascriptInternal = (
     return [modifiedConfig, rulesConfig];
   });
 };
-
-const javascript = Object.assign(javascriptInternal, {
-  configNamesMapSource,
-});
 
 export { javascript };
