@@ -1,8 +1,8 @@
-import type { TypedFlatConfigItem } from "@antfu/eslint-config";
 import type {
   BaseConfigNamesMapSource,
   ConfigOverrides,
   ResolveConfigNamesMap,
+  TypedFlatConfigItem,
 } from "../types";
 
 import {

@@ -1,13 +1,14 @@
-import type { ConfigNames, TypedFlatConfigItem } from "@antfu/eslint-config";
+import type { ConfigNames } from "@antfu/eslint-config";
 import type { FlatConfigComposer } from "eslint-flat-config-utils";
 import type {
   BaseConfigNamesMapSource,
   ConfigOverrides,
   ResolveConfigNamesMap,
+  TypedFlatConfigItem,
 } from "../types";
 import defu from "defu";
 import { omit, pick } from "es-toolkit";
-import { reactCompiler } from "../lib/eslint-plugin-react-compiler";
+import { reactCompiler } from "../configs/reactCompiler";
 import { extendsConfig } from "../utils/extendsConfig";
 import { ignoreKeys } from "./_utils";
 
@@ -26,8 +27,8 @@ namespace react {
   export type ConfigNamesMapSource = typeof configNamesMapSource;
   export interface Options {
     react?: ConfigOverrides;
-    reactCompilerSetup?: ConfigOverrides;
-    reactCompilerRules?: ConfigOverrides;
+    reactCompiler?: reactCompiler.Options["reactCompiler"];
+    reactCompilerSetup?: reactCompiler.Options["setup"];
   }
 }
 
@@ -51,34 +52,14 @@ const reactInternal = (
       },
       omittedConfig,
     );
-    const reactCompilerSetupConfig = defu<
-      TypedFlatConfigItem,
-      Array<TypedFlatConfigItem>
-    >(options?.reactCompilerSetup, {
-      name: configNamesMapSource.reactCompilerSetup,
-      plugins: {
-        "react-compiler": await reactCompiler(),
-      },
+    const reactCompilerConfigs = await reactCompiler({
+      setup: options?.reactCompilerSetup ?? {},
+      reactCompiler: defu(
+        options?.reactCompiler,
+        pick(omittedConfig, ["files", "ignores"]),
+      ),
     });
-    const reactCompilerRulesConfig = defu<
-      TypedFlatConfigItem,
-      Array<TypedFlatConfigItem>
-    >(
-      options?.reactCompilerRules,
-      {
-        name: configNamesMapSource.reactCompilerRules,
-        rules: {
-          "react-compiler/react-compiler": "error",
-        },
-      },
-      omittedConfig,
-    );
-    return [
-      modifiedConfig,
-      rulesConfig,
-      reactCompilerSetupConfig,
-      reactCompilerRulesConfig,
-    ];
+    return [modifiedConfig, rulesConfig, ...reactCompilerConfigs];
   });
 };
 

@@ -46,37 +46,6 @@ export default vdustr(
 );
 ```
 
-## Known Issues
-
-## `RulesRecord` Type Definition Not Applied
-
-If the rule record type definitions are not applied correctly, the plugin rules
-supported by this ESLint config may not appear in properties that rely on these
-types, such as `overrides`.
-
-For example, you might not see the rule key `react-compiler/react-compiler` as
-expected.
-
-To fix this, you may need to prevent the outdated package `@types/eslint` from
-being installed. This can be done by creating a `.pnpmfile.cjs` file:
-
-```js
-// .pnpmfile.cjs
-module.exports = {
-  hooks: {
-    readPackage(pkg) {
-      if (pkg.dependencies) {
-        delete pkg.dependencies["@types/eslint"];
-      }
-      return pkg;
-    },
-  },
-};
-```
-
-- [ESLint v9.10.0 released - Types now included](https://eslint.org/blog/2024/09/eslint-v9.10.0-released/#types-now-included)
-- [feat: Add types #18854](https://github.com/eslint/eslint/pull/18854)
-
 ## License
 
 MIT © ViPro <vdustr@gmail.com> (<http://vdustr.dev>)

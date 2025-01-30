@@ -1,7 +1,7 @@
-import type { ConfigNames, TypedFlatConfigItem } from "@antfu/eslint-config";
+import type { ConfigNames } from "@antfu/eslint-config";
 import type { FlatConfigComposer } from "eslint-flat-config-utils";
 
-import type { Config, ConfigNamesMap } from "./types";
+import type { Config, ConfigNamesMap, TypedFlatConfigItem } from "./types";
 import antfu from "@antfu/eslint-config";
 
 import { mdx } from "./configs/mdx";
@@ -13,7 +13,6 @@ import { jsonc } from "./extends/jsonc";
 import { react } from "./extends/react";
 import { typescript } from "./extends/typescript";
 import { yaml } from "./extends/yaml";
-import "./eslint-typegen";
 
 type Options = NonNullable<Parameters<typeof antfu>[0]> & {
   javascriptExtends?: javascript.Options;
@@ -32,7 +31,7 @@ const vdustr = (options?: Options, ...userConfigs: Array<Config>) => {
     TypedFlatConfigItem,
     ConfigNames | keyof ConfigNamesMap
   > = antfu({
-    // We use `prettier`.
+    // Use `prettier` for formatting by default.
     stylistic: false,
     ...options,
   });

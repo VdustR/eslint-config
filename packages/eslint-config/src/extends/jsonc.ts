@@ -1,9 +1,10 @@
-import type { ConfigNames, TypedFlatConfigItem } from "@antfu/eslint-config";
+import type { ConfigNames } from "@antfu/eslint-config";
 import type { FlatConfigComposer } from "eslint-flat-config-utils";
 import type {
   BaseConfigNamesMapSource,
   ConfigOverrides,
   ResolveConfigNamesMap,
+  TypedFlatConfigItem,
 } from "../types";
 import { ensurePackages, interopDefault } from "@antfu/eslint-config";
 import defu from "defu";

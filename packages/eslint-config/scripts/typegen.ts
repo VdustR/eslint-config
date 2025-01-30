@@ -1,12 +1,12 @@
-import type { ESLint } from "eslint";
-import { rules as mdxRules } from "eslint-plugin-mdx/lib/rules";
-
-import storybook from "eslint-plugin-storybook";
-import { pluginsToRulesDTS } from "eslint-typegen/core";
+import { combine } from "@antfu/eslint-config";
+import { flatConfigsToRulesDTS } from "eslint-typegen/core";
 import fs from "fs-extra";
 import path from "pathe";
 import { packageDirectory } from "pkg-dir";
-import { reactCompiler } from "../src/lib/eslint-plugin-react-compiler";
+import { mdx } from "../src/configs/mdx";
+import { prettier } from "../src/configs/prettier";
+import { reactCompiler } from "../src/configs/reactCompiler";
+import { storybook } from "../src/configs/storybook";
 
 (async () => {
   const pkgDir = await packageDirectory();
@@ -17,29 +17,26 @@ import { reactCompiler } from "../src/lib/eslint-plugin-react-compiler";
   const targetPath = path.join(distDir, "eslint-typegen.d.ts");
   await fs.ensureDir(path.dirname(targetPath));
 
-  type Plugins = Record<string, ESLint.Plugin>;
+  const configs = await combine(
+    mdx(),
+    prettier(),
+    reactCompiler(),
+    storybook(),
+  );
 
-  function definePlugins<T extends Plugins>(plugins: T): T {
-    return plugins;
-  }
+  /**
+   * Learned from: <https://github.com/antfu/eslint-config/blob/d9b10e1/scripts/typegen.ts>
+   */
+  const configNames = configs
+    .map((i) => i.name)
+    .filter(Boolean) as Array<string>;
+  let dts = await flatConfigsToRulesDTS(configs, {
+    includeAugmentation: false,
+  });
+  dts += `
+  // Names of all the configs
+  export type ConfigNames = ${configNames.map((i) => `'${i}'`).join(" | ")}
+  `;
 
-  const plugins: Plugins = {
-    ...definePlugins({ "react-compiler": await reactCompiler() }),
-    ...definePlugins({
-      mdx: {
-        rules: mdxRules,
-      },
-    }),
-    ...definePlugins({
-      ...Object.fromEntries(
-        storybook.configs["flat/csf-strict"].flatMap((config) =>
-          !("plugins" in config) || !config.plugins
-            ? []
-            : Object.entries(config.plugins),
-        ),
-      ),
-    }),
-  };
-
-  await fs.writeFile(targetPath, await pluginsToRulesDTS(plugins));
+  await fs.writeFile(targetPath, dts);
 })();

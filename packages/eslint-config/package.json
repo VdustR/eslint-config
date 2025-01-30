@@ -9,23 +9,23 @@
   },
   "exports": {
     ".": {
-      "default": {
-        "default": "./dist/index.js",
-        "types": "./dist/index.d.ts"
-      },
       "import": {
-        "default": "./dist/esm/index.mjs",
-        "types": "./dist/esm/index.d.ts"
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.mjs"
+      },
+      "default": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
       }
     },
     "./*": {
-      "default": {
-        "default": "./dist/*.js",
-        "types": "./dist/*.d.ts"
-      },
       "import": {
-        "default": "./dist/esm/*.mjs",
-        "types": "./dist/esm/*.d.ts"
+        "types": "./dist/esm/*.d.ts",
+        "default": "./dist/esm/*.mjs"
+      },
+      "default": {
+        "types": "./dist/*.d.ts",
+        "default": "./dist/*.js"
       }
     },
     "./README.md": "./README.md",
@@ -39,10 +39,8 @@
     "dist"
   ],
   "scripts": {
-    "build": "run-s build:unbuild fixEslintTypegenDts",
-    "build:unbuild": "unbuild",
+    "build": "unbuild",
     "copy": "tsx scripts/copy",
-    "fixEslintTypegenDts": "tsx scripts/fixEslintTypegenDts",
     "prepare": "run-s typegen",
     "prepublishOnly": "run-s build copy",
     "typegen": "tsx scripts/typegen"
