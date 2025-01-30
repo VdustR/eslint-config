@@ -89,7 +89,17 @@ const yamlInternal = (
       ...options?.sortKeys,
       files: [GLOB_PNPM_WORKSPACE_YAML, ...(options?.sortKeys?.files ?? [])],
       rules: {
-        "yaml/sort-keys": ["error", "asc"],
+        "yaml/sort-keys": [
+          "error",
+          {
+            pathPattern: ".*",
+            order: {
+              type: "asc",
+              caseSensitive: false,
+              natural: true,
+            },
+          },
+        ],
         ...options?.sortKeys?.rules,
       },
     } satisfies typeof config,

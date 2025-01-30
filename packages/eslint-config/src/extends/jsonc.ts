@@ -103,7 +103,17 @@ const jsoncInternal = (
             /**
              * Default.
              */
-            "jsonc/sort-keys": "error",
+            "jsonc/sort-keys": [
+              "error",
+              {
+                pathPattern: ".*",
+                order: {
+                  type: "asc",
+                  caseSensitive: false,
+                  natural: true,
+                },
+              },
+            ],
 
             /**
              * Overridable.
@@ -174,6 +184,8 @@ const jsoncInternal = (
                 pathPattern: ".*",
                 order: {
                   type: "asc",
+                  caseSensitive: false,
+                  natural: true,
                 },
               },
             ],
