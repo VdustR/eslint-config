@@ -14,6 +14,7 @@ import {
   GLOB_TSX,
 } from "@antfu/eslint-config";
 import { omit } from "es-toolkit";
+import { GLOB_CONFIG_JS } from "../globs";
 import { extendsConfig } from "../utils/extendsConfig";
 import { ignoreKeys } from "./_utils";
 
@@ -103,7 +104,7 @@ const importsInternal = (
       ],
       ignores: [
         // Configuration files
-        "**/*.config.*",
+        GLOB_CONFIG_JS,
         GLOB_MARKDOWN_CODE,
         GLOB_ASTRO_TS,
         ...(options?.noDefaultExport?.ignores || []),

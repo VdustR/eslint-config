@@ -5,7 +5,12 @@ import type {
   ResolveConfigNamesMap,
 } from "../types";
 
-import { ensurePackages, interopDefault } from "@antfu/eslint-config";
+import {
+  ensurePackages,
+  GLOB_MARKDOWN,
+  GLOB_MARKDOWN_CODE,
+  interopDefault,
+} from "@antfu/eslint-config";
 import { omit, pick } from "es-toolkit";
 import { renameRules } from "../utils/renameRules";
 
@@ -67,7 +72,7 @@ const mdxInternal = async ({
         /**
          * Handled by `@eslint/markdown`.
          */
-        "**/*.md",
+        GLOB_MARKDOWN,
       ],
 
       /**
@@ -105,7 +110,7 @@ const mdxInternal = async ({
               /**
                * Handled by `@eslint/markdown`.
                */
-              "**/*.md/*",
+              GLOB_MARKDOWN_CODE,
             ],
 
             /**

@@ -55,7 +55,7 @@ const jsoncInternal = (
           /**
            * Default.
            */
-          ...GLOB_CODE_WORKSPACE,
+          GLOB_CODE_WORKSPACE,
 
           /**
            * Overridable.
@@ -71,7 +71,7 @@ const jsoncInternal = (
           /**
            * Default.
            */
-          ...GLOB_PACKAGE_JSON,
+          GLOB_PACKAGE_JSON,
 
           /**
            * Overridable.
@@ -166,10 +166,7 @@ const jsoncInternal = (
            */
           ...options?.sortArrayValues,
 
-          files: [
-            ...GLOB_CSPELL_JSON,
-            ...(options?.sortArrayValues?.files ?? []),
-          ],
+          files: [GLOB_CSPELL_JSON, ...(options?.sortArrayValues?.files ?? [])],
           rules: {
             "jsonc/sort-array-values": [
               "error",

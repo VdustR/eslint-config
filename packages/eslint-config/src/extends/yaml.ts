@@ -87,7 +87,7 @@ const yamlInternal = (
        * Overridable.
        */
       ...options?.sortKeys,
-      files: [...GLOB_PNPM_WORKSPACE_YAML, ...(options?.sortKeys?.files ?? [])],
+      files: [GLOB_PNPM_WORKSPACE_YAML, ...(options?.sortKeys?.files ?? [])],
       rules: {
         "yaml/sort-keys": ["error", "asc"],
         ...options?.sortKeys?.rules,
