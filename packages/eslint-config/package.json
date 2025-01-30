@@ -9,23 +9,23 @@
   },
   "exports": {
     ".": {
-      "import": {
-        "types": "./dist/esm/index.d.ts",
-        "default": "./dist/esm/index.mjs"
-      },
       "default": {
-        "types": "./dist/index.d.ts",
-        "default": "./dist/index.js"
+        "default": "./dist/index.js",
+        "types": "./dist/index.d.ts"
+      },
+      "import": {
+        "default": "./dist/esm/index.mjs",
+        "types": "./dist/esm/index.d.ts"
       }
     },
     "./*": {
-      "import": {
-        "types": "./dist/esm/*.d.ts",
-        "default": "./dist/esm/*.mjs"
-      },
       "default": {
-        "types": "./dist/*.d.ts",
-        "default": "./dist/*.js"
+        "default": "./dist/*.js",
+        "types": "./dist/*.d.ts"
+      },
+      "import": {
+        "default": "./dist/esm/*.mjs",
+        "types": "./dist/esm/*.d.ts"
       }
     },
     "./README.md": "./README.md",
@@ -49,10 +49,8 @@
   },
   "dependencies": {
     "@mui/types": "catalog:",
-    "@types/eslint-config-prettier": "catalog:",
     "defu": "catalog:",
     "es-toolkit": "catalog:",
-    "eslint-config-prettier": "catalog:",
     "eslint-flat-config-utils": "catalog:",
     "local-pkg": "catalog:"
   },
@@ -62,13 +60,21 @@
   },
   "peerDependencies": {
     "@antfu/eslint-config": "catalog:",
+    "@types/eslint-config-prettier": "catalog:",
     "eslint": "catalog:",
+    "eslint-config-prettier": "catalog:",
     "eslint-plugin-mdx": "catalog:",
     "eslint-plugin-package-json": "catalog:",
     "eslint-plugin-react-compiler": "catalog:",
     "eslint-plugin-storybook": "catalog:"
   },
   "peerDependenciesMeta": {
+    "@types/eslint-config-prettier": {
+      "optional": true
+    },
+    "eslint-config-prettier": {
+      "optional": true
+    },
     "eslint-mdx": {
       "optional": true
     },
