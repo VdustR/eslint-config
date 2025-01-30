@@ -1,15 +1,18 @@
-import type { Config } from "./types";
+import type { ConfigNames, TypedFlatConfigItem } from "@antfu/eslint-config";
+import type { FlatConfigComposer } from "eslint-flat-config-utils";
+
+import type { Config, ConfigNamesMap } from "./types";
 import antfu, {
   GLOB_ASTRO_TS,
   GLOB_JS,
   GLOB_JSX,
+  GLOB_MARKDOWN_CODE,
   GLOB_TS,
   GLOB_TSX,
 } from "@antfu/eslint-config";
-
 import packageJson from "eslint-plugin-package-json/configs/recommended";
-import { isPackageExists } from "local-pkg";
 
+import { isPackageExists } from "local-pkg";
 import { mdx } from "./configs/mdx";
 import { prettier } from "./configs/prettier";
 import { storybook } from "./configs/storybook";
@@ -18,30 +21,18 @@ import "./eslint-typegen";
 
 type Options = Omit<NonNullable<Parameters<typeof antfu>[0]>, "stylistic"> & {
   mdx?: boolean | mdx.Options;
-  storybook?: boolean;
+  storybook?: boolean | storybook.Options;
+  prettier?: boolean | prettier.Options;
 };
 
 const vdustr = (options?: Options, ...userConfigs: Array<Config>) => {
   const typescriptEnabled = isPackageExists("typescript");
   const jsoncEnabled: boolean = Boolean(options?.jsonc ?? true);
   const reactEnabled: boolean = Boolean(options?.react ?? false);
-  const storybookEnabled: boolean = Boolean(options?.storybook ?? false);
-  const mdxEnabled: boolean = Boolean(options?.mdx ?? false);
-  const mdxOptions: Extract<Options["mdx"], Record<PropertyKey, any>> = {
-    ...(typeof options?.mdx !== "object" ? null : options.mdx),
-  };
-  const mdxFlatCodeBlocksEnabled: boolean = Boolean(
-    mdxOptions?.flatCodeBlocks ?? true,
-  );
-  const mdxFlatCodeBlocksOptions: Extract<
-    (typeof mdxOptions)["flatCodeBlocks"],
-    Record<PropertyKey, any>
-  > = {
-    ...(typeof mdxOptions?.flatCodeBlocks !== "object"
-      ? null
-      : mdxOptions.flatCodeBlocks),
-  };
-  let config = antfu(
+  let config: FlatConfigComposer<
+    TypedFlatConfigItem,
+    ConfigNames | keyof ConfigNamesMap
+  > = antfu(
     {
       // We use `prettier`.
       stylistic: false,
@@ -105,6 +96,7 @@ const vdustr = (options?: Options, ...userConfigs: Array<Config>) => {
       ignores: [
         // Configuration files
         "**/*.config.*",
+        GLOB_MARKDOWN_CODE,
         GLOB_ASTRO_TS,
       ],
     });
@@ -177,23 +169,38 @@ const vdustr = (options?: Options, ...userConfigs: Array<Config>) => {
     });
   }
 
+  const storybookEnabled: boolean = Boolean(options?.storybook ?? false);
+
   if (storybookEnabled) {
-    config = config
-      .append(storybook())
-      .override("storybook:csf:stories-rules", (config) => ({
-        ...config,
-        rules: {
-          ...config.rules,
-          "import/no-default-export": "off",
-        },
-      }));
+    const storybookOptions: undefined | storybook.Options =
+      typeof options?.storybook !== "object" ? undefined : options.storybook;
+    config = config.append(
+      storybook(...(!storybookOptions ? [] : [storybookOptions])),
+    );
   }
 
+  const mdxEnabled: boolean = Boolean(options?.mdx ?? false);
+
   if (mdxEnabled) {
+    const mdxOptions: Extract<Options["mdx"], Record<PropertyKey, any>> = {
+      ...(typeof options?.mdx !== "object" ? null : options.mdx),
+    };
+    const mdxFlatCodeBlocksEnabled: boolean = Boolean(
+      mdxOptions?.codeBlocks ?? true,
+    );
+    const mdxFlatCodeBlocksOptions: Extract<
+      (typeof mdxOptions)["codeBlocks"],
+      Record<PropertyKey, any>
+    > = {
+      ...(typeof mdxOptions?.codeBlocks !== "object"
+        ? null
+        : mdxOptions.codeBlocks),
+    };
+
     config = config.append(
       mdx({
         ...mdxOptions,
-        flatCodeBlocks: !mdxFlatCodeBlocksEnabled
+        codeBlocks: !mdxFlatCodeBlocksEnabled
           ? false
           : {
               ...mdxFlatCodeBlocksOptions,
@@ -206,7 +213,14 @@ const vdustr = (options?: Options, ...userConfigs: Array<Config>) => {
     );
   }
 
-  config = config.append(prettier());
+  const prettierEnabled: boolean = Boolean(options?.prettier ?? true);
+  if (prettierEnabled) {
+    const prettierOptions: undefined | prettier.Options =
+      typeof options?.prettier !== "object" ? undefined : options.prettier;
+    config = config.append(
+      prettier(...(!prettierOptions ? [] : [prettierOptions])),
+    );
+  }
 
   return config;
 };

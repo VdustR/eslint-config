@@ -50,6 +50,7 @@
   "dependencies": {
     "@mui/types": "catalog:",
     "@types/eslint-config-prettier": "catalog:",
+    "es-toolkit": "catalog:",
     "eslint-config-prettier": "catalog:",
     "eslint-flat-config-utils": "^2.0.0",
     "eslint-plugin-package-json": "catalog:",

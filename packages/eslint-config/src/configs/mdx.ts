@@ -1,62 +1,139 @@
 import type { TypedFlatConfigItem } from "@antfu/eslint-config";
-import type { DistributiveOmit } from "@mui/types";
-import { ensurePackages, interopDefault } from "@antfu/eslint-config";
+import type {
+  BaseConfigNamesMapSource,
+  ConfigOverrides,
+  ResolveConfigNamesMap,
+} from "../types";
 
+import { ensurePackages, interopDefault } from "@antfu/eslint-config";
+import { omit, pick } from "es-toolkit";
 import { renameRules } from "../utils/renameRules";
 
+const configNamesMapSource = {
+  setup: "vdustr/mdx/setup",
+  processor: "vdustr/mdx/processor",
+  rules: "vdustr/mdx/rules",
+  codeBlocks: "vdustr/mdx/code-blocks",
+} as const satisfies BaseConfigNamesMapSource;
+
+declare module "../types" {
+  interface ConfigNamesMap
+    extends ResolveConfigNamesMap<mdx.ConfigNamesMapSource> {}
+}
+
 namespace mdx {
-  export interface Options
-    extends DistributiveOmit<TypedFlatConfigItem, "processor"> {
+  export type ConfigNamesMapSource = typeof configNamesMapSource;
+  export interface Options extends ConfigOverrides {
     processorOptions?: import("eslint-plugin-mdx").ProcessorOptions;
-    flatCodeBlocks?: boolean | TypedFlatConfigItem;
+    codeBlocks?: boolean | ConfigOverrides;
   }
 }
 
-const mdx = async ({
-  flatCodeBlocks = true,
+const mdxInternal = async ({
+  codeBlocks = true,
   processorOptions,
   ...options
 }: mdx.Options = {}): Promise<Array<TypedFlatConfigItem>> => {
   await ensurePackages(["eslint-plugin-mdx"]);
   const mdxPlugin = await interopDefault(await import("eslint-plugin-mdx"));
-  const flatCodeBlocksOptions: TypedFlatConfigItem =
-    typeof flatCodeBlocks !== "object" ? {} : flatCodeBlocks;
+  const codeBlocksOptions: TypedFlatConfigItem =
+    typeof codeBlocks !== "object" ? {} : codeBlocks;
   const configs: Array<TypedFlatConfigItem> = [
     {
-      name: "vdustr/mdx",
-      ...mdxPlugin.flat,
-      ...options,
-      rules: {
-        ...renameRules({
-          ...mdxPlugin.flat.rules,
-        }),
-        ...options.rules,
-      },
+      ...pick(mdxPlugin.flat, ["plugins"]),
+      name: configNamesMapSource.setup,
+    },
+    {
       processor: mdxPlugin.createRemarkProcessor({
-        lintCodeBlocks: Boolean(flatCodeBlocks),
+        lintCodeBlocks: Boolean(codeBlocks),
         ...processorOptions,
         languageMapper: {
           ...processorOptions?.languageMapper,
         },
       }),
+      name: configNamesMapSource.processor,
     },
-    ...(!flatCodeBlocks
+    {
+      /**
+       * Inherited.
+       */
+      ...omit(mdxPlugin.flat, ["plugins", "processor"]),
+
+      /**
+       * Default.
+       */
+      name: configNamesMapSource.rules,
+      ignores: [
+        /**
+         * Handled by `@eslint/markdown`.
+         */
+        "**/*.md",
+      ],
+
+      /**
+       * Overridable.
+       */
+      ...options,
+      rules: {
+        /**
+         * Inherited.
+         */
+        ...renameRules({
+          ...mdxPlugin.flat.rules,
+        }),
+
+        /**
+         * Overridable.
+         */
+        ...options.rules,
+      },
+    },
+    ...(!codeBlocks
       ? []
       : [
           {
-            name: "vdustr/mdx/flat-code-blocks",
+            /**
+             * Inherited.
+             */
             ...mdxPlugin.flatCodeBlocks,
-            ...flatCodeBlocksOptions,
+
+            /**
+             * Default.
+             */
+            name: configNamesMapSource.codeBlocks,
+            ignores: [
+              /**
+               * Handled by `@eslint/markdown`.
+               */
+              "**/*.md/*",
+            ],
+
+            /**
+             * Overridable.
+             */
+            ...codeBlocksOptions,
+
             rules: {
+              /**
+               * Inherited.
+               */
               ...renameRules({
                 ...mdxPlugin.flatCodeBlocks.rules,
               }),
-              ...flatCodeBlocksOptions.rules,
+
+              /**
+               * Overridable.
+               */
+              ...codeBlocksOptions.rules,
             },
           } satisfies TypedFlatConfigItem,
         ]),
   ];
   return configs;
 };
+
+const mdx = Object.assign(mdxInternal, {
+  configNamesMapSource,
+});
 
 export { mdx };

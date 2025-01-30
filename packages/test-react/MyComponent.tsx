@@ -16,6 +16,7 @@ const b: Array<string> = ["Hello", "world!"];
 
 path.resolve("foo", ...a, ...b);
 
+// eslint-disable-next-line react-hooks/rules-of-hooks -- `react-hooks` should validate this.
 const onClick = useCallback(() => {}, []);
 
 namespace MyComponent {
