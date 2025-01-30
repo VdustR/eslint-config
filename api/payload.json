@@ -2273,21 +2273,13 @@
       "index": 29
     },
     {
-      "files": [
-        "**/*.?([cm])[jt]s?(x)"
-      ],
-      "languageOptions": {
-        "parserOptions": {
-          "ecmaFeatures": {
-            "jsx": true
-          }
-        },
-        "sourceType": "module"
-      },
       "name": "vdustr/react/react-compiler/rules",
       "rules": {
         "react-compiler/react-compiler": "error"
       },
+      "files": [
+        "**/*.?([cm])[jt]s?(x)"
+      ],
       "index": 30
     },
     {
@@ -17733,24 +17725,6 @@
       ]
     },
     {
-      "filepath": "packages/eslint-config/scripts/fixEslintTypegenDts.ts",
-      "globs": [
-        "**/*.?([cm])ts",
-        "**/*.?([cm])[jt]s?(x)",
-        "**/scripts/**/*.?([cm])[jt]s?(x)"
-      ],
-      "configs": [
-        14,
-        20,
-        21,
-        22,
-        27,
-        28,
-        30,
-        49
-      ]
-    },
-    {
       "filepath": "packages/eslint-config/scripts/typegen.ts",
       "globs": [
         "**/*.?([cm])ts",
@@ -17801,7 +17775,7 @@
       ]
     },
     {
-      "filepath": "packages/eslint-config/src/configs/storybook.ts",
+      "filepath": "packages/eslint-config/src/configs/reactCompiler.ts",
       "globs": [
         "**/*.?([cm])ts",
         "**/*.?([cm])[jt]s?(x)"
@@ -17817,19 +17791,19 @@
       ]
     },
     {
-      "filepath": "packages/eslint-config/src/eslint-typegen.js",
+      "filepath": "packages/eslint-config/src/configs/storybook.ts",
       "globs": [
-        "**/*.js",
-        "**/*.?([cm])js",
+        "**/*.?([cm])ts",
         "**/*.?([cm])[jt]s?(x)"
       ],
       "configs": [
-        2,
         14,
+        20,
+        21,
+        22,
         27,
         28,
-        30,
-        53
+        30
       ]
     },
     {
@@ -18361,7 +18335,7 @@
     }
   ],
   "meta": {
-    "lastUpdate": 1738273451375,
+    "lastUpdate": 1738277004003,
     "basePath": "",
     "configPath": ""
   }
