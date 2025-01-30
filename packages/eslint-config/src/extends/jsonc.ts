@@ -5,8 +5,8 @@ import type {
   ConfigOverrides,
   ResolveConfigNamesMap,
 } from "../types";
+import { ensurePackages, interopDefault } from "@antfu/eslint-config";
 import { omit } from "es-toolkit";
-import packageJson from "eslint-plugin-package-json/configs/recommended";
 import {
   GLOB_CODE_WORKSPACE,
   GLOB_CSPELL_JSON,
@@ -36,10 +36,14 @@ namespace jsonc {
   }
 }
 
-const jsoncInternal = (
+const jsoncInternal = async (
   composer: FlatConfigComposer<TypedFlatConfigItem, ConfigNames>,
   options?: jsonc.Options,
 ) => {
+  await ensurePackages(["eslint-plugin-package-json"]);
+  const packageJson = await interopDefault(
+    import("eslint-plugin-package-json/configs/recommended"),
+  );
   extendsConfig(
     composer,
     "antfu/jsonc/rules",

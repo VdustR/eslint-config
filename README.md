@@ -8,6 +8,7 @@ ViPro's ESLint configuration.
   - [eslint-mdx](https://github.com/mdx-js/eslint-mdx)
   - [eslint-plugin-storybook](https://github.com/storybookjs/eslint-plugin-storybook)
   - [eslint-plugin-react-compiler](https://www.npmjs.com/package/eslint-plugin-react-compiler)
+  - [eslint-plugin-package-json](https://github.com/JoshuaKGoldberg/eslint-plugin-package-json)
 - Fine-tuned to provide an opinionated, optimal DX. Please copy the VSCode settings from [eslint-config.code-workspace](https://github.com/VdustR/eslint-config/blob/main/eslint-config.code-workspace).
 
 Check [here](https://vdustr.dev/eslint-config) to preview the ESLint inspection.

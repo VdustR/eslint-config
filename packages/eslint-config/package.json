@@ -53,7 +53,6 @@
     "es-toolkit": "catalog:",
     "eslint-config-prettier": "catalog:",
     "eslint-flat-config-utils": "catalog:",
-    "eslint-plugin-package-json": "catalog:",
     "local-pkg": "catalog:"
   },
   "devDependencies": {
@@ -64,11 +63,15 @@
     "@antfu/eslint-config": "catalog:",
     "eslint": "catalog:",
     "eslint-plugin-mdx": "catalog:",
+    "eslint-plugin-package-json": "catalog:",
     "eslint-plugin-react-compiler": "catalog:",
     "eslint-plugin-storybook": "catalog:"
   },
   "peerDependenciesMeta": {
     "eslint-mdx": {
+      "optional": true
+    },
+    "eslint-plugin-package-json": {
       "optional": true
     },
     "eslint-plugin-react-compiler": {
