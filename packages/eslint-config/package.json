@@ -75,7 +75,7 @@
     "eslint-config-prettier": {
       "optional": true
     },
-    "eslint-mdx": {
+    "eslint-plugin-mdx": {
       "optional": true
     },
     "eslint-plugin-package-json": {
