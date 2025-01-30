@@ -36,7 +36,7 @@ const prettierignorePath = path.resolve(__dirname, ".prettierignore");
 
 export default vdustr(
   {
-    // `stylistic` has been removed in favor of `prettier`.
+    // By default, we disable `stylistic` and use `prettier` instead.
     // stylistic: true,
     storybook: true,
     mdx: true,

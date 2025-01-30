@@ -37,7 +37,7 @@ type ResolveConfigNamesMap<TSource extends BaseConfigNamesMapSource> = {
 };
 
 interface ConfigOverrides
-  extends DistributiveOmit<TypedFlatConfigItem, "plugins" | "process"> {}
+  extends DistributiveOmit<TypedFlatConfigItem, "process"> {}
 
 export type {
   BaseConfigNamesMapSource,
