@@ -31,14 +31,11 @@ const vdustr = (options?: Options, ...userConfigs: Array<Config>) => {
   let config: FlatConfigComposer<
     TypedFlatConfigItem,
     ConfigNames | keyof ConfigNamesMap
-  > = antfu(
-    {
-      // We use `prettier`.
-      stylistic: false,
-      ...options,
-    },
-    ...userConfigs,
-  );
+  > = antfu({
+    // We use `prettier`.
+    stylistic: false,
+    ...options,
+  });
 
   javascript(config, options?.javascriptExtends);
   imports(config, options?.importsExtends);
@@ -99,6 +96,8 @@ const vdustr = (options?: Options, ...userConfigs: Array<Config>) => {
       prettier(...(!prettierOptions ? [] : [prettierOptions])),
     );
   }
+
+  config.append(...(userConfigs as any));
 
   return config;
 };
