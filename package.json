@@ -36,7 +36,7 @@
     "@vp-tw/tsconfig": "^2.0.1",
     "commitizen": "^4.3.1",
     "cspell": "^8.17.2",
-    "eslint": "^9.19.0",
+    "eslint": "catalog:",
     "eslint-config-prettier": "catalog:",
     "eslint-plugin-mdx": "catalog:",
     "eslint-plugin-package-json": "catalog:",

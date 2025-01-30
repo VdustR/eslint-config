@@ -52,17 +52,31 @@
     "@types/eslint-config-prettier": "catalog:",
     "es-toolkit": "catalog:",
     "eslint-config-prettier": "catalog:",
-    "eslint-flat-config-utils": "^2.0.0",
+    "eslint-flat-config-utils": "catalog:",
     "eslint-plugin-package-json": "catalog:",
     "local-pkg": "catalog:"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "catalog:",
     "eslint-typegen": "^1.0.0",
     "unbuild": "^3.3.1"
   },
   "peerDependencies": {
-    "@antfu/eslint-config": "catalog:"
+    "@antfu/eslint-config": "catalog:",
+    "eslint": "catalog:",
+    "eslint-plugin-mdx": "catalog:",
+    "eslint-plugin-react-compiler": "catalog:",
+    "eslint-plugin-storybook": "catalog:"
+  },
+  "peerDependenciesMeta": {
+    "eslint-mdx": {
+      "optional": true
+    },
+    "eslint-plugin-react-compiler": {
+      "optional": true
+    },
+    "eslint-plugin-storybook": {
+      "optional": true
+    }
   },
   "publishConfig": {
     "access": "public"
