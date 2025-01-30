@@ -1,0 +1,7 @@
+# eslint-disable-next-line yaml/no-empty-mapping-value -- `yaml` should validate this.
+BAD:
+GOOD: value
+
+# eslint-disable-next-line yaml/plain-scalar -- `yaml` should validate this.
+"s1": s
+s2: s

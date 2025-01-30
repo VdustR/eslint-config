@@ -12,6 +12,7 @@ import { javascript } from "./extends/javascript";
 import { jsonc } from "./extends/jsonc";
 import { react } from "./extends/react";
 import { typescript } from "./extends/typescript";
+import { yaml } from "./extends/yaml";
 import "./eslint-typegen";
 
 type Options = NonNullable<Parameters<typeof antfu>[0]> & {
@@ -19,6 +20,7 @@ type Options = NonNullable<Parameters<typeof antfu>[0]> & {
   importsExtends?: imports.Options;
   typescriptExtends?: typescript.Options;
   jsoncExtends?: jsonc.Options;
+  yamlExtends?: yaml.Options;
   reactExtends?: react.Options;
   mdx?: boolean | mdx.Options;
   storybook?: boolean | storybook.Options;
@@ -42,6 +44,7 @@ const vdustr = (options?: Options, ...userConfigs: Array<Config>) => {
   imports(config, options?.importsExtends);
   typescript(config, options?.typescriptExtends);
   jsonc(config, options?.jsoncExtends);
+  yaml(config, options?.yamlExtends);
   react(config, options?.reactExtends);
 
   const storybookEnabled: boolean = Boolean(options?.storybook ?? false);
