@@ -2710,22 +2710,11 @@
       "index": 52
     },
     {
-      "name": "Imported .gitignore patterns",
-      "ignores": [
-        "!**/.*",
-        "pnpm-lock.yaml",
-        "**/dist",
-        "packages/eslint-config/src/eslint-typegen.d.ts",
-        ".eslint-config-inspector"
-      ],
-      "index": 53
-    },
-    {
       "plugins": {
         "storybook": {}
       },
       "name": "vdustr/stroybook/setup",
-      "index": 54
+      "index": 53
     },
     {
       "name": "vdustr/storybook/stories-rules",
@@ -2745,7 +2734,7 @@
         "storybook/no-title-property-in-meta": "error",
         "import/no-default-export": "off"
       },
-      "index": 55
+      "index": 54
     },
     {
       "name": "vdustr/storybook/main-rules",
@@ -2755,19 +2744,19 @@
       "rules": {
         "storybook/no-uninstalled-addons": "error"
       },
-      "index": 56
+      "index": 55
     },
     {
       "plugins": {
         "mdx": {}
       },
       "name": "vdustr/mdx/setup",
-      "index": 57
+      "index": 56
     },
     {
       "processor": "mdx/remark",
       "name": "vdustr/mdx/processor",
-      "index": 58
+      "index": 57
     },
     {
       "files": [
@@ -2790,7 +2779,7 @@
       "ignores": [
         "**/*.md"
       ],
-      "index": 59
+      "index": 58
     },
     {
       "files": [
@@ -2817,7 +2806,7 @@
       "ignores": [
         "**/*.md/**/*.?([cm])[jt]s?(x)"
       ],
-      "index": 60
+      "index": 59
     },
     {
       "rules": {
@@ -3181,6 +3170,17 @@
         "react/jsx-space-before-closing": "off"
       },
       "name": "vdustr/prettier/rules",
+      "index": 60
+    },
+    {
+      "name": "Imported .gitignore patterns",
+      "ignores": [
+        "!**/.*",
+        "pnpm-lock.yaml",
+        "**/dist",
+        "packages/eslint-config/src/eslint-typegen.d.ts",
+        ".eslint-config-inspector"
+      ],
       "index": 61
     }
   ],
@@ -18135,7 +18135,7 @@
         22,
         27,
         28,
-        55
+        54
       ]
     },
     {
@@ -18160,7 +18160,7 @@
         "**/*.{md,mdx}"
       ],
       "configs": [
-        59
+        58
       ]
     },
     {
@@ -18289,7 +18289,7 @@
     }
   ],
   "meta": {
-    "lastUpdate": 1738238194073,
+    "lastUpdate": 1738239270766,
     "basePath": "",
     "configPath": ""
   }
