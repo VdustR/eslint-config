@@ -5,7 +5,8 @@ import type {
   ConfigOverrides,
   ResolveConfigNamesMap,
 } from "../types";
-import { omit } from "es-toolkit";
+import defu from "defu";
+import { omit, pick } from "es-toolkit";
 import eslintPluginYml from "eslint-plugin-yml";
 import { GLOB_PNPM_WORKSPACE_YAML } from "../globs";
 import { extendsConfig } from "../utils/extendsConfig";
@@ -13,8 +14,8 @@ import { renameRules } from "../utils/renameRules";
 import { ignoreKeys } from "./_utils";
 
 const configNamesMapSource = {
-  rules: "vdustr/yaml/rules",
-  sortKeys: "vdustr/yaml/sortKeys",
+  yaml: "vdustr/yaml/rules",
+  sortKeys: "vdustr/yaml/sort-keys/rules",
 } as const satisfies BaseConfigNamesMapSource;
 
 declare module "../types" {
@@ -34,28 +35,17 @@ const yamlInternal = (
   composer: FlatConfigComposer<TypedFlatConfigItem, ConfigNames>,
   options?: yaml.Options,
 ) => {
-  extendsConfig(composer, "antfu/yaml/rules", (config) => [
-    config,
-    {
-      /**
-       * Inherited.
-       */
-      ...omit(config, ignoreKeys),
-
-      /**
-       * Default.
-       */
-      name: configNamesMapSource.rules,
-
-      /**
-       * Overridable.
-       */
-      ...options,
-      rules: {
-        /**
-         * Inherited from `eslint-plugin-yml`.
-         */
-        ...renameRules({
+  extendsConfig(composer, "antfu/yaml/rules", (config) => {
+    const modifiedConfig = defu<
+      TypedFlatConfigItem,
+      Array<TypedFlatConfigItem>
+    >(pick(options?.yaml ?? {}, ["files", "ignores"]), config);
+    const omittedConfig = omit(modifiedConfig, ignoreKeys);
+    const rulesConfig = defu<TypedFlatConfigItem, Array<TypedFlatConfigItem>>(
+      omit(options?.yaml ?? {}, ["files", "ignores"]),
+      {
+        name: configNamesMapSource.yaml,
+        rules: renameRules({
           ...Object.fromEntries([
             ...eslintPluginYml.configs["flat/recommended"].flatMap((config) =>
               Object.entries(config.rules ?? {}),
@@ -65,29 +55,16 @@ const yamlInternal = (
             ),
           ]),
         }),
-
-        /**
-         * Overridable.
-         */
-        ...options?.yaml?.rules,
       },
-    } satisfies typeof config,
-    {
-      /**
-       * Inherited.
-       */
-      ...config,
-
-      /**
-       * Default.
-       */
+      omittedConfig,
+    );
+    const sortKeysConfig = defu<
+      TypedFlatConfigItem,
+      Array<TypedFlatConfigItem>
+    >(options?.sortKeys, {
+      ...omit(omittedConfig, ["files", "ignores"]),
       name: configNamesMapSource.sortKeys,
-
-      /**
-       * Overridable.
-       */
-      ...options?.sortKeys,
-      files: [GLOB_PNPM_WORKSPACE_YAML, ...(options?.sortKeys?.files ?? [])],
+      files: [GLOB_PNPM_WORKSPACE_YAML],
       rules: {
         "yaml/sort-keys": [
           "error",
@@ -100,10 +77,10 @@ const yamlInternal = (
             },
           },
         ],
-        ...options?.sortKeys?.rules,
       },
-    } satisfies typeof config,
-  ]);
+    });
+    return [modifiedConfig, rulesConfig, sortKeysConfig];
+  });
 };
 
 const yaml = Object.assign(yamlInternal, {

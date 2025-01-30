@@ -11,6 +11,7 @@ import {
   GLOB_MARKDOWN_CODE,
   interopDefault,
 } from "@antfu/eslint-config";
+import defu from "defu";
 import { omit, pick } from "es-toolkit";
 import { renameRules } from "../utils/renameRules";
 
@@ -28,8 +29,12 @@ declare module "../types" {
 
 namespace mdx {
   export type ConfigNamesMapSource = typeof configNamesMapSource;
-  export interface Options extends ConfigOverrides {
-    processorOptions?: import("eslint-plugin-mdx").ProcessorOptions;
+  export interface Options {
+    mdx?: ConfigOverrides;
+    processorOptions?: Omit<
+      import("eslint-plugin-mdx").ProcessorOptions,
+      "lintCodeBlocks"
+    >;
     codeBlocks?: boolean | ConfigOverrides;
   }
 }
@@ -43,97 +48,51 @@ const mdxInternal = async ({
   const mdxPlugin = await interopDefault(await import("eslint-plugin-mdx"));
   const codeBlocksOptions: TypedFlatConfigItem =
     typeof codeBlocks !== "object" ? {} : codeBlocks;
-  const configs: Array<TypedFlatConfigItem> = [
+  const setupConfig: TypedFlatConfigItem = {
+    ...pick(mdxPlugin.flat, ["plugins"]),
+    name: configNamesMapSource.setup,
+  };
+  const processorConfig: TypedFlatConfigItem = {
+    processor: mdxPlugin.createRemarkProcessor({
+      ...processorOptions,
+      lintCodeBlocks: Boolean(codeBlocks),
+    }),
+    name: configNamesMapSource.processor,
+  };
+  const rulesConfig = defu<TypedFlatConfigItem, Array<TypedFlatConfigItem>>(
+    options.mdx,
     {
-      ...pick(mdxPlugin.flat, ["plugins"]),
-      name: configNamesMapSource.setup,
-    },
-    {
-      processor: mdxPlugin.createRemarkProcessor({
-        lintCodeBlocks: Boolean(codeBlocks),
-        ...processorOptions,
-        languageMapper: {
-          ...processorOptions?.languageMapper,
-        },
-      }),
-      name: configNamesMapSource.processor,
-    },
-    {
-      /**
-       * Inherited.
-       */
       ...omit(mdxPlugin.flat, ["plugins", "processor"]),
-
-      /**
-       * Default.
-       */
       name: configNamesMapSource.rules,
-      ignores: [
-        /**
-         * Handled by `@eslint/markdown`.
-         */
-        GLOB_MARKDOWN,
-      ],
-
+      rules: renameRules(mdxPlugin.flat.rules ?? {}),
       /**
-       * Overridable.
+       * Handled by `@eslint/markdown`.
        */
-      ...options,
-      rules: {
-        /**
-         * Inherited.
-         */
-        ...renameRules({
-          ...mdxPlugin.flat.rules,
-        }),
-
-        /**
-         * Overridable.
-         */
-        ...options.rules,
-      },
+      ignores: [...(mdxPlugin.flat.ignores ?? []), GLOB_MARKDOWN],
     },
-    ...(!codeBlocks
-      ? []
-      : [
-          {
-            /**
-             * Inherited.
-             */
-            ...mdxPlugin.flatCodeBlocks,
+  );
 
-            /**
-             * Default.
-             */
-            name: configNamesMapSource.codeBlocks,
-            ignores: [
-              /**
-               * Handled by `@eslint/markdown`.
-               */
-              GLOB_MARKDOWN_CODE,
-            ],
+  const configs = [setupConfig, processorConfig, rulesConfig];
 
-            /**
-             * Overridable.
-             */
-            ...codeBlocksOptions,
+  if (codeBlocks) {
+    const codeBlocksConfig = defu<
+      TypedFlatConfigItem,
+      Array<TypedFlatConfigItem>
+    >(codeBlocksOptions, {
+      ...mdxPlugin.flatCodeBlocks,
+      name: configNamesMapSource.codeBlocks,
+      rules: renameRules(mdxPlugin.flatCodeBlocks.rules ?? {}),
+      /**
+       * Handled by `@eslint/markdown`.
+       */
+      ignores: [
+        ...(mdxPlugin.flatCodeBlocks.ignores ?? []),
+        GLOB_MARKDOWN_CODE,
+      ],
+    });
+    configs.push(codeBlocksConfig);
+  }
 
-            rules: {
-              /**
-               * Inherited.
-               */
-              ...renameRules({
-                ...mdxPlugin.flatCodeBlocks.rules,
-              }),
-
-              /**
-               * Overridable.
-               */
-              ...codeBlocksOptions.rules,
-            },
-          } satisfies TypedFlatConfigItem,
-        ]),
-  ];
   return configs;
 };
 

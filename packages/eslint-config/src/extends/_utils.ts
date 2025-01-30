@@ -1,6 +1,6 @@
 import type { TypedFlatConfigItem } from "@antfu/eslint-config";
 
-const ignoreKeys = ["plugins", "rules"] satisfies Array<
+const ignoreKeys = ["name", "plugins", "processor", "rules"] satisfies Array<
   keyof TypedFlatConfigItem
 >;
 

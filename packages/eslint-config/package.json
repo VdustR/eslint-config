@@ -50,6 +50,7 @@
   "dependencies": {
     "@mui/types": "catalog:",
     "@types/eslint-config-prettier": "catalog:",
+    "defu": "catalog:",
     "es-toolkit": "catalog:",
     "eslint-config-prettier": "catalog:",
     "eslint-flat-config-utils": "catalog:",

@@ -5,12 +5,14 @@ import type {
   ResolveConfigNamesMap,
 } from "../types";
 import { ensurePackages, interopDefault } from "@antfu/eslint-config";
+import defu from "defu";
 import { pick } from "es-toolkit";
+import { renameRules } from "../utils/renameRules";
 
 const configNamesMapSource = {
   setup: "vdustr/stroybook/setup",
-  storiesRules: "vdustr/storybook/stories-rules",
-  mainRules: "vdustr/storybook/main-rules",
+  storiesRules: "vdustr/storybook/stories/rules",
+  mainRules: "vdustr/storybook/main/rules",
 } as const satisfies BaseConfigNamesMapSource;
 
 declare module "../types" {
@@ -21,8 +23,8 @@ declare module "../types" {
 namespace storybook {
   export type ConfigNamesMapSource = typeof configNamesMapSource;
   export interface Options {
-    storiesConfig?: ConfigOverrides;
-    mainConfig?: ConfigOverrides;
+    stories?: ConfigOverrides;
+    main?: ConfigOverrides;
   }
 }
 
@@ -46,57 +48,36 @@ const storybookInternal = async (
     ...pick(originalSetupConfig, ["plugins"]),
     name: configNamesMapSource.setup,
   };
-  const storyRulesConfig: TypedFlatConfigItem = {
-    /**
-     * Inherited.
-     */
-    ...originalStoryRulesConfig,
-    ...originalCsfStrictConfig,
-
-    /**
-     * Default.
-     */
-    name: configNamesMapSource.storiesRules,
-
-    /**
-     * Overridable.
-     */
-    ...options?.storiesConfig,
-    rules: {
-      /**
-       * Inherited.
-       */
-      ...originalStoryRulesConfig.rules,
-      ...originalCsfStrictConfig.rules,
-
-      /**
-       * Default.
-       */
-      "import/no-default-export": "off",
-
-      /**
-       * Overridable.
-       */
-      ...options?.storiesConfig?.rules,
+  const storyRulesConfig = defu<
+    TypedFlatConfigItem,
+    Array<TypedFlatConfigItem>
+  >(
+    options?.stories,
+    {
+      name: configNamesMapSource.storiesRules,
+      rules: {
+        "import/no-default-export": "off",
+      },
     },
-  };
-
-  const mainRulesConfig: TypedFlatConfigItem = {
-    /**
-     * Inherited.
-     */
-    ...originalMainRulesConfig,
-
-    /**
-     * Default.
-     */
-    name: configNamesMapSource.mainRules,
-
-    /**
-     * Overridable.
-     */
-    ...options?.mainConfig,
-  };
+    {
+      ...originalStoryRulesConfig,
+      ...originalCsfStrictConfig,
+      rules: renameRules({
+        ...originalStoryRulesConfig.rules,
+        ...originalCsfStrictConfig.rules,
+      }),
+    },
+  );
+  const mainRulesConfig = defu<TypedFlatConfigItem, Array<TypedFlatConfigItem>>(
+    options?.main,
+    {
+      name: configNamesMapSource.mainRules,
+    },
+    {
+      ...originalMainRulesConfig,
+      rules: renameRules(originalMainRulesConfig.rules ?? {}),
+    },
+  );
   return [
     setupConfig,
     storyRulesConfig,

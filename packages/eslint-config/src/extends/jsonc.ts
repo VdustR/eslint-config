@@ -6,7 +6,8 @@ import type {
   ResolveConfigNamesMap,
 } from "../types";
 import { ensurePackages, interopDefault } from "@antfu/eslint-config";
-import { omit } from "es-toolkit";
+import defu from "defu";
+import { omit, pick } from "es-toolkit";
 import {
   GLOB_CODE_WORKSPACE,
   GLOB_CSPELL_JSON,
@@ -16,8 +17,8 @@ import { extendsConfig } from "../utils/extendsConfig";
 import { ignoreKeys } from "./_utils";
 
 const configNamesMapSource = {
-  rules: "vdustr/jsonc/rules",
-  sortArrayValues: "vdustr/jsonc/sortArrayValues",
+  jsonc: "vdustr/jsonc/rules",
+  sortArrayValues: "vdustr/jsonc/sort-array-values/rules",
   packageJsonSetup: "vdustr/package-json/setup",
   packageJsonRules: "vdustr/package-json/rules",
 } as const satisfies BaseConfigNamesMapSource;
@@ -31,8 +32,8 @@ namespace jsonc {
   export type ConfigNamesMapSource = typeof configNamesMapSource;
   export interface Options {
     jsonc?: ConfigOverrides;
+    sortArrayValues?: ConfigOverrides;
     packageJson?: ConfigOverrides;
-    sortArrayValues: ConfigOverrides;
   }
 }
 
@@ -48,61 +49,18 @@ const jsoncInternal = async (
     composer,
     "antfu/jsonc/rules",
     (config) => {
-      config = {
-        ...config,
-        files: [
-          /**
-           * Inherited.
-           */
-          ...(config.files ?? []),
-
-          /**
-           * Default.
-           */
-          GLOB_CODE_WORKSPACE,
-
-          /**
-           * Overridable.
-           */
-          ...(options?.jsonc?.files ?? []),
-        ],
-        ignores: [
-          /**
-           * Inherited.
-           */
-          ...(config.ignores ?? []),
-
-          /**
-           * Default.
-           */
-          GLOB_PACKAGE_JSON,
-
-          /**
-           * Overridable.
-           */
-          ...(options?.jsonc?.ignores ?? []),
-        ],
-      };
-      return [
-        config,
+      const modifiedConfig = defu<
+        TypedFlatConfigItem,
+        Array<TypedFlatConfigItem>
+      >(pick(options?.jsonc ?? {}, ["files", "ignores"]), config, {
+        files: [GLOB_CODE_WORKSPACE],
+        ignores: [GLOB_PACKAGE_JSON],
+      });
+      const omittedConfig = omit(modifiedConfig, ignoreKeys);
+      const rulesConfig = defu<TypedFlatConfigItem, Array<TypedFlatConfigItem>>(
+        omit(options?.jsonc ?? {}, ["files", "ignores"]),
         {
-          /**
-           * Inherited.
-           */
-          ...omit(config, ignoreKeys),
-
-          /**
-           * Default.
-           */
-          name: configNamesMapSource.rules,
-
-          files: [...(config.files ?? [])],
-          ignores: [...(config.ignores ?? [])],
-
-          /**
-           * Overridable.
-           */
-          ...omit(options?.jsonc ?? {}, ["files", "ignores"]),
+          name: configNamesMapSource.jsonc,
           rules: {
             /**
              * Default.
@@ -118,84 +76,47 @@ const jsoncInternal = async (
                 },
               },
             ],
-
-            /**
-             * Overridable.
-             */
-            ...options?.jsonc?.rules,
           },
-        } satisfies typeof config,
-        {
-          plugins: packageJson.plugins,
-          name: configNamesMapSource.packageJsonSetup,
         },
-        {
-          /**
-           * Inherited.
-           */
-          ...omit(packageJson, ["plugins"]),
-
-          /**
-           * Default.
-           */
-          name: configNamesMapSource.packageJsonRules,
-
-          /**
-           * Overridable.
-           */
-          ...options?.packageJson,
-
-          plugins: {
-            /**
-             * Inherited.
-             */
-            ...packageJson.plugins,
-
-            /**
-             * Overridable.
-             */
-            ...options?.packageJson?.plugins,
-          },
-
-          rules: {
-            /**
-             * Inherited.
-             */
-            ...packageJson.rules,
-
-            /**
-             * Overridable.
-             */
-            ...options?.packageJson?.rules,
-          },
-        } satisfies typeof config,
-        {
-          /**
-           * Default.
-           */
-          name: configNamesMapSource.sortArrayValues,
-
-          /**
-           * Overridable.
-           */
-          ...options?.sortArrayValues,
-
-          files: [GLOB_CSPELL_JSON, ...(options?.sortArrayValues?.files ?? [])],
-          rules: {
-            "jsonc/sort-array-values": [
-              "error",
-              {
-                pathPattern: ".*",
-                order: {
-                  type: "asc",
-                  caseSensitive: false,
-                  natural: true,
-                },
+        omittedConfig,
+      );
+      const sortArrayValuesConfig = defu<
+        TypedFlatConfigItem,
+        Array<TypedFlatConfigItem>
+      >(options?.sortArrayValues, {
+        name: configNamesMapSource.sortArrayValues,
+        files: [GLOB_CSPELL_JSON],
+        rules: {
+          "jsonc/sort-array-values": [
+            "error",
+            {
+              pathPattern: ".*",
+              order: {
+                type: "asc",
+                caseSensitive: false,
+                natural: true,
               },
-            ],
-            ...options?.sortArrayValues?.rules,
-          },
-        } satisfies typeof config,
+            },
+          ],
+        },
+      });
+      const packageJsonSetupConfig: TypedFlatConfigItem = {
+        plugins: packageJson.plugins,
+        name: configNamesMapSource.packageJsonSetup,
+      };
+      const packageJsonRulesConfig = defu<
+        TypedFlatConfigItem,
+        Array<TypedFlatConfigItem>
+      >(options?.packageJson, {
+        ...omit(packageJson, ["name", "plugins"]),
+        name: configNamesMapSource.packageJsonRules,
+      });
+      return [
+        modifiedConfig,
+        rulesConfig,
+        sortArrayValuesConfig,
+        packageJsonSetupConfig,
+        packageJsonRulesConfig,
       ];
     },
     ["antfu/sort/package-json", "antfu/sort/tsconfig-json"],

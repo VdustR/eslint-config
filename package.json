@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@eslint/config-inspector": "^1.0.0",
+    "defu": "catalog:",
     "es-toolkit": "catalog:",
     "eslint-plugin-react-hooks": "catalog:",
     "eslint-plugin-react-refresh": "catalog:",

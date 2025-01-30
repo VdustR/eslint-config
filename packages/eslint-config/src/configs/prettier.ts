@@ -5,8 +5,8 @@ import type {
   ResolveConfigNamesMap,
 } from "../types";
 
-import { ensurePackages } from "@antfu/eslint-config";
-import eslintConfigPrettier from "eslint-config-prettier";
+import { ensurePackages, interopDefault } from "@antfu/eslint-config";
+import defu from "defu";
 import { renameRules } from "../utils/renameRules";
 
 const configNamesMapSource = {
@@ -20,39 +20,27 @@ declare module "../types" {
 
 namespace prettier {
   export type ConfigNamesMapSource = typeof configNamesMapSource;
-  export interface Options extends ConfigOverrides {}
+  export interface Options {
+    prettier?: ConfigOverrides;
+  }
 }
 
 const prettierInternal = async (
   options?: prettier.Options,
 ): Promise<TypedFlatConfigItem> => {
   await ensurePackages(["eslint-config-prettier"]);
-  return {
-    /**
-     * Inherited.
-     */
-    ...eslintConfigPrettier,
-
-    /**
-     * Default.
-     */
-    name: configNamesMapSource.rules,
-
-    /**
-     * Overridable.
-     */
-    rules: {
-      /**
-       * Inherited.
-       */
-      ...renameRules(eslintConfigPrettier.rules),
-
-      /**
-       * Overridable.
-       */
-      ...options?.rules,
+  const eslintConfigPrettier = await interopDefault(
+    import("eslint-config-prettier"),
+  );
+  const rulesConfig = defu<TypedFlatConfigItem, Array<TypedFlatConfigItem>>(
+    options?.prettier,
+    {
+      ...eslintConfigPrettier,
+      rules: renameRules(eslintConfigPrettier.rules),
+      name: configNamesMapSource.rules,
     },
-  };
+  );
+  return rulesConfig;
 };
 
 const prettier = Object.assign(prettierInternal, {
