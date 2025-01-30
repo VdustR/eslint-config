@@ -2408,7 +2408,17 @@
         "**/package.json"
       ],
       "rules": {
-        "jsonc/sort-keys": "error"
+        "jsonc/sort-keys": [
+          "error",
+          {
+            "pathPattern": ".*",
+            "order": {
+              "type": "asc",
+              "caseSensitive": false,
+              "natural": true
+            }
+          }
+        ]
       },
       "index": 33
     },
@@ -2455,7 +2465,9 @@
           {
             "pathPattern": ".*",
             "order": {
-              "type": "asc"
+              "type": "asc",
+              "caseSensitive": false,
+              "natural": true
             }
           }
         ]
@@ -2534,7 +2546,14 @@
       "rules": {
         "yaml/sort-keys": [
           "error",
-          "asc"
+          {
+            "pathPattern": ".*",
+            "order": {
+              "type": "asc",
+              "caseSensitive": false,
+              "natural": true
+            }
+          }
         ]
       },
       "index": 40
@@ -18289,7 +18308,7 @@
     }
   ],
   "meta": {
-    "lastUpdate": 1738239270766,
+    "lastUpdate": 1738240275700,
     "basePath": "",
     "configPath": ""
   }
