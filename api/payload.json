@@ -1772,7 +1772,7 @@
         "**/*.?([cm])tsx"
       ],
       "ignores": [
-        "**/*.config.?([cm])([jt])s",
+        "**/*.config.?([cm])[jt]s",
         "**/*.md/**/*.?([cm])[jt]s?(x)",
         "**/*.astro/*.ts"
       ],
@@ -17507,12 +17507,12 @@
     {
       "filepath": "commitlint.config.ts",
       "globs": [
+        "**/*.config.?([cm])[jt]s",
         "**/*.?([cm])ts",
         "**/*.?([cm])[jt]s?(x)",
         "**/*.config.?([cm])[jt]s?(x)"
       ],
       "configs": [
-        14,
         20,
         21,
         22,
@@ -17561,12 +17561,12 @@
     {
       "filepath": "eslint.config.ts",
       "globs": [
+        "**/*.config.?([cm])[jt]s",
         "**/*.?([cm])ts",
         "**/*.?([cm])[jt]s?(x)",
         "**/*.config.?([cm])[jt]s?(x)"
       ],
       "configs": [
-        14,
         20,
         21,
         22,
@@ -17606,13 +17606,12 @@
       "filepath": "lint-staged.config.js",
       "globs": [
         "**/*.js",
-        "**/*.?([cm])js",
+        "**/*.config.?([cm])[jt]s",
         "**/*.?([cm])[jt]s?(x)",
         "**/*.config.?([cm])[jt]s?(x)"
       ],
       "configs": [
         2,
-        14,
         27,
         28,
         51,
@@ -17631,12 +17630,12 @@
     {
       "filepath": "packages/eslint-config/build.config.ts",
       "globs": [
+        "**/*.config.?([cm])[jt]s",
         "**/*.?([cm])ts",
         "**/*.?([cm])[jt]s?(x)",
         "**/*.config.?([cm])[jt]s?(x)"
       ],
       "configs": [
-        14,
         20,
         21,
         22,
@@ -18266,13 +18265,12 @@
       "filepath": "prettier.config.js",
       "globs": [
         "**/*.js",
-        "**/*.?([cm])js",
+        "**/*.config.?([cm])[jt]s",
         "**/*.?([cm])[jt]s?(x)",
         "**/*.config.?([cm])[jt]s?(x)"
       ],
       "configs": [
         2,
-        14,
         27,
         28,
         51,
@@ -18291,7 +18289,7 @@
     }
   ],
   "meta": {
-    "lastUpdate": 1738237925063,
+    "lastUpdate": 1738238194073,
     "basePath": "",
     "configPath": ""
   }
