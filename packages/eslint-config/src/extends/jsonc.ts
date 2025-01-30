@@ -7,12 +7,17 @@ import type {
 } from "../types";
 import { omit } from "es-toolkit";
 import packageJson from "eslint-plugin-package-json/configs/recommended";
-import { GLOB_CODE_WORKSPACE, GLOB_PACKAGE_JSON } from "../globs";
+import {
+  GLOB_CODE_WORKSPACE,
+  GLOB_CSPELL_JSON,
+  GLOB_PACKAGE_JSON,
+} from "../globs";
 import { extendsConfig } from "../utils/extendsConfig";
 import { ignoreKeys } from "./_utils";
 
 const configNamesMapSource = {
   rules: "vdustr/jsonc/rules",
+  sortArrayValues: "vdustr/jsonc/sortArrayValues",
   packageJsonSetup: "vdustr/package-json/setup",
   packageJsonRules: "vdustr/package-json/rules",
 } as const satisfies BaseConfigNamesMapSource;
@@ -27,6 +32,7 @@ namespace jsonc {
   export interface Options {
     jsonc?: ConfigOverrides;
     packageJson?: ConfigOverrides;
+    sortArrayValues: ConfigOverrides;
   }
 }
 
@@ -147,6 +153,34 @@ const jsoncInternal = (
              * Overridable.
              */
             ...options?.packageJson?.rules,
+          },
+        } satisfies typeof config,
+        {
+          /**
+           * Default.
+           */
+          name: configNamesMapSource.sortArrayValues,
+
+          /**
+           * Overridable.
+           */
+          ...options?.sortArrayValues,
+
+          files: [
+            ...GLOB_CSPELL_JSON,
+            ...(options?.sortArrayValues?.files ?? []),
+          ],
+          rules: {
+            "jsonc/sort-array-values": [
+              "error",
+              {
+                pathPattern: ".*",
+                order: {
+                  type: "asc",
+                },
+              },
+            ],
+            ...options?.sortArrayValues?.rules,
           },
         } satisfies typeof config,
       ];

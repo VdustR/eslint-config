@@ -1,0 +1,7 @@
+{
+  "words": [
+    "b",
+    // eslint-disable-next-line jsonc/sort-array-values -- `jsonc` should validate this.
+    "a"
+  ]
+}
