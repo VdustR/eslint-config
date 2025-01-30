@@ -49,6 +49,12 @@ const typescriptInternal = (
          * Default.
          */
 
+        /**
+         * Use `Array<T>` instead of `T[]` for better DX.
+         *
+         * - [Array<T> vs T[]: Which is better?](https://www.totaltypescript.com/array-types-in-typescript)
+         * - [Array Types in TypeScript](https://tkdodo.eu/blog/array-types-in-type-script)
+         */
         "ts/array-type": ["error", { default: "generic" }],
 
         /**
