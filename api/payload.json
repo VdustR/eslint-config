@@ -1761,7 +1761,7 @@
       "index": 13
     },
     {
-      "name": "vdustr/no-default-export/rules",
+      "name": "vdustr/imports/no-default-export/rules",
       "rules": {
         "import/no-default-export": "error"
       },
@@ -2260,21 +2260,42 @@
         "sourceType": "module"
       },
       "name": "vdustr/react/rules",
-      "plugins": {
-        "react-compiler": {}
-      },
       "rules": {
-        "react-compiler/react-compiler": "error",
         "react/prefer-destructuring-assignment": "off"
       },
       "index": 28
+    },
+    {
+      "name": "vdustr/react/react-compiler/setup",
+      "plugins": {
+        "react-compiler": {}
+      },
+      "index": 29
+    },
+    {
+      "files": [
+        "**/*.?([cm])[jt]s?(x)"
+      ],
+      "languageOptions": {
+        "parserOptions": {
+          "ecmaFeatures": {
+            "jsx": true
+          }
+        },
+        "sourceType": "module"
+      },
+      "name": "vdustr/react/react-compiler/rules",
+      "rules": {
+        "react-compiler/react-compiler": "error"
+      },
+      "index": 30
     },
     {
       "name": "antfu/svelte/setup",
       "plugins": {
         "svelte": {}
       },
-      "index": 29
+      "index": 31
     },
     {
       "files": [
@@ -2340,14 +2361,14 @@
           }
         ]
       },
-      "index": 30
+      "index": 32
     },
     {
       "name": "antfu/jsonc/setup",
       "plugins": {
         "jsonc": {}
       },
-      "index": 31
+      "index": 33
     },
     {
       "files": [
@@ -2355,6 +2376,9 @@
         "**/*.json5",
         "**/*.jsonc",
         "**/*.code-workspace"
+      ],
+      "ignores": [
+        "**/package.json"
       ],
       "languageOptions": {
         "parser": "jsonc-eslint-parser"
@@ -2388,10 +2412,7 @@
         "jsonc/valid-json-number": "error",
         "jsonc/vue-custom-block/no-parsing-error": "error"
       },
-      "ignores": [
-        "**/package.json"
-      ],
-      "index": 32
+      "index": 34
     },
     {
       "files": [
@@ -2400,13 +2421,13 @@
         "**/*.jsonc",
         "**/*.code-workspace"
       ],
+      "ignores": [
+        "**/package.json"
+      ],
       "languageOptions": {
         "parser": "jsonc-eslint-parser"
       },
       "name": "vdustr/jsonc/rules",
-      "ignores": [
-        "**/package.json"
-      ],
       "rules": {
         "jsonc/sort-keys": [
           "error",
@@ -2420,42 +2441,10 @@
           }
         ]
       },
-      "index": 33
-    },
-    {
-      "plugins": {
-        "package-json": {}
-      },
-      "name": "vdustr/package-json/setup",
-      "index": 34
-    },
-    {
-      "files": [
-        "**/package.json"
-      ],
-      "languageOptions": {
-        "parser": "jsonc-eslint-parser"
-      },
-      "name": "vdustr/package-json/rules",
-      "rules": {
-        "package-json/no-empty-fields": "error",
-        "package-json/order-properties": "error",
-        "package-json/repository-shorthand": "error",
-        "package-json/sort-collections": "error",
-        "package-json/unique-dependencies": "error",
-        "package-json/valid-local-dependency": "error",
-        "package-json/valid-name": "error",
-        "package-json/valid-package-definition": "error",
-        "package-json/valid-repository-directory": "error",
-        "package-json/valid-version": "error"
-      },
-      "plugins": {
-        "package-json": {}
-      },
       "index": 35
     },
     {
-      "name": "vdustr/jsonc/sortArrayValues",
+      "name": "vdustr/jsonc/sort-array-values/rules",
       "files": [
         "**/cspell.json"
       ],
@@ -2475,11 +2464,40 @@
       "index": 36
     },
     {
+      "plugins": {
+        "package-json": {}
+      },
+      "name": "vdustr/package-json/setup",
+      "index": 37
+    },
+    {
+      "files": [
+        "**/package.json"
+      ],
+      "languageOptions": {
+        "parser": "jsonc-eslint-parser"
+      },
+      "rules": {
+        "package-json/no-empty-fields": "error",
+        "package-json/order-properties": "error",
+        "package-json/repository-shorthand": "error",
+        "package-json/sort-collections": "error",
+        "package-json/unique-dependencies": "error",
+        "package-json/valid-local-dependency": "error",
+        "package-json/valid-name": "error",
+        "package-json/valid-package-definition": "error",
+        "package-json/valid-repository-directory": "error",
+        "package-json/valid-version": "error"
+      },
+      "name": "vdustr/package-json/rules",
+      "index": 38
+    },
+    {
       "name": "antfu/yaml/setup",
       "plugins": {
         "yaml": {}
       },
-      "index": 37
+      "index": 39
     },
     {
       "files": [
@@ -2499,7 +2517,7 @@
         "yaml/plain-scalar": "error",
         "yaml/vue-custom-block/no-parsing-error": "error"
       },
-      "index": 38
+      "index": 40
     },
     {
       "files": [
@@ -2533,16 +2551,16 @@
         "yaml/no-trailing-zeros": "off",
         "yaml/quotes": "off"
       },
-      "index": 39
+      "index": 41
     },
     {
-      "files": [
-        "**/pnpm-workspace.y?(a)ml"
-      ],
       "languageOptions": {
         "parser": "yaml-eslint-parser"
       },
-      "name": "vdustr/yaml/sortKeys",
+      "name": "vdustr/yaml/sort-keys/rules",
+      "files": [
+        "**/pnpm-workspace.y?(a)ml"
+      ],
       "rules": {
         "yaml/sort-keys": [
           "error",
@@ -2556,14 +2574,14 @@
           }
         ]
       },
-      "index": 40
+      "index": 42
     },
     {
       "name": "antfu/toml/setup",
       "plugins": {
         "toml": {}
       },
-      "index": 41
+      "index": 43
     },
     {
       "files": [
@@ -2584,14 +2602,14 @@
         "toml/tables-order": "error",
         "toml/vue-custom-block/no-parsing-error": "error"
       },
-      "index": 42
+      "index": 44
     },
     {
       "name": "antfu/markdown/setup",
       "plugins": {
         "markdown": {}
       },
-      "index": 43
+      "index": 45
     },
     {
       "files": [
@@ -2602,7 +2620,7 @@
       ],
       "name": "antfu/markdown/processor",
       "processor": "merged-processor:@eslint/markdown/markdown+pass-through",
-      "index": 44
+      "index": 46
     },
     {
       "files": [
@@ -2612,7 +2630,7 @@
         "parser": "parser-plain"
       },
       "name": "antfu/markdown/parser",
-      "index": 45
+      "index": 47
     },
     {
       "files": [
@@ -2653,7 +2671,7 @@
         "unused-imports/no-unused-imports": "off",
         "unused-imports/no-unused-vars": "off"
       },
-      "index": 46
+      "index": 48
     },
     {
       "files": [
@@ -2665,7 +2683,7 @@
         "no-console": "off",
         "ts/explicit-function-return-type": "off"
       },
-      "index": 47
+      "index": 49
     },
     {
       "files": [
@@ -2677,7 +2695,7 @@
         "antfu/no-top-level-await": "off",
         "no-console": "off"
       },
-      "index": 48
+      "index": 50
     },
     {
       "files": [
@@ -2689,7 +2707,7 @@
         "antfu/no-import-dist": "off",
         "antfu/no-import-node-modules-by-path": "off"
       },
-      "index": 49
+      "index": 51
     },
     {
       "files": [
@@ -2702,7 +2720,7 @@
         "no-restricted-syntax": "off",
         "unused-imports/no-unused-vars": "off"
       },
-      "index": 50
+      "index": 52
     },
     {
       "files": [
@@ -2713,7 +2731,7 @@
       "rules": {
         "ts/no-require-imports": "off"
       },
-      "index": 51
+      "index": 53
     },
     {
       "files": [
@@ -2726,17 +2744,17 @@
         "no-console": "off",
         "ts/explicit-function-return-type": "off"
       },
-      "index": 52
+      "index": 54
     },
     {
       "plugins": {
         "storybook": {}
       },
       "name": "vdustr/stroybook/setup",
-      "index": 53
+      "index": 55
     },
     {
-      "name": "vdustr/storybook/stories-rules",
+      "name": "vdustr/storybook/stories/rules",
       "files": [
         "**/*.stories.@(ts|tsx|js|jsx|mjs|cjs)",
         "**/*.story.@(ts|tsx|js|jsx|mjs|cjs)"
@@ -2753,29 +2771,29 @@
         "storybook/no-title-property-in-meta": "error",
         "import/no-default-export": "off"
       },
-      "index": 54
+      "index": 56
     },
     {
-      "name": "vdustr/storybook/main-rules",
+      "name": "vdustr/storybook/main/rules",
       "files": [
         ".storybook/main.@(js|cjs|mjs|ts)"
       ],
       "rules": {
         "storybook/no-uninstalled-addons": "error"
       },
-      "index": 55
+      "index": 57
     },
     {
       "plugins": {
         "mdx": {}
       },
       "name": "vdustr/mdx/setup",
-      "index": 56
+      "index": 58
     },
     {
       "processor": "mdx/remark",
       "name": "vdustr/mdx/processor",
-      "index": 57
+      "index": 59
     },
     {
       "files": [
@@ -2798,7 +2816,7 @@
       "ignores": [
         "**/*.md"
       ],
-      "index": 58
+      "index": 60
     },
     {
       "files": [
@@ -2825,7 +2843,7 @@
       "ignores": [
         "**/*.md/**/*.?([cm])[jt]s?(x)"
       ],
-      "index": 59
+      "index": 61
     },
     {
       "rules": {
@@ -3189,7 +3207,7 @@
         "react/jsx-space-before-closing": "off"
       },
       "name": "vdustr/prettier/rules",
-      "index": 60
+      "index": 62
     },
     {
       "name": "Imported .gitignore patterns",
@@ -3200,7 +3218,7 @@
         "packages/eslint-config/src/eslint-typegen.d.ts",
         ".eslint-config-inspector"
       ],
-      "index": 61
+      "index": 63
     }
   ],
   "rules": {
@@ -17509,8 +17527,8 @@
         "**/*.y?(a)ml"
       ],
       "configs": [
-        38,
-        39
+        40,
+        41
       ]
     },
     {
@@ -17519,8 +17537,8 @@
         "**/*.md"
       ],
       "configs": [
-        44,
-        45
+        46,
+        47
       ]
     },
     {
@@ -17537,7 +17555,8 @@
         22,
         27,
         28,
-        52
+        30,
+        54
       ]
     },
     {
@@ -17547,8 +17566,8 @@
         "**/cspell.json"
       ],
       "configs": [
-        32,
-        33,
+        34,
+        35,
         36
       ]
     },
@@ -17564,7 +17583,8 @@
         21,
         22,
         27,
-        28
+        28,
+        30
       ]
     },
     {
@@ -17573,8 +17593,8 @@
         "**/*.code-workspace"
       ],
       "configs": [
-        32,
-        33
+        34,
+        35
       ]
     },
     {
@@ -17591,7 +17611,8 @@
         22,
         27,
         28,
-        52
+        30,
+        54
       ]
     },
     {
@@ -17608,7 +17629,8 @@
         22,
         27,
         28,
-        50
+        30,
+        52
       ]
     },
     {
@@ -17617,8 +17639,8 @@
         "**/*.json"
       ],
       "configs": [
-        32,
-        33
+        34,
+        35
       ]
     },
     {
@@ -17633,8 +17655,9 @@
         2,
         27,
         28,
-        51,
-        52
+        30,
+        53,
+        54
       ]
     },
     {
@@ -17643,7 +17666,7 @@
         "**/package.json"
       ],
       "configs": [
-        35
+        38
       ]
     },
     {
@@ -17660,7 +17683,8 @@
         22,
         27,
         28,
-        52
+        30,
+        54
       ]
     },
     {
@@ -17677,7 +17701,8 @@
         22,
         27,
         28,
-        50
+        30,
+        52
       ]
     },
     {
@@ -17686,7 +17711,7 @@
         "**/package.json"
       ],
       "configs": [
-        35
+        38
       ]
     },
     {
@@ -17703,7 +17728,8 @@
         22,
         27,
         28,
-        47
+        30,
+        49
       ]
     },
     {
@@ -17720,7 +17746,8 @@
         22,
         27,
         28,
-        47
+        30,
+        49
       ]
     },
     {
@@ -17737,7 +17764,8 @@
         22,
         27,
         28,
-        47
+        30,
+        49
       ]
     },
     {
@@ -17752,7 +17780,8 @@
         21,
         22,
         27,
-        28
+        28,
+        30
       ]
     },
     {
@@ -17767,7 +17796,8 @@
         21,
         22,
         27,
-        28
+        28,
+        30
       ]
     },
     {
@@ -17782,7 +17812,8 @@
         21,
         22,
         27,
-        28
+        28,
+        30
       ]
     },
     {
@@ -17797,7 +17828,8 @@
         14,
         27,
         28,
-        51
+        30,
+        53
       ]
     },
     {
@@ -17812,7 +17844,8 @@
         21,
         22,
         27,
-        28
+        28,
+        30
       ]
     },
     {
@@ -17827,7 +17860,8 @@
         21,
         22,
         27,
-        28
+        28,
+        30
       ]
     },
     {
@@ -17842,7 +17876,8 @@
         21,
         22,
         27,
-        28
+        28,
+        30
       ]
     },
     {
@@ -17857,7 +17892,8 @@
         21,
         22,
         27,
-        28
+        28,
+        30
       ]
     },
     {
@@ -17872,7 +17908,8 @@
         21,
         22,
         27,
-        28
+        28,
+        30
       ]
     },
     {
@@ -17887,7 +17924,8 @@
         21,
         22,
         27,
-        28
+        28,
+        30
       ]
     },
     {
@@ -17902,7 +17940,8 @@
         21,
         22,
         27,
-        28
+        28,
+        30
       ]
     },
     {
@@ -17917,7 +17956,8 @@
         21,
         22,
         27,
-        28
+        28,
+        30
       ]
     },
     {
@@ -17932,7 +17972,8 @@
         21,
         22,
         27,
-        28
+        28,
+        30
       ]
     },
     {
@@ -17947,7 +17988,8 @@
         21,
         22,
         27,
-        28
+        28,
+        30
       ]
     },
     {
@@ -17956,8 +17998,8 @@
         "**/*.json"
       ],
       "configs": [
-        32,
-        33
+        34,
+        35
       ]
     },
     {
@@ -17972,7 +18014,8 @@
         21,
         22,
         27,
-        28
+        28,
+        30
       ]
     },
     {
@@ -17987,7 +18030,8 @@
         21,
         22,
         27,
-        28
+        28,
+        30
       ]
     },
     {
@@ -18002,7 +18046,8 @@
         21,
         22,
         27,
-        28
+        28,
+        30
       ]
     },
     {
@@ -18017,7 +18062,8 @@
         21,
         22,
         27,
-        28
+        28,
+        30
       ]
     },
     {
@@ -18026,8 +18072,8 @@
         "**/*.json"
       ],
       "configs": [
-        32,
-        33
+        34,
+        35
       ]
     },
     {
@@ -18042,7 +18088,8 @@
         14,
         27,
         28,
-        51
+        30,
+        53
       ]
     },
     {
@@ -18057,7 +18104,8 @@
         14,
         27,
         28,
-        51
+        30,
+        53
       ]
     },
     {
@@ -18066,8 +18114,8 @@
         "**/*.json"
       ],
       "configs": [
-        32,
-        33
+        34,
+        35
       ]
     },
     {
@@ -18077,8 +18125,8 @@
         "**/cspell.json"
       ],
       "configs": [
-        32,
-        33,
+        34,
+        35,
         36
       ]
     },
@@ -18096,7 +18144,8 @@
         22,
         27,
         28,
-        50
+        30,
+        52
       ]
     },
     {
@@ -18105,8 +18154,8 @@
         "**/*.jsonc"
       ],
       "configs": [
-        32,
-        33
+        34,
+        35
       ]
     },
     {
@@ -18115,8 +18164,8 @@
         "**/*.code-workspace"
       ],
       "configs": [
-        32,
-        33
+        34,
+        35
       ]
     },
     {
@@ -18125,8 +18174,8 @@
         "**/*.json"
       ],
       "configs": [
-        32,
-        33
+        34,
+        35
       ]
     },
     {
@@ -18135,8 +18184,8 @@
         "**/*.md"
       ],
       "configs": [
-        44,
-        45
+        46,
+        47
       ]
     },
     {
@@ -18154,7 +18203,8 @@
         22,
         27,
         28,
-        54
+        30,
+        56
       ]
     },
     {
@@ -18170,7 +18220,8 @@
         21,
         22,
         27,
-        28
+        28,
+        30
       ]
     },
     {
@@ -18179,7 +18230,7 @@
         "**/*.{md,mdx}"
       ],
       "configs": [
-        58
+        60
       ]
     },
     {
@@ -18188,7 +18239,7 @@
         "**/package.json"
       ],
       "configs": [
-        35
+        38
       ]
     },
     {
@@ -18197,8 +18248,8 @@
         "**/*.json"
       ],
       "configs": [
-        32,
-        33
+        34,
+        35
       ]
     },
     {
@@ -18207,7 +18258,7 @@
         "**/*.svelte"
       ],
       "configs": [
-        30
+        32
       ]
     },
     {
@@ -18224,7 +18275,8 @@
         22,
         27,
         28,
-        50
+        30,
+        52
       ]
     },
     {
@@ -18233,7 +18285,7 @@
         "**/package.json"
       ],
       "configs": [
-        35
+        38
       ]
     },
     {
@@ -18242,8 +18294,8 @@
         "**/*.json"
       ],
       "configs": [
-        32,
-        33
+        34,
+        35
       ]
     },
     {
@@ -18253,9 +18305,9 @@
         "**/pnpm-workspace.y?(a)ml"
       ],
       "configs": [
-        38,
-        39,
-        40
+        40,
+        41,
+        42
       ]
     },
     {
@@ -18264,8 +18316,8 @@
         "**/*.y?(a)ml"
       ],
       "configs": [
-        38,
-        39
+        40,
+        41
       ]
     },
     {
@@ -18275,9 +18327,9 @@
         "**/pnpm-workspace.y?(a)ml"
       ],
       "configs": [
-        38,
-        39,
-        40
+        40,
+        41,
+        42
       ]
     },
     {
@@ -18292,8 +18344,9 @@
         2,
         27,
         28,
-        51,
-        52
+        30,
+        53,
+        54
       ]
     },
     {
@@ -18302,13 +18355,13 @@
         "**/*.json"
       ],
       "configs": [
-        32,
-        33
+        34,
+        35
       ]
     }
   ],
   "meta": {
-    "lastUpdate": 1738244365574,
+    "lastUpdate": 1738272715474,
     "basePath": "",
     "configPath": ""
   }
