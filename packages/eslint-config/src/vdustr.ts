@@ -74,13 +74,7 @@ const vdustr = (
         ...mdxOptions,
         codeBlocks: !mdxFlatCodeBlocksEnabled
           ? false
-          : {
-              ...mdxFlatCodeBlocksOptions,
-              rules: {
-                "import/no-default-export": "off",
-                ...mdxFlatCodeBlocksOptions?.rules,
-              },
-            },
+          : mdxFlatCodeBlocksOptions,
       }),
     );
   }

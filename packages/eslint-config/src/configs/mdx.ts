@@ -44,13 +44,18 @@ const mdx = async ({
   const rulesConfig = defu<TypedFlatConfigItem, Array<TypedFlatConfigItem>>(
     options.mdx,
     {
+      ignores: [
+        /**
+         * Handled by `@eslint/markdown`.
+         */
+        GLOB_MARKDOWN,
+      ],
+    },
+    {
       ...omit(mdxPlugin.flat, ["plugins", "processor"]),
       name: "vdustr/mdx/rules",
       rules: renameRules(mdxPlugin.flat.rules ?? {}),
-      /**
-       * Handled by `@eslint/markdown`.
-       */
-      ignores: [...(mdxPlugin.flat.ignores ?? []), GLOB_MARKDOWN],
+      ignores: mdxPlugin.flat.ignores ?? [],
     },
   );
 
@@ -60,18 +65,26 @@ const mdx = async ({
     const codeBlocksConfig = defu<
       TypedFlatConfigItem,
       Array<TypedFlatConfigItem>
-    >(codeBlocksOptions, {
-      ...mdxPlugin.flatCodeBlocks,
-      name: "vdustr/mdx/code-blocks",
-      rules: renameRules(mdxPlugin.flatCodeBlocks.rules ?? {}),
-      /**
-       * Handled by `@eslint/markdown`.
-       */
-      ignores: [
-        ...(mdxPlugin.flatCodeBlocks.ignores ?? []),
-        GLOB_MARKDOWN_CODE,
-      ],
-    });
+    >(
+      codeBlocksOptions,
+      {
+        rules: {
+          "import/no-default-export": "off",
+        },
+        ignores: [
+          /**
+           * Handled by `@eslint/markdown`.
+           */
+          GLOB_MARKDOWN_CODE,
+        ],
+      },
+      {
+        ...mdxPlugin.flatCodeBlocks,
+        name: "vdustr/mdx/code-blocks",
+        rules: renameRules(mdxPlugin.flatCodeBlocks.rules ?? {}),
+        ignores: mdxPlugin.flatCodeBlocks.ignores ?? [],
+      },
+    );
     configs.push(codeBlocksConfig);
   }
 
