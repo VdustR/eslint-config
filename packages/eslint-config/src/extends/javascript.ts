@@ -37,8 +37,6 @@ const javascript = (composer: VpComposer, options?: javascript.Options) => {
            */
           "no-unused-vars": "off",
           "unused-imports/no-unused-vars": "off",
-          "unused-imports/no-unused-imports-ts": "off",
-          "unused-imports/no-unused-vars-ts": "off",
           "unused-imports/no-unused-imports": "off",
         },
       },
