@@ -1,6 +1,6 @@
 {
   "name": "@vp-tw/eslint-config",
-  "version": "0.0.21",
+  "version": "0.0.22",
   "description": "ViPro's ESLint configuration",
   "homepage": "https://github.com/vdustr/eslint-config",
   "author": {
