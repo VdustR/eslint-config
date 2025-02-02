@@ -46,6 +46,16 @@ export default vdustr(
 );
 ```
 
+## Release
+
+```bash
+pnpm -w v:patch # or
+pnpm -w v:minor # or
+pnpm -w v:major
+
+pnpm -r publish
+```
+
 ## License
 
 MIT © ViPro <vdustr@gmail.com> (<http://vdustr.dev>)
