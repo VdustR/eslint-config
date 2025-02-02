@@ -11,7 +11,28 @@ import type {
   ConfigNames as VpEslintConfigNames,
 } from "./eslint-typegen";
 
-type Config = NonNullable<Parameters<typeof antfu>[1]>;
+type AnyObject = Record<PropertyKey, any>;
+
+type ObjectReplaceAntfuEslintRulesWithRulesDeeply<T extends AnyObject> =
+  // If `T` includes `AntfuEslintRules`, replace it with our `Rules`.
+  | (Extract<T, AntfuEslintRules> extends never ? never : Rules)
+  | {
+      [K in keyof T]: ReplaceAntfuEslintRulesWithVpRulesDeeply<T[K]>;
+    };
+
+type ReplaceAntfuEslintRulesWithVpRulesDeeply<T> =
+  // If `T` includes `AntfuEslintRules`, replace it with our `Rules`.
+  | (Extract<T, AntfuEslintRules> extends never ? never : Rules)
+  // If `T` is an object, recursively replace its properties.
+  | (
+      | ObjectReplaceAntfuEslintRulesWithRulesDeeply<Extract<T, AnyObject>>
+      // Otherwise, keep `T` as is.
+      | Exclude<T, AnyObject>
+    );
+
+type Config = ReplaceAntfuEslintRulesWithVpRulesDeeply<
+  NonNullable<Parameters<typeof antfu>[1]>
+>;
 
 type Rules = RuleOptions & AntfuEslintRules;
 type ConfigNames = VpEslintConfigNames | AntfuEslintConfigNames;
@@ -35,9 +56,11 @@ interface ConfigOverrides
 type VpComposer = FlatConfigComposer<TypedFlatConfigItem, ConfigNames>;
 
 export type {
+  AnyObject,
   Config,
   ConfigNames,
   ConfigOverrides,
+  ReplaceAntfuEslintRulesWithVpRulesDeeply,
   TypedFlatConfigItem,
   VpComposer,
 };

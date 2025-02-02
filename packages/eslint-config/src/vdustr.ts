@@ -1,5 +1,9 @@
-import type { Config, VpComposer } from "./types";
-
+import type {
+  AnyObject,
+  Config,
+  ReplaceAntfuEslintRulesWithVpRulesDeeply,
+  VpComposer,
+} from "./types";
 import antfu from "@antfu/eslint-config";
 
 import { mdx } from "./configs/mdx";
@@ -12,7 +16,9 @@ import { react } from "./extends/react";
 import { typescript } from "./extends/typescript";
 import { yaml } from "./extends/yaml";
 
-type Options = NonNullable<Parameters<typeof antfu>[0]> & {
+type Options = ReplaceAntfuEslintRulesWithVpRulesDeeply<
+  NonNullable<Parameters<typeof antfu>[0]>
+> & {
   javascriptExtends?: javascript.Options;
   importsExtends?: imports.Options;
   typescriptExtends?: typescript.Options;
@@ -31,7 +37,7 @@ const vdustr = (
   let config: VpComposer = antfu({
     // Use `prettier` for formatting by default.
     stylistic: false,
-    ...options,
+    ...(options as any),
   });
 
   javascript(config, options?.javascriptExtends);
@@ -54,7 +60,7 @@ const vdustr = (
   const mdxEnabled: boolean = Boolean(options?.mdx ?? false);
 
   if (mdxEnabled) {
-    const mdxOptions: Extract<Options["mdx"], Record<PropertyKey, any>> = {
+    const mdxOptions: Extract<Options["mdx"], AnyObject> = {
       ...(typeof options?.mdx !== "object" ? null : options.mdx),
     };
     const mdxFlatCodeBlocksEnabled: boolean = Boolean(
@@ -62,7 +68,7 @@ const vdustr = (
     );
     const mdxFlatCodeBlocksOptions: Extract<
       (typeof mdxOptions)["codeBlocks"],
-      Record<PropertyKey, any>
+      AnyObject
     > = {
       ...(typeof mdxOptions?.codeBlocks !== "object"
         ? null
