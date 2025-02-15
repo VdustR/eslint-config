@@ -23,7 +23,6 @@ const sortJsonKeys = async (
 ) => {
   extendsConfig.pushOverations(composer, [
     async (items) => {
-      // @ts-expect-error -- TODO: generate ConfigNames with extends configs.
       const source: ConfigNames = "vdustr/jsonc/rules";
       const configIndex = items.findIndex((item) => item.name === source);
       const config = items[configIndex];
