@@ -56,45 +56,45 @@ type Operation<T extends object = Linter.Config> = (
   items: Array<T>,
 ) => Promise<Array<T>>;
 
-function extendsConfig<
+const pushOverations = <
+  T extends object = Linter.Config,
+  ConfigNames extends string = keyof DefaultConfigNamesMap,
+>(
+  composer: FlatConfigComposer<T, ConfigNames>,
+  operations: Array<Operation<T>>,
+) => {
+  // @ts-expect-error -- Hijacking the composer's operations.
+  composer._operations.push(...operations);
+};
+
+function extendsConfigInternal<
   T extends object = Linter.Config,
   ConfigNames extends string = keyof DefaultConfigNamesMap,
 >(
   composer: FlatConfigComposer<T, ConfigNames>,
   sourceOrIndex: StringLiteralUnion<ConfigNames, string | number>,
   config: Awaitable<Arrayable<T>> | ((config: T) => Awaitable<Arrayable<T>>),
-  remove?: Arrayable<StringLiteralUnion<ConfigNames, string | number>>,
 ) {
-  const operations: Array<Operation<T>> =
-    // @ts-expect-error -- Hijacking the composer's operations.
-    composer._operations;
-  operations.push(async (items) => {
-    const removingTargets = (() => {
-      if (!remove) return [];
-      const removeSources = Array.isArray(remove) ? remove : [remove];
-      return removeSources.flatMap((removeSource) => {
-        const index = tryGetConfigIndex(items, removeSource);
-        return index === -1 ? [] : [index];
-      });
-    })();
-    /**
-     * Remove the configs at the specified indexes.
-     */
-    items =
-      removingTargets.length === 0
-        ? items
-        : items.filter((_, index) => !removingTargets.includes(index));
-    const index = tryGetConfigIndex(items, sourceOrIndex);
-    const source = items[index];
-    // Do nothing if the config is not found.
-    if (!source) return items;
-    const newConfigs = await (async () => {
-      const awaited =
-        typeof config === "function" ? await config(source) : await config;
-      return Array.isArray(awaited) ? awaited : [awaited];
-    })();
-    return [...items.slice(0, index), ...newConfigs, ...items.slice(index + 1)];
-  });
+  pushOverations(composer, [
+    async (items) => {
+      const index = tryGetConfigIndex(items, sourceOrIndex);
+      const source = items[index];
+      // Do nothing if the config is not found.
+      if (!source) return items;
+      const newConfigs = await (async () => {
+        const awaited =
+          typeof config === "function" ? await config(source) : await config;
+        return Array.isArray(awaited) ? awaited : [awaited];
+      })();
+      return items.toSpliced(index, 1, ...newConfigs);
+    },
+  ]);
 }
+
+const extendsConfig = Object.assign(extendsConfigInternal, {
+  getConfigIndex,
+  tryGetConfigIndex,
+  pushOverations,
+});
 
 export { extendsConfig };
