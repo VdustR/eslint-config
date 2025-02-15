@@ -61,6 +61,7 @@ export type {
   ConfigNames,
   ConfigOverrides,
   ReplaceAntfuEslintRulesWithVpRulesDeeply,
+  Rules,
   TypedFlatConfigItem,
   VpComposer,
 };
