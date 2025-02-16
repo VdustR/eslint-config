@@ -2397,7 +2397,8 @@
       "files": [
         "**/*.json",
         "**/*.json5",
-        "**/*.jsonc"
+        "**/*.jsonc",
+        "**/*.code-workspace"
       ],
       "index": 34
     },
@@ -2410,7 +2411,8 @@
       "files": [
         "**/*.json",
         "**/*.json5",
-        "**/*.jsonc"
+        "**/*.jsonc",
+        "**/*.code-workspace"
       ],
       "index": 35
     },
@@ -2421,7 +2423,8 @@
       "files": [
         "**/*.json",
         "**/*.json5",
-        "**/*.jsonc"
+        "**/*.jsonc",
+        "**/*.code-workspace"
       ],
       "name": "vdustr/sort/json-keys",
       "rules": {
@@ -2566,14 +2569,14 @@
       "index": 38
     },
     {
+      "files": [
+        "**/package.json"
+      ],
       "name": "vdustr/sort/package-json",
       "rules": {
         "jsonc/sort-array-values": "off",
         "jsonc/sort-keys": "off"
       },
-      "files": [
-        "**/package.json"
-      ],
       "index": 39
     },
     {
@@ -17841,6 +17844,35 @@
       ]
     },
     {
+      "filepath": "eslint-config.code-workspace",
+      "globs": [
+        "**/*.code-workspace"
+      ],
+      "configs": [
+        34,
+        35,
+        36
+      ]
+    },
+    {
+      "filepath": "eslint.config.antfuOptions.ts",
+      "globs": [
+        "**/*.?([cm])ts",
+        "**/*.?([cm])[jt]s?(x)",
+        "**/*.config.*.?([cm])[jt]s?(x)"
+      ],
+      "configs": [
+        14,
+        20,
+        21,
+        22,
+        27,
+        28,
+        30,
+        57
+      ]
+    },
+    {
       "filepath": "eslint.config.ts",
       "globs": [
         "**/*.config.?([cm])[jt]s",
@@ -18477,6 +18509,17 @@
       ]
     },
     {
+      "filepath": "packages/test-jsonc/test.code-workspace",
+      "globs": [
+        "**/*.code-workspace"
+      ],
+      "configs": [
+        34,
+        35,
+        36
+      ]
+    },
+    {
       "filepath": "packages/test-jsonc/tsconfig.json",
       "globs": [
         "**/*.json",
@@ -18713,7 +18756,7 @@
     }
   ],
   "meta": {
-    "lastUpdate": 1739707258836,
+    "lastUpdate": 1739717297350,
     "basePath": "",
     "configPath": ""
   }
