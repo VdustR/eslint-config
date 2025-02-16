@@ -3,6 +3,7 @@ import { flatConfigsToRulesDTS } from "eslint-typegen/core";
 import fs from "fs-extra";
 import path from "pathe";
 import { packageDirectory } from "pkg-dir";
+import { antfuOptions } from "../../../eslint.config.antfuOptions";
 import { mdx } from "../src/configs/mdx";
 import { prettier } from "../src/configs/prettier";
 import { reactCompiler } from "../src/configs/reactCompiler";
@@ -36,7 +37,7 @@ import { yaml } from "../src/extends/yaml";
   );
 
   const extendsConfigs = await (async () => {
-    const antfuConfig = antfu();
+    const antfuConfig = antfu(antfuOptions);
     javascript(antfuConfig);
     imports(antfuConfig);
     typescript(antfuConfig);
