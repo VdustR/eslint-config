@@ -15,9 +15,10 @@ const jsonc = async (composer: VpComposer, options?: jsonc.Options) => {
   extendsConfig(composer, "antfu/jsonc/rules", (config) => {
     const modifiedConfig = mergeConfig(
       pick(options?.jsonc ?? {}, ["files", "ignores"]),
-      config,
+
       {
-        files: [GLOB_CODE_WORKSPACE],
+        ...config,
+        files: [...(config.files ?? []), GLOB_CODE_WORKSPACE],
       },
     );
     const omittedConfig = omit(modifiedConfig, ignoreKeys);
