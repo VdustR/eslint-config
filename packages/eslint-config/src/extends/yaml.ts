@@ -1,13 +1,9 @@
-import type {
-  ConfigOverrides,
-  TypedFlatConfigItem,
-  VpComposer,
-} from "../types";
-import defu from "defu";
+import type { ConfigOverrides, VpComposer } from "../types";
 import { omit, pick } from "es-toolkit";
 import eslintPluginYml from "eslint-plugin-yml";
 import { GLOB_PNPM_WORKSPACE_YAML } from "../globs";
 import { extendsConfig } from "../utils/extendsConfig";
+import { mergeConfig } from "../utils/mergeConfig";
 import { renameRules } from "../utils/renameRules";
 import { ignoreKeys } from "./_utils";
 
@@ -20,12 +16,12 @@ namespace yaml {
 
 const yaml = (composer: VpComposer, options?: yaml.Options) => {
   extendsConfig(composer, "antfu/yaml/rules", (config) => {
-    const modifiedConfig = defu<
-      TypedFlatConfigItem,
-      Array<TypedFlatConfigItem>
-    >(pick(options?.yaml ?? {}, ["files", "ignores"]), config);
+    const modifiedConfig = mergeConfig(
+      pick(options?.yaml ?? {}, ["files", "ignores"]),
+      config,
+    );
     const omittedConfig = omit(modifiedConfig, ignoreKeys);
-    const rulesConfig = defu<TypedFlatConfigItem, Array<TypedFlatConfigItem>>(
+    const rulesConfig = mergeConfig(
       omit(options?.yaml ?? {}, ["files", "ignores"]),
       {
         name: "vdustr/yaml/rules",
@@ -42,10 +38,7 @@ const yaml = (composer: VpComposer, options?: yaml.Options) => {
       },
       omittedConfig,
     );
-    const sortKeysConfig = defu<
-      TypedFlatConfigItem,
-      Array<TypedFlatConfigItem>
-    >(options?.sortKeys, {
+    const sortKeysConfig = mergeConfig(options?.sortKeys, {
       ...omit(omittedConfig, ["files", "ignores"]),
       name: "vdustr/yaml/sort-keys/rules",
       files: [GLOB_PNPM_WORKSPACE_YAML],

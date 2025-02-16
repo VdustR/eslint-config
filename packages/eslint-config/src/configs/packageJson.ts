@@ -1,7 +1,8 @@
 import type { ConfigOverrides, TypedFlatConfigItem } from "../types";
 import { ensurePackages, interopDefault } from "@antfu/eslint-config";
-import defu from "defu";
 import { omit } from "es-toolkit";
+import { mergeConfig } from "../utils/mergeConfig";
+import { renameRules } from "../utils/renameRules";
 
 namespace packageJson {
   export interface Options {
@@ -19,11 +20,9 @@ const packageJson = async (options?: packageJson.Options) => {
     plugins: packageJson.plugins,
     name: "vdustr/package-json/setup",
   };
-  const packageJsonRulesConfig = defu<
-    TypedFlatConfigItem,
-    Array<TypedFlatConfigItem>
-  >(options?.packageJson, {
+  const packageJsonRulesConfig = mergeConfig(options?.packageJson, {
     ...omit(packageJson, ["name", "plugins"]),
+    rules: renameRules(packageJson.rules),
     name: "vdustr/package-json/rules",
   });
   return [packageJsonSetupConfig, packageJsonRulesConfig];

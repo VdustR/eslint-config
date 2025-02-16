@@ -1,7 +1,7 @@
 import type { ConfigOverrides, TypedFlatConfigItem } from "../types";
 import { ensurePackages, interopDefault } from "@antfu/eslint-config";
-import defu from "defu";
 import { pick } from "es-toolkit";
+import { mergeConfig } from "../utils/mergeConfig";
 import { renameRules } from "../utils/renameRules";
 
 namespace storybook {
@@ -31,10 +31,7 @@ const storybook = async (
     ...pick(originalSetupConfig, ["plugins"]),
     name: "vdustr/stroybook/setup",
   };
-  const storyRulesConfig = defu<
-    TypedFlatConfigItem,
-    Array<TypedFlatConfigItem>
-  >(
+  const storyRulesConfig = mergeConfig(
     options?.stories,
     {
       name: "vdustr/storybook/stories/rules",
@@ -51,7 +48,7 @@ const storybook = async (
       }),
     },
   );
-  const mainRulesConfig = defu<TypedFlatConfigItem, Array<TypedFlatConfigItem>>(
+  const mainRulesConfig = mergeConfig(
     options?.main,
     {
       name: "vdustr/storybook/main/rules",

@@ -3,7 +3,7 @@ import type {
   ConfigNames as AntfuEslintConfigNames,
   Rules as AntfuEslintRules,
 } from "@antfu/eslint-config";
-import type { DistributiveOmit } from "@mui/types";
+import type { DistributiveOmit, Overwrite } from "@mui/types";
 import type { Linter } from "eslint";
 import type { FlatConfigComposer } from "eslint-flat-config-utils";
 import type {
@@ -47,8 +47,18 @@ type TypedFlatConfigItem = Omit<
   plugins?: Record<string, any>;
 };
 
+type Files = TypedFlatConfigItem["files"];
+type Ignores = TypedFlatConfigItem["ignores"];
+type Mutables<T> = T | ((config: T) => T);
+
 interface ConfigOverrides
-  extends DistributiveOmit<TypedFlatConfigItem, "process"> {}
+  extends Overwrite<
+    DistributiveOmit<TypedFlatConfigItem, "process">,
+    {
+      files?: Mutables<Files>;
+      ignores?: Mutables<Ignores>;
+    }
+  > {}
 
 /**
  * Typed composer.

@@ -1,11 +1,7 @@
-import type {
-  ConfigOverrides,
-  TypedFlatConfigItem,
-  VpComposer,
-} from "../types";
-import defu from "defu";
+import type { ConfigOverrides, VpComposer } from "../types";
 import { omit, pick } from "es-toolkit";
 import { extendsConfig } from "../utils/extendsConfig";
+import { mergeConfig } from "../utils/mergeConfig";
 import { ignoreKeys } from "./_utils";
 
 namespace typescript {
@@ -16,12 +12,12 @@ namespace typescript {
 
 const typescript = (composer: VpComposer, options?: typescript.Options) => {
   extendsConfig(composer, "antfu/typescript/rules", (config) => {
-    const modifiedConfig = defu<
-      TypedFlatConfigItem,
-      Array<TypedFlatConfigItem>
-    >(pick(options?.typescript ?? {}, ["files", "ignores"]), config);
+    const modifiedConfig = mergeConfig(
+      pick(options?.typescript ?? {}, ["files", "ignores"]),
+      config,
+    );
     const omittedConfig = omit(modifiedConfig, ignoreKeys);
-    const rulesConfig = defu<TypedFlatConfigItem, Array<TypedFlatConfigItem>>(
+    const rulesConfig = mergeConfig(
       omit(options?.typescript ?? {}, ["files", "ignores"]),
       {
         name: "vdustr/typescript/rules",

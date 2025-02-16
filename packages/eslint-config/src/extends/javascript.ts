@@ -1,11 +1,7 @@
-import type {
-  ConfigOverrides,
-  TypedFlatConfigItem,
-  VpComposer,
-} from "../types";
-import defu from "defu";
+import type { ConfigOverrides, VpComposer } from "../types";
 import { omit, pick } from "es-toolkit";
 import { extendsConfig } from "../utils/extendsConfig";
+import { mergeConfig } from "../utils/mergeConfig";
 import { ignoreKeys } from "./_utils";
 
 namespace javascript {
@@ -16,12 +12,12 @@ namespace javascript {
 
 const javascript = (composer: VpComposer, options?: javascript.Options) => {
   extendsConfig(composer, "antfu/javascript/rules", (config) => {
-    const modifiedConfig = defu<
-      TypedFlatConfigItem,
-      Array<TypedFlatConfigItem>
-    >(pick(options?.javascript ?? {}, ["files", "ignores"]), config);
+    const modifiedConfig = mergeConfig(
+      pick(options?.javascript ?? {}, ["files", "ignores"]),
+      config,
+    );
     const omittedConfig = omit(modifiedConfig, ignoreKeys);
-    const rulesConfig = defu<TypedFlatConfigItem, Array<TypedFlatConfigItem>>(
+    const rulesConfig = mergeConfig(
       omit(options?.javascript ?? {}, ["files", "ignores"]),
       {
         name: "vdustr/javascript/rules",

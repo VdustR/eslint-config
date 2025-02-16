@@ -6,8 +6,8 @@ import {
   GLOB_MARKDOWN_CODE,
   interopDefault,
 } from "@antfu/eslint-config";
-import defu from "defu";
 import { omit, pick } from "es-toolkit";
+import { mergeConfig } from "../utils/mergeConfig";
 import { renameRules } from "../utils/renameRules";
 
 namespace mdx {
@@ -28,7 +28,7 @@ const mdx = async ({
 }: mdx.Options = {}): Promise<Array<TypedFlatConfigItem>> => {
   await ensurePackages(["eslint-plugin-mdx"]);
   const mdxPlugin = await interopDefault(await import("eslint-plugin-mdx"));
-  const codeBlocksOptions: TypedFlatConfigItem =
+  const codeBlocksOptions: ConfigOverrides =
     typeof codeBlocks !== "object" ? {} : codeBlocks;
   const setupConfig: TypedFlatConfigItem = {
     ...pick(mdxPlugin.flat, ["plugins"]),
@@ -41,7 +41,7 @@ const mdx = async ({
     }),
     name: "vdustr/mdx/processor",
   };
-  const rulesConfig = defu<TypedFlatConfigItem, Array<TypedFlatConfigItem>>(
+  const rulesConfig = mergeConfig(
     options.mdx,
     {
       ignores: [
@@ -62,10 +62,7 @@ const mdx = async ({
   const configs = [setupConfig, processorConfig, rulesConfig];
 
   if (codeBlocks) {
-    const codeBlocksConfig = defu<
-      TypedFlatConfigItem,
-      Array<TypedFlatConfigItem>
-    >(
+    const codeBlocksConfig = mergeConfig(
       codeBlocksOptions,
       {
         rules: {

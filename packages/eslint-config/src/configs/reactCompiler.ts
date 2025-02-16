@@ -1,6 +1,6 @@
-import type { ConfigOverrides, TypedFlatConfigItem } from "../types";
-import defu from "defu";
+import type { ConfigOverrides } from "../types";
 import { reactCompiler as importLib } from "../lib/eslint-plugin-react-compiler";
+import { mergeConfig } from "../utils/mergeConfig";
 
 namespace reactCompiler {
   export interface Options {
@@ -10,19 +10,13 @@ namespace reactCompiler {
 }
 
 const reactCompiler = async (options?: reactCompiler.Options) => {
-  const reactCompilerSetupConfig = defu<
-    TypedFlatConfigItem,
-    Array<TypedFlatConfigItem>
-  >(options?.setup, {
+  const reactCompilerSetupConfig = mergeConfig(options?.setup, {
     name: "vdustr/react/react-compiler/setup",
     plugins: {
       "react-compiler": await importLib(),
     },
   });
-  const reactCompilerRulesConfig = defu<
-    TypedFlatConfigItem,
-    Array<TypedFlatConfigItem>
-  >(options?.reactCompiler, {
+  const reactCompilerRulesConfig = mergeConfig(options?.reactCompiler, {
     name: "vdustr/react/react-compiler/rules",
     rules: {
       "react-compiler/react-compiler": "error",

@@ -47,7 +47,6 @@
   },
   "dependencies": {
     "@mui/types": "catalog:",
-    "defu": "catalog:",
     "es-toolkit": "catalog:",
     "eslint-flat-config-utils": "catalog:",
     "local-pkg": "catalog:"

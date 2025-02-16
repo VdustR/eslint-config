@@ -3,10 +3,10 @@ import type {
   TypedFlatConfigItem,
   VpComposer,
 } from "../types";
-import defu from "defu";
 import { omit, pick } from "es-toolkit";
 import { GLOB_CSPELL_JSON } from "../globs";
 import { extendsConfig } from "../utils/extendsConfig";
+import { mergeConfig } from "../utils/mergeConfig";
 import { ignoreKeys } from "./_utils";
 
 const defaultSortJsonKeys: NonNullable<
@@ -49,7 +49,7 @@ const sortJsonKeys = async (
 ) => {
   extendsConfig(composer, "vdustr/jsonc/rules", async (config) => {
     const omittedConfig = omit(config, ignoreKeys);
-    const rulesConfig = defu<TypedFlatConfigItem, Array<TypedFlatConfigItem>>(
+    const rulesConfig = mergeConfig(
       options?.sortKeys,
       {
         name: "vdustr/sort/json-keys",
@@ -77,13 +77,13 @@ const sortPackageJson = async (
   options?: sortPackageJson.Options,
 ) => {
   extendsConfig(composer, "antfu/sort/package-json", (config) => {
-    const modifiedConfig = defu<
-      TypedFlatConfigItem,
-      Array<TypedFlatConfigItem>
-    >(pick(options?.packageJson ?? {}, ["files", "ignores"]), config);
+    const modifiedConfig = mergeConfig(
+      pick(options?.packageJson ?? {}, ["files", "ignores"]),
+      config,
+    );
     const omittedConfig = omit(modifiedConfig, ignoreKeys);
-    const rulesConfig = defu<TypedFlatConfigItem, Array<TypedFlatConfigItem>>(
-      options?.packageJson,
+    const rulesConfig = mergeConfig(
+      options?.packageJson ?? {},
       {
         name: "vdustr/sort/package-json",
         rules: {
@@ -108,12 +108,12 @@ const sortTsconfigJson = async (
   options?: sortTsconfigJson.Options,
 ) => {
   extendsConfig(composer, "antfu/sort/tsconfig-json", (config) => {
-    const modifiedConfig = defu<
-      TypedFlatConfigItem,
-      Array<TypedFlatConfigItem>
-    >(pick(options?.tsconfigJson ?? {}, ["files", "ignores"]), config);
+    const modifiedConfig = mergeConfig(
+      pick(options?.tsconfigJson ?? {}, ["files", "ignores"]),
+      config,
+    );
     const omittedConfig = omit(modifiedConfig, ignoreKeys);
-    const rulesConfig = defu<TypedFlatConfigItem, Array<TypedFlatConfigItem>>(
+    const rulesConfig = mergeConfig(
       options?.tsconfigJson,
       {
         name: "vdustr/sort/tsconfig-json",
@@ -138,16 +138,16 @@ const sortJsonArrayValues = async (
   options?: sortJsonArrayValues.Options,
 ) => {
   extendsConfig(composer, "vdustr/sort/json-keys", async (config) => {
-    const sortArrayValuesConfig: TypedFlatConfigItem = defu<
-      TypedFlatConfigItem,
-      Array<TypedFlatConfigItem>
-    >(options?.sortJsonArrayValues, {
-      name: "vdustr/sort/json-array-values",
-      files: [GLOB_CSPELL_JSON],
-      rules: {
-        "jsonc/sort-array-values": defaultSortJsonArrayValues,
+    const sortArrayValuesConfig: TypedFlatConfigItem = mergeConfig(
+      options?.sortJsonArrayValues,
+      {
+        name: "vdustr/sort/json-array-values",
+        files: [GLOB_CSPELL_JSON],
+        rules: {
+          "jsonc/sort-array-values": defaultSortJsonArrayValues,
+        },
       },
-    });
+    );
     return [config, sortArrayValuesConfig];
   });
 };

@@ -1,12 +1,8 @@
-import type {
-  ConfigOverrides,
-  TypedFlatConfigItem,
-  VpComposer,
-} from "../types";
-import defu from "defu";
+import type { ConfigOverrides, VpComposer } from "../types";
 import { omit, pick } from "es-toolkit";
 import { reactCompiler } from "../configs/reactCompiler";
 import { extendsConfig } from "../utils/extendsConfig";
+import { mergeConfig } from "../utils/mergeConfig";
 import { ignoreKeys } from "./_utils";
 
 namespace react {
@@ -19,12 +15,12 @@ namespace react {
 
 const react = (composer: VpComposer, options?: react.Options) => {
   extendsConfig(composer, "antfu/react/rules", async (config) => {
-    const modifiedConfig = defu<
-      TypedFlatConfigItem,
-      Array<TypedFlatConfigItem>
-    >(pick(options?.react ?? {}, ["files", "ignores"]), config);
+    const modifiedConfig = mergeConfig(
+      pick(options?.react ?? {}, ["files", "ignores"]),
+      config,
+    );
     const omittedConfig = omit(modifiedConfig, ignoreKeys);
-    const rulesConfig = defu<TypedFlatConfigItem, Array<TypedFlatConfigItem>>(
+    const rulesConfig = mergeConfig(
       omit(options?.react ?? {}, ["files", "ignores"]),
       {
         name: "vdustr/react/rules",
@@ -36,7 +32,7 @@ const react = (composer: VpComposer, options?: react.Options) => {
     );
     const reactCompilerConfigs = await reactCompiler({
       setup: options?.reactCompilerSetup ?? {},
-      reactCompiler: defu(
+      reactCompiler: mergeConfig(
         options?.reactCompiler,
         pick(omittedConfig, ["files", "ignores"]),
       ),

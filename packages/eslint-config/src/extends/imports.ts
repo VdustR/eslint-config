@@ -11,10 +11,10 @@ import {
   GLOB_TS,
   GLOB_TSX,
 } from "@antfu/eslint-config";
-import defu from "defu";
 import { omit, pick } from "es-toolkit";
-import { GLOB_CONFIG_JS } from "../globs";
+import { GLOB_CONFIG_JS, GLOB_VITEST_WORKSPACE } from "../globs";
 import { extendsConfig } from "../utils/extendsConfig";
+import { mergeConfig } from "../utils/mergeConfig";
 import { ignoreKeys } from "./_utils";
 
 namespace imports {
@@ -26,15 +26,12 @@ namespace imports {
 
 const imports = (composer: VpComposer, options?: imports.Options) => {
   extendsConfig(composer, "antfu/imports/rules", (config) => {
-    const modifiedConfig = defu<
-      TypedFlatConfigItem,
-      Array<TypedFlatConfigItem>
-    >(pick(options?.imports ?? {}, ["files", "ignores"]), config);
+    const modifiedConfig = mergeConfig(
+      pick(options?.imports ?? {}, ["files", "ignores"]),
+      config,
+    );
     const omittedConfig = omit(modifiedConfig, ignoreKeys);
-    const rulesConfig: TypedFlatConfigItem = defu<
-      TypedFlatConfigItem,
-      Array<TypedFlatConfigItem>
-    >(
+    const rulesConfig: TypedFlatConfigItem = mergeConfig(
       omit(options?.imports ?? {}, ["files", "ignores"]),
       {
         name: "vdustr/imports/rules",
@@ -53,10 +50,7 @@ const imports = (composer: VpComposer, options?: imports.Options) => {
       },
       omittedConfig,
     );
-    const noDefaultExportConfig = defu<
-      TypedFlatConfigItem,
-      Array<TypedFlatConfigItem>
-    >(
+    const noDefaultExportConfig = mergeConfig(
       options?.noDefaultExport,
       {
         name: "vdustr/imports/no-default-export/rules",
@@ -69,19 +63,13 @@ const imports = (composer: VpComposer, options?: imports.Options) => {
            */
           "import/no-default-export": "error",
         },
-        files: [
-          GLOB_JS,
-          GLOB_JSX,
-          GLOB_TS,
-          GLOB_TSX,
-          ...(options?.noDefaultExport?.files || []),
-        ],
+        files: [GLOB_JS, GLOB_JSX, GLOB_TS, GLOB_TSX],
         ignores: [
           // Configuration files
           GLOB_CONFIG_JS,
           GLOB_MARKDOWN_CODE,
           GLOB_ASTRO_TS,
-          ...(options?.noDefaultExport?.ignores || []),
+          GLOB_VITEST_WORKSPACE,
         ],
       },
       omit(omittedConfig, ["files", "ignores"]),

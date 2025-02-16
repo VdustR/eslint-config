@@ -30,7 +30,7 @@ const config = isFormat
       ],
     }
   : {
-      "**/*": "cspell lint --no-must-find-files",
+      "**/*": ["cspell lint --no-must-find-files", "vitest related --run"],
       ...Object.fromEntries(
         pkgs.flatMap((pkg) => {
           if (withSrcPkgs.includes(pkg)) {
