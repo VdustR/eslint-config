@@ -37,20 +37,23 @@ const defaultSortJsonArrayValues: NonNullable<
   },
 ];
 
-namespace sortJsonKeys {
+namespace sort {
   export interface Options {
-    sortKeys?: ConfigOverrides;
+    jsoncSortKeys?: ConfigOverrides;
+    jsoncSortArrayValues?: ConfigOverrides;
+    packageJson?: ConfigOverrides;
+    tsconfigJson?: ConfigOverrides;
   }
 }
 
 const sortJsonKeys = async (
   composer: VpComposer,
-  options?: sortJsonKeys.Options,
+  options?: sort.Options["jsoncSortKeys"],
 ) => {
   extendsConfig(composer, "vdustr/jsonc/rules", async (config) => {
     const omittedConfig = omit(config, ignoreKeys);
     const rulesConfig = mergeConfig(
-      options?.sortKeys,
+      options,
       {
         name: "vdustr/sort/json-keys",
         rules: {
@@ -63,27 +66,21 @@ const sortJsonKeys = async (
   });
 };
 
-namespace sortPackageJson {
-  export interface Options {
-    packageJson?: ConfigOverrides;
-  }
-}
-
 /**
  * Disable rules conflicting with `eslint-config-package-json`.
  */
 const sortPackageJson = async (
   composer: VpComposer,
-  options?: sortPackageJson.Options,
+  options?: sort.Options["packageJson"],
 ) => {
   extendsConfig(composer, "antfu/sort/package-json", (config) => {
     const modifiedConfig = mergeConfig(
-      pick(options?.packageJson ?? {}, ["files", "ignores"]),
+      pick(options ?? {}, ["files", "ignores"]),
       config,
     );
     const omittedConfig = omit(modifiedConfig, ignoreKeys);
     const rulesConfig = mergeConfig(
-      options?.packageJson ?? {},
+      options,
       {
         name: "vdustr/sort/package-json",
         rules: {
@@ -97,24 +94,18 @@ const sortPackageJson = async (
   });
 };
 
-namespace sortTsconfigJson {
-  export interface Options {
-    tsconfigJson?: ConfigOverrides;
-  }
-}
-
 const sortTsconfigJson = async (
   composer: VpComposer,
-  options?: sortTsconfigJson.Options,
+  options?: sort.Options["tsconfigJson"],
 ) => {
   extendsConfig(composer, "antfu/sort/tsconfig-json", (config) => {
     const modifiedConfig = mergeConfig(
-      pick(options?.tsconfigJson ?? {}, ["files", "ignores"]),
+      pick(options ?? {}, ["files", "ignores"]),
       config,
     );
     const omittedConfig = omit(modifiedConfig, ignoreKeys);
     const rulesConfig = mergeConfig(
-      options?.tsconfigJson,
+      options,
       {
         name: "vdustr/sort/tsconfig-json",
         rules: {
@@ -127,29 +118,21 @@ const sortTsconfigJson = async (
   });
 };
 
-namespace sortJsonArrayValues {
-  export interface Options {
-    sortJsonArrayValues?: ConfigOverrides;
-  }
-}
-
 const sortJsonArrayValues = async (
   composer: VpComposer,
-  options?: sortJsonArrayValues.Options,
+  options?: sort.Options["jsoncSortArrayValues"],
 ) => {
   extendsConfig(composer, "vdustr/sort/json-keys", async (config) => {
-    const sortArrayValuesConfig: TypedFlatConfigItem = mergeConfig(
-      options?.sortJsonArrayValues,
-      {
-        name: "vdustr/sort/json-array-values",
-        files: [GLOB_CSPELL_JSON],
-        rules: {
-          "jsonc/sort-array-values": defaultSortJsonArrayValues,
-        },
+    const sortArrayValuesConfig: TypedFlatConfigItem = mergeConfig(options, {
+      name: "vdustr/sort/json-array-values",
+      files: [GLOB_CSPELL_JSON],
+      rules: {
+        "jsonc/sort-array-values": defaultSortJsonArrayValues,
       },
-    );
+    });
     return [config, sortArrayValuesConfig];
   });
 };
 
+export type { sort };
 export { sortJsonArrayValues, sortJsonKeys, sortPackageJson, sortTsconfigJson };

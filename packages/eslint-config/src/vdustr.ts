@@ -1,6 +1,7 @@
 import type { OptionsConfig } from "@antfu/eslint-config";
 import type { DistributiveOmit } from "@mui/types";
 
+import type { sort } from "./extends/sort";
 import type {
   AnyObject,
   Config,
@@ -34,10 +35,7 @@ type Options = ReplaceAntfuEslintRulesWithVpRulesDeeply<
     imports?: imports.Options;
     typescript?: typescript.Options;
     jsonc?: jsonc.Options;
-    sortPackageJson?: sortPackageJson.Options;
-    sortTsConfigJson?: sortTsconfigJson.Options;
-    sortJsonKeys?: sortJsonKeys.Options;
-    sortJsonArrayValues?: sortJsonArrayValues.Options;
+    sort?: sort.Options;
     yaml?: yaml.Options;
     react?: react.Options;
   };
@@ -87,10 +85,10 @@ const vdustr = (
   typescript(config, vpOptions?.extends?.typescript);
   jsonc(config, vpOptions?.extends?.jsonc);
   if (packageJsonEnabled)
-    sortPackageJson(config, vpOptions?.extends?.sortPackageJson);
-  sortTsconfigJson(config, vpOptions?.extends?.sortTsConfigJson);
-  sortJsonKeys(config, vpOptions?.extends?.sortJsonKeys);
-  sortJsonArrayValues(config, vpOptions?.extends?.sortJsonArrayValues);
+    sortPackageJson(config, vpOptions?.extends?.sort?.packageJson);
+  sortTsconfigJson(config, vpOptions?.extends?.sort?.tsconfigJson);
+  sortJsonKeys(config, vpOptions?.extends?.sort?.jsoncSortKeys);
+  sortJsonArrayValues(config, vpOptions?.extends?.sort?.jsoncSortArrayValues);
   yaml(config, vpOptions?.extends?.yaml);
   react(config, vpOptions?.extends?.react);
 
