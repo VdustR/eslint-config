@@ -46,20 +46,32 @@ const vdustr = (
   options?: Options,
   ...userConfigs: Array<Config>
 ): VpComposer => {
+  const packageJsonEnabled: boolean = Boolean(options?.packageJson ?? true);
+  const storybookEnabled: boolean = Boolean(options?.storybook ?? false);
+  const mdxEnabled: boolean = Boolean(options?.mdx ?? false);
+  const prettierEnabled: boolean = Boolean(options?.prettier ?? true);
+
   let config: VpComposer = antfu({
-    // Use `prettier` for formatting by default.
-    stylistic: false,
     ...(options as any),
+    ...(!prettierEnabled
+      ? null
+      : {
+          // Forcibly disable style rules if prettier is enabled.
+          stylistic: false,
+        }),
   });
 
   javascript(config, options?.javascriptExtends);
   imports(config, options?.importsExtends);
   typescript(config, options?.typescriptExtends);
   jsonc(config, options?.jsoncExtends);
+  if (packageJsonEnabled)
+    sortPackageJson(config, options?.sortPackageJsonExtends);
+  sortTsconfigJson(config, options?.sortTsConfigJsonExtends);
+  sortJsonKeys(config, options?.sortJsonKeysExtends);
+  sortJsonArrayValues(config, options?.sortJsonArrayValuesExtends);
   yaml(config, options?.yamlExtends);
   react(config, options?.reactExtends);
-
-  const packageJsonEnabled: boolean = Boolean(options?.packageJson ?? true);
 
   if (packageJsonEnabled) {
     const packageJsonOptions: undefined | packageJson.Options =
@@ -71,33 +83,6 @@ const vdustr = (
     );
   }
 
-  const jsoncEnabled = Boolean(options?.jsonc ?? true);
-
-  /**
-   * Disable sorting of `package.json` through jsonc rules.
-   */
-  const sortPackageJsonExtendsEnabled =
-    /**
-     * jsonc is required for the rules to work.
-     */
-    jsoncEnabled && packageJsonEnabled;
-  if (sortPackageJsonExtendsEnabled) {
-    const sortPackageJsonOptions: undefined | sortPackageJson.Options =
-      typeof options?.sortPackageJsonExtends !== "object"
-        ? undefined
-        : options.sortPackageJsonExtends;
-    sortPackageJson(
-      config,
-      ...(!sortPackageJsonOptions ? [] : [sortPackageJsonOptions]),
-    );
-  }
-
-  sortTsconfigJson(config, options?.sortTsConfigJsonExtends);
-  sortJsonKeys(config, options?.sortJsonKeysExtends);
-  sortJsonArrayValues(config, options?.sortJsonArrayValuesExtends);
-
-  const storybookEnabled: boolean = Boolean(options?.storybook ?? false);
-
   if (storybookEnabled) {
     const storybookOptions: undefined | storybook.Options =
       typeof options?.storybook !== "object" ? undefined : options.storybook;
@@ -105,8 +90,6 @@ const vdustr = (
       storybook(...(!storybookOptions ? [] : [storybookOptions])),
     );
   }
-
-  const mdxEnabled: boolean = Boolean(options?.mdx ?? false);
 
   if (mdxEnabled) {
     const mdxOptions: Extract<Options["mdx"], AnyObject> = {
@@ -134,7 +117,6 @@ const vdustr = (
     );
   }
 
-  const prettierEnabled: boolean = Boolean(options?.prettier ?? true);
   if (prettierEnabled) {
     const prettierOptions: undefined | prettier.Options =
       typeof options?.prettier !== "object" ? undefined : options.prettier;
