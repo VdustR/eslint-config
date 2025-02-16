@@ -1,3 +1,6 @@
+import type { OptionsConfig } from "@antfu/eslint-config";
+import type { DistributiveOmit } from "@mui/types";
+
 import type {
   AnyObject,
   Config,
@@ -5,7 +8,7 @@ import type {
   VpComposer,
 } from "./types";
 import antfu from "@antfu/eslint-config";
-
+import { omit, pick } from "es-toolkit";
 import { mdx } from "./configs/mdx";
 import { packageJson } from "./configs/packageJson";
 import { prettier } from "./configs/prettier";
@@ -26,33 +29,51 @@ import { yaml } from "./extends/yaml";
 type Options = ReplaceAntfuEslintRulesWithVpRulesDeeply<
   NonNullable<Parameters<typeof antfu>[0]>
 > & {
-  javascriptExtends?: javascript.Options;
-  importsExtends?: imports.Options;
-  typescriptExtends?: typescript.Options;
-  jsoncExtends?: jsonc.Options;
-  sortPackageJsonExtends?: sortPackageJson.Options;
-  sortTsConfigJsonExtends?: sortTsconfigJson.Options;
-  sortJsonKeysExtends?: sortJsonKeys.Options;
-  sortJsonArrayValuesExtends?: sortJsonArrayValues.Options;
-  yamlExtends?: yaml.Options;
+  extends?: {
+    javascript?: javascript.Options;
+    imports?: imports.Options;
+    typescript?: typescript.Options;
+    jsonc?: jsonc.Options;
+    sortPackageJson?: sortPackageJson.Options;
+    sortTsConfigJson?: sortTsconfigJson.Options;
+    sortJsonKeys?: sortJsonKeys.Options;
+    sortJsonArrayValues?: sortJsonArrayValues.Options;
+    yaml?: yaml.Options;
+    react?: react.Options;
+  };
   packageJson?: boolean | packageJson.Options;
-  reactExtends?: react.Options;
   mdx?: boolean | mdx.Options;
   storybook?: boolean | storybook.Options;
   prettier?: boolean | prettier.Options;
 };
 
+const ownedConfigNames = [
+  "extends",
+  "packageJson",
+  "mdx",
+  "storybook",
+  "prettier",
+] as const satisfies Array<keyof Options>;
+
 const vdustr = (
   options?: Options,
   ...userConfigs: Array<Config>
 ): VpComposer => {
-  const packageJsonEnabled: boolean = Boolean(options?.packageJson ?? true);
-  const storybookEnabled: boolean = Boolean(options?.storybook ?? false);
-  const mdxEnabled: boolean = Boolean(options?.mdx ?? false);
-  const prettierEnabled: boolean = Boolean(options?.prettier ?? true);
+  type AntfuOptions = DistributiveOmit<OptionsConfig, keyof Options>;
+  const antfuOptions: OptionsConfig = omit(
+    options ?? {},
+    ownedConfigNames,
+  ) satisfies AntfuOptions as AntfuOptions;
+
+  const vpOptions = pick(options ?? {}, ownedConfigNames);
+
+  const packageJsonEnabled: boolean = Boolean(vpOptions?.packageJson ?? true);
+  const storybookEnabled: boolean = Boolean(vpOptions?.storybook ?? false);
+  const mdxEnabled: boolean = Boolean(vpOptions?.mdx ?? false);
+  const prettierEnabled: boolean = Boolean(vpOptions?.prettier ?? true);
 
   let config: VpComposer = antfu({
-    ...(options as any),
+    ...antfuOptions,
     ...(!prettierEnabled
       ? null
       : {
@@ -61,23 +82,23 @@ const vdustr = (
         }),
   });
 
-  javascript(config, options?.javascriptExtends);
-  imports(config, options?.importsExtends);
-  typescript(config, options?.typescriptExtends);
-  jsonc(config, options?.jsoncExtends);
+  javascript(config, vpOptions?.extends?.javascript);
+  imports(config, vpOptions?.extends?.imports);
+  typescript(config, vpOptions?.extends?.typescript);
+  jsonc(config, vpOptions?.extends?.jsonc);
   if (packageJsonEnabled)
-    sortPackageJson(config, options?.sortPackageJsonExtends);
-  sortTsconfigJson(config, options?.sortTsConfigJsonExtends);
-  sortJsonKeys(config, options?.sortJsonKeysExtends);
-  sortJsonArrayValues(config, options?.sortJsonArrayValuesExtends);
-  yaml(config, options?.yamlExtends);
-  react(config, options?.reactExtends);
+    sortPackageJson(config, vpOptions?.extends?.sortPackageJson);
+  sortTsconfigJson(config, vpOptions?.extends?.sortTsConfigJson);
+  sortJsonKeys(config, vpOptions?.extends?.sortJsonKeys);
+  sortJsonArrayValues(config, vpOptions?.extends?.sortJsonArrayValues);
+  yaml(config, vpOptions?.extends?.yaml);
+  react(config, vpOptions?.extends?.react);
 
   if (packageJsonEnabled) {
     const packageJsonOptions: undefined | packageJson.Options =
-      typeof options?.packageJson !== "object"
+      typeof vpOptions?.packageJson !== "object"
         ? undefined
-        : options.packageJson;
+        : vpOptions.packageJson;
     config = config.append(
       packageJson(...(!packageJsonOptions ? [] : [packageJsonOptions])),
     );
@@ -85,7 +106,9 @@ const vdustr = (
 
   if (storybookEnabled) {
     const storybookOptions: undefined | storybook.Options =
-      typeof options?.storybook !== "object" ? undefined : options.storybook;
+      typeof vpOptions?.storybook !== "object"
+        ? undefined
+        : vpOptions.storybook;
     config = config.append(
       storybook(...(!storybookOptions ? [] : [storybookOptions])),
     );
@@ -93,7 +116,7 @@ const vdustr = (
 
   if (mdxEnabled) {
     const mdxOptions: Extract<Options["mdx"], AnyObject> = {
-      ...(typeof options?.mdx !== "object" ? null : options.mdx),
+      ...(typeof vpOptions?.mdx !== "object" ? null : vpOptions.mdx),
     };
     const mdxFlatCodeBlocksEnabled: boolean = Boolean(
       mdxOptions?.codeBlocks ?? true,
@@ -119,7 +142,7 @@ const vdustr = (
 
   if (prettierEnabled) {
     const prettierOptions: undefined | prettier.Options =
-      typeof options?.prettier !== "object" ? undefined : options.prettier;
+      typeof vpOptions?.prettier !== "object" ? undefined : vpOptions.prettier;
     config = config.append(
       prettier(...(!prettierOptions ? [] : [prettierOptions])),
     );
