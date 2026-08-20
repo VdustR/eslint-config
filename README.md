@@ -14,7 +14,7 @@ ViPro's ESLint configuration.
   - [eslint-config-prettier](https://github.com/prettier/eslint-config-prettier) - disables formatting rules to work with any formatter (Prettier, oxfmt, etc.)
 - Fine-tuned to provide an opinionated, optimal DX. Please copy the VSCode settings from [eslint-config.code-workspace](https://github.com/VdustR/eslint-config/blob/main/eslint-config.code-workspace).
 
-Check [here](https://vdustr.dev/eslint-config) to preview the ESLint inspection.
+Check [here](https://vp-tw.github.io/eslint-config/) to preview the ESLint inspection.
 
 ## Installation
 
@@ -118,4 +118,4 @@ See [CLAUDE.md](./CLAUDE.md) for detailed architecture and patterns.
 
 ## License
 
-MIT © ViPro <vdustr@gmail.com> (<http://vdustr.dev>)
+MIT © ViPro <vdustr@gmail.com> (<https://vdustr.github.io>)
