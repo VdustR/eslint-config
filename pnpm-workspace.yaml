@@ -1,59 +1,60 @@
 catalog:
-  "@antfu/eslint-config": ^8.2.0
-  "@changesets/cli": ^2.29.8
-  "@commitlint/cli": ^20.3.1
-  "@commitlint/config-conventional": ^20.3.1
-  "@commitlint/types": ^20.3.1
+  "@antfu/eslint-config": ^9.4.1
+  "@changesets/cli": ^3.0.1
+  "@commitlint/cli": ^21.2.2
+  "@commitlint/config-conventional": ^21.2.2
+  "@commitlint/types": ^21.2.0
   "@emotion/css": ^11.13.5
   "@emotion/eslint-plugin": ^11.12.0
-  "@eslint/compat": ^2.0.5
-  "@eslint/config-inspector": ^2.0.0
-  "@eslint-react/eslint-plugin": ^4.2.3
-  "@mui/types": ^7.4.2
-  "@storybook/preview-api": ^8.6.14
-  "@storybook/react": ^10.2.1
-  "@tanstack/eslint-plugin-query": ^5.99.2
-  "@tanstack/react-query": ^5.79.0
+  "@eslint/compat": ^2.1.0
+  "@eslint/config-inspector": ^3.3.0
+  "@eslint-react/eslint-plugin": ^5.18.7
+  "@mui/types": ^9.4.0
+  "@storybook/react": ^10.5.10
+  "@tanstack/eslint-plugin-query": ^5.102.8
+  "@tanstack/react-query": ^5.102.8
   "@total-typescript/ts-reset": ^0.6.1
   "@tsconfig/svelte": ^5.0.8
   "@types/eslint-config-prettier": ^6.11.3
   "@types/fs-extra": ^11.0.4
-  "@types/lint-staged": ^14.0.0
-  "@types/node": ^25.6.0
-  "@types/react": ^19.1.6
-  "@typescript/native-preview": ^7.0.0-dev.20260421.2
-  "@typescript-eslint/utils": ^8.59.0
-  "@vp-tw/tsconfig": ^5.0.0
-  commitizen: ^4.3.1
-  cspell: ^9.6.2
-  es-toolkit: ^1.44.0
-  eslint: ^10.2.1
+  "@types/node": ^26.4.1
+  "@types/react": ^19.2.18
+  "@typescript/native-preview": 7.0.0-dev.20260707.2
+  "@typescript-eslint/utils": ^8.69.0
+  "@vp-tw/tsconfig": ^5.0.1
+  commitizen: ^4.3.2
+  cspell: ^10.2.0
+  es-toolkit: ^1.52.0
+  eslint: ^10.9.1
   eslint-config-prettier: ^10.1.8
-  eslint-flat-config-utils: ^3.1.0
-  eslint-plugin-mdx: ^3.7.0
-  eslint-plugin-package-json: ^0.91.1
+  eslint-flat-config-utils: ^3.2.0
+  eslint-plugin-mdx: ^3.8.1
+  eslint-plugin-package-json: ^1.8.0
   eslint-plugin-react-compiler: 19.1.0-rc.2
-  eslint-plugin-react-refresh: ^0.5.2
-  eslint-plugin-storybook: ^10.3.5
-  eslint-plugin-svelte: ^3.17.0
-  eslint-plugin-yml: ^3.3.1
+  eslint-plugin-react-refresh: ^0.5.5
+  eslint-plugin-storybook: ^10.5.10
+  eslint-plugin-svelte: ^3.23.0
+  eslint-plugin-yml: ^3.8.1
   eslint-typegen: ^2.3.1
   fast-glob: ^3.3.3
-  fs-extra: ^11.3.3
+  fs-extra: ^11.4.0
   husky: ^9.1.7
-  jiti: ^2.6.1
-  lint-staged: ^16.2.7
-  local-pkg: ^1.1.2
+  jiti: ^2.7.0
+  lint-staged: ^17.4.1
+  local-pkg: ^1.2.1
   npm-run-all: ^4.1.5
-  oxfmt: ^0.27.0
+  oxfmt: ^0.66.0
   pathe: ^2.0.3
   pkg-dir: ^9.0.0
-  storybook: ^10.2.1
-  svelte: ^5.48.5
-  tsx: ^4.21.0
+  storybook: ^10.5.10
+  svelte: ^5.57.0
+  tsx: ^4.23.13
   typescript: ^6.0.3
-  unbuild: ^3.5.0
-  vitest: ^4.0.18
+  unbuild: ^3.6.1
+  vite: ^8.2.2
+  vitest: ^4.1.11
+
+minimumReleaseAgeExcludePrune: true
 
 onlyBuiltDependencies:
   - esbuild
@@ -65,6 +66,10 @@ overrides:
 
 packages:
   - packages/*
+
 shellEmulator: true
 
 trustPolicy: no-downgrade
+
+trustPolicyExclude:
+  - semver@5.7.2 || 6.3.1
