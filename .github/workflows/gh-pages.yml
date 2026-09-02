@@ -11,7 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup
-      - run: pnpm inspect build --base=/${{ github.event.repository.name }}/
+      - run: pnpm inspect build --base=/${{ github.event.repository.name }}/ --out-dir=.eslint-config-inspector
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4
         with:
