@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { useArgs, useCallback, useState } from "@storybook/preview-api";
+import { useArgs, useCallback, useState } from "storybook/preview-api";
 import { MyComponent } from "./MyComponent";
 
 type Args = MyComponent.Props;

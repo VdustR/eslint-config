@@ -27,6 +27,7 @@
     "local-pkg": "catalog:",
     "npm-run-all": "catalog:",
     "svelte": "catalog:",
+    "vite": "catalog:",
     "vitest": "catalog:"
   },
   "devDependencies": {
@@ -41,7 +42,6 @@
     "@tanstack/eslint-plugin-query": "catalog:",
     "@total-typescript/ts-reset": "catalog:",
     "@types/fs-extra": "catalog:",
-    "@types/lint-staged": "catalog:",
     "@types/node": "catalog:",
     "@typescript-eslint/utils": "catalog:",
     "@typescript/native-preview": "catalog:",

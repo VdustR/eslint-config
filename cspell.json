@@ -35,6 +35,7 @@
     "unocss",
     "unrs",
     "vdustr",
+    "vite",
     "vitest"
   ]
 }

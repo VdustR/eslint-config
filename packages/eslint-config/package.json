@@ -50,6 +50,7 @@
     "access": "public"
   },
   "scripts": {
+    "prebuild": "run-s copy",
     "build": "unbuild",
     "copy": "tsx scripts/copy",
     "prepare": "run-s typegen",
